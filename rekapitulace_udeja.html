@@ -150,7 +150,7 @@
     telInput.addEventListener('input', formatujVstupy);
     pscInput.addEventListener('input', formatujVstupy);
 
-    // --- NAČTENÍ KOŠÍKU (Optimalizováno pro GitHub Pages) ---
+    // --- NAČTENÍ KOŠÍKU (Opraveno pro složku img a formát .jpg) ---
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
     const seznamDiv = document.getElementById('seznam-polozek');
     let celkovaSuma = 0;
@@ -163,20 +163,10 @@
     kosik.forEach(p => {
         celkovaSuma += p.cena;
 
-        let nazevObrazku = p.obrazek || 'placeholder.jpg';
-        let finalniCesta;
-
-        // Očištění názvu od úvodního lomítka pro GitHub kompatibilitu
-        if (nazevObrazku.startsWith('/')) {
-            nazevObrazku = nazevObrazku.substring(1);
-        }
-
-        if (nazevObrazku.includes('img/') || nazevObrazku.startsWith('http')) {
-            finalniCesta = nazevObrazku;
-        } else {
-            // Použití ./img/ zajistí správné relativní směrování na GitHubu
-            finalniCesta = './img/' + nazevObrazku;
-        }
+        // Vyčištění názvu pro získání cesty k JPG ve složce img
+        let cistyNazev = p.obrazek || 'placeholder';
+        cistyNazev = cistyNazev.split('/').pop().split('.')[0];
+        let finalniCesta = `./img/${cistyNazev}.jpg`;
 
         seznamDiv.innerHTML += `
             <div class="polozka-mini">
@@ -187,7 +177,7 @@
     });
     document.getElementById('suma-celkem').innerText = `Celkem: ${celkovaSuma.toLocaleString()} Kč`;
 
-    // --- FIREBASE & EMAILJS ZŮSTÁVÁ STEJNÉ ---
+    // --- FIREBASE & EMAILJS ---
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
