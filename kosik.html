@@ -36,6 +36,7 @@
         .btn:hover { opacity: 0.9; transform: translateY(-1px); }
         .prazdny-kosik { text-align: center; padding: 40px; color: #666; }
 
+        /* Bublina - notifikace */
         #bublina { position: fixed; bottom: 30px; right: 30px; background: #2c3e50; color: #fff; padding: 16px 24px; border-radius: 8px; display: none; z-index: 1001; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: opacity 0.3s; }
     </style>
 </head>
@@ -77,7 +78,6 @@
     <div id="bublina"></div>
 
     <script>
-        // Konfigurace Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
             authDomain: "pc-store-5656d.firebaseapp.com",
@@ -92,6 +92,18 @@
 
         let casovacBubliny;
 
+        function zobrazBublinu(text) {
+            const bublina = document.getElementById('bublina');
+            bublina.innerText = text;
+            bublina.style.display = 'block';
+            bublina.style.opacity = '1';
+            clearTimeout(casovacBubliny);
+            casovacBubliny = setTimeout(() => {
+                bublina.style.opacity = '0';
+                setTimeout(() => { bublina.style.display = 'none'; }, 300);
+            }, 3000);
+        }
+
         function zobrazKosik() {
             const seznam = document.getElementById('seznam-polozek');
             const celkemElement = document.getElementById('celkova-cena');
@@ -99,18 +111,14 @@
             const kosikOdkaz = document.getElementById('kosik-odkaz');
             
             let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
-            
-            // Aktualizace počítadla v menu
             if(kosikOdkaz) kosikOdkaz.innerText = 'Košík 🛒 (' + kosik.length + ')';
             
-            // Pokud je prázdno
             if (kosik.length === 0) {
-                seznam.innerHTML = '<div class="prazdny-kosik"><h3>Váš košík je prázdný.</h3><p>Vyberte si některý z našich strojů!</p></div>';
+                seznam.innerHTML = '<div class="prazdny-kosik"><h3>Váš košík je prázdný.</h3><p>Vyberte si některý z našich herních strojů!</p></div>';
                 patka.style.display = 'none';
                 return;
             }
 
-            // Načtení aktuálních cen z Firebase
             db.ref('/').once('value').then((snapshot) => {
                 const data = snapshot.val() || {};
                 const aktualniCeny = data.ceny || {};
@@ -120,11 +128,9 @@
                 patka.style.display = 'block';
 
                 kosik.forEach((polozka, index) => {
-                    // Kontrola ceny: Pokud je v DB nová, použijeme ji, jinak bereme tu z localStorage
                     const cenaProVypocet = (aktualniCeny[polozka.dbKey] !== undefined) ? aktualniCeny[polozka.dbKey] : polozka.cena;
                     celkovaSuma += cenaProVypocet;
                     
-                    // CESta K OBRÁZKU: Načítá ze složky img/ podle dbKey (např. img/PC1.jpg)
                     const cestaKObrazku = `img/${polozka.dbKey}.jpg`;
                     
                     seznam.innerHTML += `
@@ -142,13 +148,11 @@
                 });
                 celkemElement.innerText = `Celkem: ${celkovaSuma.toLocaleString('cs-CZ')} Kč`;
             }).catch(error => {
-                console.error("Chyba při komunikaci s databází:", error);
-                // Nouzové vykreslení pouze z LocalStorage
+                console.error("Firebase error:", error);
                 vykresliZLocalStorage(kosik);
             });
         }
 
-        // Funkce pro případ, že nejde internet nebo Firebase
         function vykresliZLocalStorage(kosik) {
             const seznam = document.getElementById('seznam-polozek');
             const celkemElement = document.getElementById('celkova-cena');
@@ -175,18 +179,6 @@
             celkemElement.innerText = `Celkem: ${celkovaSuma.toLocaleString('cs-CZ')} Kč`;
         }
 
-        function zobrazBublinu(text) {
-            const bublina = document.getElementById('bublina');
-            bublina.innerText = text;
-            bublina.style.display = 'block';
-            bublina.style.opacity = '1';
-            clearTimeout(casovacBubliny);
-            casovacBubliny = setTimeout(() => {
-                bublina.style.opacity = '0';
-                setTimeout(() => { bublina.style.display = 'none'; }, 300);
-            }, 3000);
-        }
-
         function odebratPolozku(index, nazev) {
             let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
             kosik.splice(index, 1);
@@ -196,14 +188,12 @@
         }
 
         function vyprazdnitKosik() {
-            if(confirm("Opravdu chcete vyprázdnit celý košík?")) {
-                localStorage.removeItem('mujKosik');
-                zobrazKosik();
-                zobrazBublinu("🗑️ Celý košík byl vyprázdněn");
-            }
+            // Žádný alert ani confirm, rovnou vymazat a ukázat bublinu
+            localStorage.removeItem('mujKosik');
+            zobrazKosik();
+            zobrazBublinu("🗑️ Košík byl vyprázdněn");
         }
 
-        // Spuštění při načtení stránky
         window.onload = zobrazKosik;
     </script>
 </body>
