@@ -127,7 +127,7 @@
 
     <div class="detail-karta">
         <div class="foto-sekce">
-            <img src="PC1.jpg" alt="Herní Bestie i7">
+            <img src="img/PC1.jpg" alt="Herní Bestie i7">
         </div>
 
         <div class="info-sekce">
@@ -147,7 +147,7 @@
             <div class="cena-sekce">
                 <span id="sklad-PC1" class="sklad-info">Načítání skladu...</span>
                 <span class="velka-cena"><span id="cena-PC1">----</span> Kč</span>
-                <button id="btn-PC1" class="btn-nakup" onclick="pridatDoKosiku('Herní Bestie i7', 'PC1', 'https://i.postimg.cc/0y138rQK/PC1.jpg', 'PC1')">
+                <button id="btn-PC1" class="btn-nakup" onclick="pridatDoKosiku('Herní Bestie i7', 'PC1', 'img/PC1.jpg', 'PC1')">
                     Do košíku 🛒
                 </button>
             </div>
@@ -171,7 +171,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const PRODUCT_ID = 'PC1'; // ID pro tento konkrétní produkt v DB
+    const PRODUCT_ID = 'PC1'; 
 
     // Načítání ceny a skladu z Firebase
     db.ref('/').on('value', (snapshot) => {
@@ -180,11 +180,9 @@
             const cena = data.ceny ? data.ceny[PRODUCT_ID] : 0;
             const sklad = data.sklad ? data.sklad[PRODUCT_ID] : 0;
 
-            // Aktualizace ceny
             const cenaEl = document.getElementById('cena-' + PRODUCT_ID);
             if (cenaEl) cenaEl.innerText = cena.toLocaleString('cs-CZ');
 
-            // Aktualizace skladu a tlačítka
             const skladEl = document.getElementById('sklad-' + PRODUCT_ID);
             const btnEl = document.getElementById('btn-' + PRODUCT_ID);
 
@@ -209,13 +207,13 @@
     let casovacBubliny;
 
     function pridatDoKosiku(nazev, cenaElementId, urlObrazku, dbKey) {
-        // Získáme aktuální cenu zobrazenou na stránce (očištěnou o mezery)
         const cenaText = document.getElementById('cena-' + cenaElementId).innerText.replace(/\s/g, '');
         const cenaCislo = parseInt(cenaText) || 0;
 
-        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        // ZMĚNA: Použití sessionStorage místo localStorage
+        let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
         kosik.push({ nazev: nazev, cena: cenaCislo, obrazek: urlObrazku, dbKey: dbKey });
-        localStorage.setItem('mujKosik', JSON.stringify(kosik));
+        sessionStorage.setItem('mujKosik', JSON.stringify(kosik));
         
         aktualizovatPocitadlo();
         zobrazBublinu(nazev);
@@ -234,12 +232,12 @@
     }
 
     function aktualizovatPocitadlo() {
-        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        // ZMĚNA: Použití sessionStorage místo localStorage
+        let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
         const pocitadlo = document.getElementById('pocitadlo-kosiku');
         if (pocitadlo) pocitadlo.innerText = `Košík 🛒 (${kosik.length})`;
     }
 
-    // Inicializace počitadla při načtení
     window.onload = aktualizovatPocitadlo;
 </script>
 

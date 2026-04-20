@@ -57,7 +57,7 @@
     <div class="product-grid">
         <article class="product-card">
             <a href="PC_1.html" class="product-link">
-                <img src="PC1.jpg" alt="Herní Bestie">
+                <img src="img/PC1.jpg" alt="Herní Bestie">
                 <h3>Herní Bestie i7</h3>
             </a>
             <p class="sklad-info" id="sklad-PC1">Načítání skladu...</p>
@@ -68,7 +68,7 @@
 
         <article class="product-card">
             <a href="PC_2.html" class="product-link">
-                <img src="PC2.jpg" alt="Kancelářský Profík">
+                <img src="img/PC2.jpg" alt="Kancelářský Profík">
                 <h3>Kancelářský Profík</h3>
             </a>
             <p class="sklad-info" id="sklad-PC2">Načítání skladu...</p>
@@ -79,7 +79,7 @@
 
         <article class="product-card">
             <a href="PC_3.html" class="product-link">
-                <img src="PC3.jpg" alt="Notebook">
+                <img src="img/PC3.jpg" alt="Notebook">
                 <h3>Stylový Notebook</h3>
             </a>
             <p class="sklad-info" id="sklad-PC3">Načítání skladu...</p>
@@ -109,8 +109,6 @@
 
     const produktyKlice = ['PC1', 'PC2', 'PC3'];
     
-    // POSLUCHAČ PRO CELOU DATABÁZI (kořen)
-    // Sledujeme celou databázi, abychom měli přístup k 'ceny' i 'sklad' najednou
     db.ref('/').on('value', (snapshot) => {
         const rootData = snapshot.val() || {};
         const cenyData = rootData.ceny || {};
@@ -124,18 +122,15 @@
             const btnEl = document.getElementById('btn-' + klic);
             const cenaEl = document.getElementById('cena-' + klic);
             
-            // 1. Aktualizace textu skladu
             if(infoEl) {
                 infoEl.innerText = pocet > 0 ? `Skladem: ${pocet} ks` : "Vyprodáno";
                 infoEl.style.color = pocet > 0 ? "#28a745" : "#e74c3c";
             }
 
-            // 2. Aktualizace ceny (formátování s mezerou pro tisíce)
             if(cenaEl) {
                 cenaEl.innerText = cena > 0 ? cena.toLocaleString('cs-CZ') : "----";
             }
 
-            // 3. Aktualizace tlačítka (vypnutí při 0 ks)
             if(btnEl) {
                 if(pocet <= 0) {
                     btnEl.disabled = true;
@@ -151,11 +146,11 @@
     let casovacBubliny;
 
     function pridatDoKosiku(nazev, cenaElementId, urlObrazku, dbKey) {
-        // Získáme aktuální cenu z HTML (odstraníme mezery)
         const cenaText = document.getElementById(cenaElementId).innerText.replace(/\s/g, '');
         const cenaCislo = parseInt(cenaText) || 0;
 
-        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        // TADY JE TA ZMĚNA: sessionStorage místo localStorage
+        let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
         kosik.push({ 
             nazev: nazev, 
             cena: cenaCislo, 
@@ -163,7 +158,7 @@
             dbKey: dbKey 
         });
         
-        localStorage.setItem('mujKosik', JSON.stringify(kosik));
+        sessionStorage.setItem('mujKosik', JSON.stringify(kosik));
         aktualizovatPocitadlo();
         zobrazBublinu(nazev);
     }
@@ -181,7 +176,8 @@
     }
 
     function aktualizovatPocitadlo() {
-        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        // TADY JE TA ZMĚNA: sessionStorage místo localStorage
+        let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
         const kosikLink = document.getElementById('pocitadlo-odkaz');
         if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;
     }
@@ -189,4 +185,4 @@
     window.onload = aktualizovatPocitadlo;
 </script>
 </body>
-</html>
+</html> 

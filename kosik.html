@@ -36,7 +36,6 @@
         .btn:hover { opacity: 0.9; transform: translateY(-1px); }
         .prazdny-kosik { text-align: center; padding: 40px; color: #666; }
 
-        /* Sjednocená bublina podle index.html */
         #bublina { position: fixed; bottom: 30px; right: 30px; background: #2c3e50; color: #fff; padding: 16px 24px; border-radius: 8px; display: none; z-index: 1001; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: opacity 0.3s; }
     </style>
 </head>
@@ -98,7 +97,7 @@
             const patka = document.getElementById('patka-kosiku');
             const kosikOdkaz = document.getElementById('kosik-odkaz');
             
-            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+            let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
             if(kosikOdkaz) kosikOdkaz.innerText = 'Košík 🛒 (' + kosik.length + ')';
             
             if (kosik.length === 0) {
@@ -116,27 +115,27 @@
                 kosik.forEach((polozka, index) => {
                     const aktualniCena = aktualniCeny[polozka.dbKey] !== undefined ? aktualniCeny[polozka.dbKey] : polozka.cena;
                     celkovaSuma += aktualniCena;
-
-                    const lokalniFoto = `img/${polozka.dbKey}.jpg`;
+                    
+                    // Použití obrázku z dat košíku, pokud existuje, jinak placeholder
+                    const foto = polozka.obrazek || `img/${polozka.dbKey}.jpg`;
 
                     seznam.innerHTML += `
                         <div class="polozka">
-                            <img src="${lokalniFoto}" alt="${polozka.nazev}" onerror="this.src='img/placeholder.jpg'">
+                            <img src="${foto}" alt="${polozka.nazev}" onerror="this.src='https://via.placeholder.com/80?text=PC'">
                             <div class="polozka-info">
                                 <strong>${polozka.nazev}</strong>
                             </div>
                             <div style="display: flex; align-items: center; gap: 20px;">
-                                <span class="cena-polozky">${aktualniCena.toLocaleString()} Kč</span>
+                                <span class="cena-polozky">${aktualniCena.toLocaleString('cs-CZ')} Kč</span>
                                 <button onclick="odebratPolozku(${index}, '${polozka.nazev}')" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:1.5rem; padding: 0 5px;">&times;</button>
                             </div>
                         </div>
                     `;
                 });
-                celkemElement.innerText = `Celkem: ${celkovaSuma.toLocaleString()} Kč`;
+                celkemElement.innerText = `Celkem: ${celkovaSuma.toLocaleString('cs-CZ')} Kč`;
             });
         }
 
-        // Sjednocená funkce pro bublinu
         function zobrazBublinu(text) {
             const bublina = document.getElementById('bublina');
             bublina.innerText = text;
@@ -150,21 +149,21 @@
         }
 
         function odebratPolozku(index, nazev) {
-            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+            let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
             kosik.splice(index, 1);
-            localStorage.setItem('mujKosik', JSON.stringify(kosik));
+            sessionStorage.setItem('mujKosik', JSON.stringify(kosik));
             zobrazKosik();
             zobrazBublinu(`🗑️ ${nazev} byl odebrán`);
         }
 
         function vyprazdnitKosik() {
-            // Žádné confirm(), rovnou akce a bublina
-            localStorage.removeItem('mujKosik');
+            // ZMĚNA: Odstraněno confirm(), rovnou smazat a zobrazit bublinu
+            sessionStorage.removeItem('mujKosik');
             zobrazKosik();
             zobrazBublinu("🗑️ Celý košík byl vyprázdněn");
         }
 
-        zobrazKosik();
+        window.onload = zobrazKosik;
     </script>
 </body>
 </html>

@@ -53,7 +53,7 @@
     <a href="produkty.html" class="zpet-odkaz">← Zpět na nabídku</a>
     <div class="detail-karta">
         <div class="foto-sekce">
-            <img src="PC2.jpg" alt="Kancelářský Profík">
+            <img src="img/PC2.jpg" alt="Kancelářský Profík">
         </div>
         <div class="info-sekce">
             <span class="kategorie">Kancelářská Sestava</span>
@@ -69,7 +69,7 @@
             <div class="cena-sekce">
                 <span id="sklad-PC2" class="sklad-info">Načítání skladu...</span>
                 <span class="velka-cena"><span id="cena-PC2">----</span> Kč</span>
-                <button id="btn-PC2" class="btn-nakup" onclick="pridatDoKosiku('Kancelářský Profík', 'PC2', 'https://i.postimg.cc/0y138rQK/PC1.jpg', 'PC2')">
+                <button id="btn-PC2" class="btn-nakup" onclick="pridatDoKosiku('Kancelářský Profík', 'PC2', 'img/PC2.jpg', 'PC2')">
                     Do košíku 🛒
                 </button>
             </div>
@@ -114,9 +114,12 @@
     function pridatDoKosiku(nazev, cenaId, url, dbKey) {
         const cenaText = document.getElementById('cena-' + cenaId).innerText.replace(/\s/g, '');
         const cenaCislo = parseInt(cenaText) || 0;
-        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        
+        // ZMĚNA: sessionStorage místo localStorage
+        let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
         kosik.push({ nazev: nazev, cena: cenaCislo, obrazek: url, dbKey: dbKey });
-        localStorage.setItem('mujKosik', JSON.stringify(kosik));
+        sessionStorage.setItem('mujKosik', JSON.stringify(kosik));
+        
         aktualizovatPocitadlo();
         zobrazBublinu(nazev);
     }
@@ -126,11 +129,15 @@
         b.innerText = '✓ ' + nazev + ' v košíku';
         b.style.display = 'block'; b.style.opacity = '1';
         clearTimeout(casovacBubliny);
-        casovacBubliny = setTimeout(() => { b.style.opacity = '0'; setTimeout(() => b.style.display='none', 300); }, 3000);
+        casovacBubliny = setTimeout(() => { 
+            b.style.opacity = '0'; 
+            setTimeout(() => b.style.display='none', 300); 
+        }, 3000);
     }
 
     function aktualizovatPocitadlo() {
-        let k = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        // ZMĚNA: sessionStorage místo localStorage
+        let k = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
         document.getElementById('pocitadlo-kosiku').innerText = `Košík 🛒 (${k.length})`;
     }
     window.onload = aktualizovatPocitadlo;
