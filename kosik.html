@@ -117,9 +117,13 @@
                     const aktualniCena = aktualniCeny[polozka.dbKey] !== undefined ? aktualniCeny[polozka.dbKey] : polozka.cena;
                     celkovaSuma += aktualniCena;
 
+                    // --- ÚPRAVA NAČÍTÁNÍ FOTKY Z LOKÁLNÍ SLOŽKY ---
+                    // Cesta k obrázku: složka 'img/' + název klíče (např. herni-pc-1) + přípona '.jpg'
+                    const lokalniFoto = `img/${polozka.dbKey}.jpg`;
+
                     seznam.innerHTML += `
                         <div class="polozka">
-                            <img src="${polozka.obrazek || 'placeholder.jpg'}" alt="${polozka.nazev}">
+                            <img src="${lokalniFoto}" alt="${polozka.nazev}" onerror="this.src='img/placeholder.jpg'">
                             <div class="polozka-info">
                                 <strong>${polozka.nazev}</strong>
                             </div>
