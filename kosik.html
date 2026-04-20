@@ -117,7 +117,6 @@
                     const aktualniCena = aktualniCeny[polozka.dbKey] !== undefined ? aktualniCeny[polozka.dbKey] : polozka.cena;
                     celkovaSuma += aktualniCena;
 
-                    // Načítání lokální fotky
                     const lokalniFoto = `img/${polozka.dbKey}.jpg`;
 
                     seznam.innerHTML += `
@@ -137,7 +136,7 @@
             });
         }
 
-        // Funkce pro bublinu sjednocená s index.html
+        // Sjednocená funkce pro bublinu
         function zobrazBublinu(text) {
             const bublina = document.getElementById('bublina');
             bublina.innerText = text;
@@ -159,10 +158,10 @@
         }
 
         function vyprazdnitKosik() {
-            // ODSTRANĚNO: confirm() - nyní se vymaže rovnou
+            // Žádné confirm(), rovnou akce a bublina
             localStorage.removeItem('mujKosik');
             zobrazKosik();
-            zobrazBublinu("🗑️ Košík byl vyprázdněn");
+            zobrazBublinu("🗑️ Celý košík byl vyprázdněn");
         }
 
         zobrazKosik();
