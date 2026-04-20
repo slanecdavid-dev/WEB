@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O nás | Počítače z Moravy</title>
+     <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f0f2f5; color: #333; }
+        
+        .container { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        header { 
+            background: #2c3e50; 
+            color: #fff; 
+            padding: 1rem 0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header .container {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .logo h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
+        nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        nav a:hover { color: #28a745; }
+
+        .hero { background: #fff; padding: 40px 0; text-align: center; border-bottom: 3px solid #28a745; margin-bottom: 40px; }
+        .hero h2 { margin: 0; color: #2c3e50; }
+
+        .about-section { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 60px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo"><h1>Počítače z Moravy</h1></div>
+            <nav>
+                <a href="index.html">Domů</a>
+                <a href="produkty.html">Produkty</a>
+                <a href="O_nas.html">O nás</a>
+                <a href="kosik.html" id="pocitadlo-odkaz">Košík 🛒 (0)</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h2>Náš příběh</h2>
+            <p>Jsme parta nadšenců z Moravy, kteří milují technologie.</p>
+        </div>
+    </div>
+
+    <main class="container">
+        <section class="about-section">
+            <h3>Kdo jsme?</h3>
+            <p>Skládáme počítače s láskou a precizností. Naším cílem je dodat zákazníkovi stroj, který nebude jen kusem železa, ale spolehlivým partnerem pro práci i zábavu.</p>
+            <p>Všechny komponenty pečlivě vybíráme a každý počítač prochází náročným testováním, než se vydá na cestu k vám.</p>
+        </section>
+    </main>
+
+    <script>
+        function aktualizovatPocitadlo() {
+            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+            const kosikLink = document.getElementById('pocitadlo-odkaz');
+            if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;
+        }
+        window.onload = aktualizovatPocitadlo;
+    </script>
+</body>
+</html>

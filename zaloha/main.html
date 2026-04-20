@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Počítače z Moravy</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f4f4f4; }
+        
+        /* Úprava headeru pro zarovnání loga */
+        header { 
+            background: #333; 
+            color: #fff; 
+            padding: 0.5rem 1rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+
+        /* Kontejner pro logo a název */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-container img {
+            height: 50px; /* Nastavte si výšku loga podle potřeby */
+            width: auto;
+            margin-right: 15px; /* Mezera mezi obrázkem a textem */
+        }
+
+        .logo-container h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        nav a { color: #fff; margin-left: 15px; text-decoration: none; font-weight: bold; }
+        .hero { background: #e2e2e2; padding: 60px 20px; text-align: center; border-bottom: 3px solid #28a745; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .product-card { background: white; border: 1px solid #ddd; padding: 15px; border-radius: 8px; text-align: center; transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .product-card img { max-width: 100%; height: auto; border-radius: 4px; }
+        .btn { background: #28a745; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; width: 100%; }
+        .btn:disabled { background: #666; cursor: not-allowed; }
+        .sklad-info { font-weight: bold; color: #555; margin: 10px 0; }
+        #bublina { position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 15px 25px; border-radius: 5px; display: none; z-index: 1001; transition: opacity 0.3s; }
+    </style>
+</head>
+<body>
+
+<header>
+        <div class="logo"><h1>Počítače z Moravy</h1></div>
+        <nav>
+            <a href="main.html">Domů</a>
+            <a href="produkty.html">Produkty</a>
+            <a href="O_nas.html">O nás</a>
+            <a href="kosik.html">Košík 🛒(0)</a>
+        </nav>
+    </header>
+
+
+
+<div class="hero">
+    <h2>Poctivé počítače skládané na Moravě</h2>
+    <p>Výkon, na který se můžete spolehnout.</p>
+</div>
+
+<div class="container">
+    <div class="product-grid">
+        <article class="product-card">
+            <img src="https://i.postimg.cc/0y138rQK/PC1.jpg" alt="Herní Bestie">
+            <h3>Herní Bestie i7</h3>
+            <p class="sklad-info" id="sklad-herni_bestie">Načítání skladu...</p>
+            <p><strong>24 499 Kč</strong></p>
+            <button class="btn" id="btn-herni_bestie" onclick="pridatDoKosiku('Herní Bestie i7', 24499, 'https://i.postimg.cc/0y138rQK/PC1.jpg', 'herni_bestie')">Do košíku</button>
+        </article>
+
+        <article class="product-card">
+            <img src="https://i.postimg.cc/0y138rQK/PC1.jpg" alt="Kancelářský Profík">
+            <h3>Kancelářský Profík</h3>
+            <p class="sklad-info" id="sklad-kancelarsky_profik">Načítání skladu...</p>
+            <p><strong>12 999 Kč</strong></p>
+            <button class="btn" id="btn-kancelarsky_profik" onclick="pridatDoKosiku('Kancelářský Profík', 12999, 'https://i.postimg.cc/0y138rQK/PC1.jpg', 'kancelarsky_profik')">Do košíku</button>
+        </article>
+
+        <article class="product-card">
+            <img src="https://i.postimg.cc/0y138rQK/PC1.jpg" alt="Notebook">
+            <h3>Stylový Notebook</h3>
+            <p class="sklad-info" id="sklad-notebook">Načítání skladu...</p>
+            <p><strong>18 500 Kč</strong></p>
+            <button class="btn" id="btn-notebook" onclick="pridatDoKosiku('Stylový Notebook', 18500, 'https://i.postimg.cc/0y138rQK/PC1.jpg', 'notebook')">Do košíku</button>
+        </article>
+    </div>
+</div>
+
+<div id="bublina"></div>
+
+<script>
+    // JS kód zůstává beze změny
+    const firebaseConfig = {
+        apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
+        authDomain: "pc-store-5656d.firebaseapp.com",
+        databaseURL: "https://pc-store-5656d-default-rtdb.europe-west1.firebasedatabase.app/",
+        projectId: "pc-store-5656d",
+        storageBucket: "pc-store-5656d.firebasestorage.app",
+        messagingSenderId: "329194547414",
+        appId: "1:329194547414:web:14cf1cffd85a0279d54177",
+        measurementId: "G-PR8D0RZNSR"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const produktyKlice = ['herni_bestie', 'kancelarsky_profik', 'notebook'];
+    
+    db.ref('sklad').on('value', (snapshot) => {
+        const sklad = snapshot.val() || {};
+        produktyKlice.forEach(klic => {
+            const pocet = sklad[klic] || 0;
+            const infoEl = document.getElementById('sklad-' + klic);
+            const btnEl = document.getElementById('btn-' + klic);
+            
+            if(infoEl) infoEl.innerText = `Skladem: ${pocet} ks`;
+            if(btnEl) {
+                if(pocet <= 0) {
+                    btnEl.disabled = true;
+                    btnEl.innerText = "Vyprodáno";
+                } else {
+                    btnEl.disabled = false;
+                    btnEl.innerText = "Do košíku";
+                }
+            }
+        });
+    });
+
+    let casovacBubliny;
+
+    function pridatDoKosiku(nazev, cena, urlObrazku, dbKey) {
+        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        kosik.push({ nazev: nazev, cena: cena, obrazek: urlObrazku, dbKey: dbKey });
+        localStorage.setItem('mujKosik', JSON.stringify(kosik));
+        
+        aktualizovatPocitadlo();
+        zobrazBublinu(nazev);
+    }
+
+    function zobrazBublinu(nazev) {
+        const bublina = document.getElementById('bublina');
+        bublina.innerText = '✓ ' + nazev + ' byl přidán do košíku';
+        bublina.style.display = 'block';
+        bublina.style.opacity = '1';
+        clearTimeout(casovacBubliny);
+        casovacBubliny = setTimeout(() => {
+            bublina.style.opacity = '0';
+            setTimeout(() => { bublina.style.display = 'none'; }, 300);
+        }, 3000);
+    }
+
+    function aktualizovatPocitadlo() {
+        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        const kosikLink = document.getElementById('pocitadlo-odkaz');
+        if (kosikLink) kosikLink.innerText = `Košík (${kosik.length})`;
+    }
+
+    window.onload = aktualizovatPocitadlo;
+</script>
+</body>
+</html>

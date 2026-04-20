@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Váš Košík | Počítače z Moravy</title>
+    <style>
+        /* Sjednocení stylu */
+        body { font-family: sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f4f4f4; }
+        header { background: #333; color: #fff; padding: 1rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; }
+        nav a { color: #fff; margin-left: 15px; text-decoration: none; }
+        
+        .container { max-width: 800px; margin: 40px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { border-bottom: 2px solid #333; padding-bottom: 10px; }
+
+        .polozka { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #ddd; }
+        .polozka:last-child { border-bottom: none; }
+        .cena-polozky { font-weight: bold; color: #28a745; }
+
+        .total { font-size: 1.5rem; font-weight: bold; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 3px double #333; }
+
+        .tlacitka-akce { display: flex; justify-content: space-between; margin-top: 30px; }
+        .btn { padding: 10px 20px; border: none; cursor: pointer; text-decoration: none; border-radius: 4px; font-weight: bold; }
+        .btn-zpet { background: #28a745; color: white; }
+        .btn-smazat { background: #dc3545; color: white; }
+        .btn-objednat { background: #28a745; color: white; }
+        .prazdny-kosik { text-align: center; padding: 40px; color: #666; }
+
+        /* --- NOVÝ STYL PRO BUBLINU --- */
+        #bublina {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        #bublina.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 4.5s;
+        }
+
+        @keyframes fadein {
+            from { bottom: 0; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
+
+        @keyframes fadeout {
+            from { bottom: 30px; opacity: 1; }
+            to { bottom: 0; opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><h1>E-ShopLogo</h1></div>
+        <nav>
+            <a href="main.html">Domů</a>
+            <a href="produkty.html">Produkty</a>
+            <a href="O_nas.html">O nás</a>
+            <a href="kosik.html" id="kosik-odkaz">Košík 🛒(0)</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Váš nákupní košík</h2>
+        <div id="seznam-polozek"></div>
+
+        <div id="patka-kosiku" style="display: none;">
+            <div class="total" id="celkova-cena">Celkem: 0 Kč</div>
+            <div class="tlacitka-akce">
+                <button class="btn btn-smazat" onclick="vyprazdnitKosik()">Vysypat košík</button>
+                <a href="rekapitulace_udeja.html" class="btn btn-objednat">Pokračovat v objednávce</a>
+            </div>
+        </div>
+        
+        <div class="tlacitka-akce" style="margin-top: 20px;">
+            <a href="produkty.html" class="btn btn-zpet">← Zpět k produktům</a>
+        </div>
+    </div>
+
+    <div id="bublina">Košík byl úspěšně vyprázdněn! 🗑️</div>
+
+    <script>
+        function zobrazKosik() {
+            const seznam = document.getElementById('seznam-polozek');
+            const celkemElement = document.getElementById('celkova-cena');
+            const patka = document.getElementById('patka-kosiku');
+            const kosikOdkaz = document.getElementById('kosik-odkaz');
+            
+            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+            kosikOdkaz.innerText = 'Košík 🛒(' + kosik.length + ')';
+            seznam.innerHTML = '';
+            let celkovaSuma = 0;
+
+            if (kosik.length === 0) {
+                seznam.innerHTML = '<div class="prazdny-kosik"><h3>Váš košík zeje prázdnotou.</h3><p>Vyberte si něco z naší nabídky!</p></div>';
+                patka.style.display = 'none';
+            } else {
+                patka.style.display = 'block';
+                kosik.forEach((polozka, index) => {
+                    celkovaSuma += polozka.cena;
+                    seznam.innerHTML += `
+                        <div class="polozka">
+                            <div><strong>${polozka.nazev}</strong></div>
+                            <div>
+                                <span class="cena-polozky">${polozka.cena} Kč</span>
+                                <button onclick="odebratPolozku(${index})" style="margin-left:15px; background:none; border:none; color:red; cursor:pointer;">✖</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                celkemElement.innerText = `Celkem: ${celkovaSuma} Kč`;
+            }
+        }
+
+        function odebratPolozku(index) {
+            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+            kosik.splice(index, 1);
+            localStorage.setItem('mujKosik', JSON.stringify(kosik));
+            zobrazKosik();
+        }
+
+        // UPRAVENÁ FUNKCE BEZ CONFIRM OKNA
+        function vyprazdnitKosik() {
+            // Smazání dat
+            localStorage.removeItem('mujKosik');
+            zobrazKosik();
+
+            // Zobrazení bubliny
+            const bublina = document.getElementById("bublina");
+            bublina.className = "show";
+
+            // Schování bubliny po 5 sekundách (5000 ms)
+            setTimeout(function(){ 
+                bublina.className = bublina.className.replace("show", ""); 
+            }, 5000);
+        }
+
+        zobrazKosik();
+    </script>
+</body>
+</html>

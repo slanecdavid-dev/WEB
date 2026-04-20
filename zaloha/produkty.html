@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Počítače z Moravy | produkty</title>
+    <style>
+        /* Základní styly pro ukázku */
+        body { font-family: sans-serif; margin: 0; padding: 0; line-height: 1.6; }
+        header { background: #333; color: #fff; padding: 1rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; }
+        nav a { color: #fff; margin-left: 15px; text-decoration: none; }
+        .hero { background: #f4f4f4; padding: 60px 20px; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .product-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; text-align: center; }
+        .product-card img { max-width: 100%; height: auto; border-radius: 4px; }
+        .btn { background: #28a745; color: white; padding: 10px 20px; border: none; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 10px; }
+        footer { background: #333; color: #fff; text-align: center; padding: 20px; margin-top: 40px; }
+    
+        #bublina {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: none; /* Schovaná v základu */
+            z-index: 2000;
+            transition: opacity 0.3s ease;
+        }
+    
+    
+    
+    </style>
+</head>
+<body>
+        
+    <header>
+        <div class="logo"><h1>E-ShopLogo</h1></div>
+        <nav>
+            <a href="main.html">Domů</a>
+            <a href="produkty.html">Produkty</a>
+            <a href="O_nas.html">O nás</a>
+            <a href="kosik.html" id="pocitadlo-odkaz">Košík 🛒(0)</a>
+        </nav>
+    </header>
+
+    <div id="bublina">Produkt byl přidán do košíku!</div>
+
+    
+
+    <main class="container" id="produkty">
+        <h2>Nabízené produkty</h2>
+        
+        <div class="product-grid">
+            <article class="product-card">
+                <img src="https://i.postimg.cc/0y138rQK/PC1.jpg" alt="Produkt 1">
+                <h3>Herní Bestie i7</h3>
+                <p>Výkonný počítač pro nejnovější hry.</p>
+                <p><strong>24 499 Kč</strong></p>
+                <button class="btn" onclick="pridatDoKosiku('Herní Bestie i7', 24499,'https://i.postimg.cc/0y138rQK/PC1.jpg')">Do košíku</button>
+            </article>
+
+            <article class="product-card">
+                <img src="https://i.postimg.cc/qBP03JRQ/PC2.jpg" alt="Produkt 2">
+                <h3>Kancelářský Profík</h3>
+                <p>Ideální společník pro rychlou práci v office.</p>
+                <p><strong>12 290 Kč</strong></p>
+                <button class="btn" onclick="pridatDoKosiku('Kancelářský Profík', 12290, 'https://i.postimg.cc/qBP03JRQ/PC2.jpg')">Do košíku</button>
+            </article>
+
+            <article class="product-card">
+                <img src="https://i.postimg.cc/mZvRHLDj/PC3.jpg" alt="Produkt 3">
+                <h3>Stylový Notebook</h3>
+                <p>Lehký, výkonný a elegantní na cesty.</p>
+                <p><strong>18 850 Kč</strong></p>
+                <button class="btn" onclick="pridatDoKosiku('Stylový Notebook', 18850, 'https://i.postimg.cc/mZvRHLDj/PC3.jpg')">Do košíku</button>
+            </article>
+        </div>
+    </main>
+    
+    <footer>
+        <p></p>
+    </footer>
+
+         <script>
+        let casovacBubliny; 
+
+        function pridatDoKosiku(nazev, cena) {
+            // 1. Uložení do LocalStorage
+            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+            kosik.push({ nazev: nazev, cena: cena });
+            localStorage.setItem('mujKosik', JSON.stringify(kosik));
+            
+            // 2. Aktualizace čísla v menu
+            aktualizovatPocitadlo();
+            
+            // 3. Zobrazení bubliny místo alertu
+            zobrazBublinu(nazev);
+        }
+
+        function zobrazBublinu(nazev) {
+            const bublina = document.getElementById('bublina');
+            bublina.innerText = '✓ ' + nazev + ' byl přidán do košíku';
+            bublina.style.display = 'block';
+            bublina.style.opacity = '1';
+
+            // Pokud už nějaký časovač běžel, zrušíme ho (aby bublina nezmizela dřív)
+            clearTimeout(casovacBubliny);
+
+            // Nastavení zmizení po 5 sekundách (5000 ms)
+            casovacBubliny = setTimeout(() => {
+                bublina.style.opacity = '0';
+                setTimeout(() => {if(bublina.style.opacity === '0') bublina.style.display = 'none'; 
+                }, 300);
+            }, 4000);
+        }
+
+        function aktualizovatPocitadlo() {
+           let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+            // Používáme ID, které je 100% jisté
+            const kosikLink = document.getElementById('pocitadlo-odkaz');
+            if (kosikLink) {
+                kosikLink.innerText = 'Košík 🛒(' + kosik.length + ')';
+            }
+        }
+
+       window.onload = aktualizovatPocitadlo;
+    </script>   
+
+</body>
+</html>
