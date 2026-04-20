@@ -240,7 +240,7 @@
         const cenaCislo = parseInt(cenaText) || 0;
 
         // ZMĚNA: sessionStorage místo localStorage
-        let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
+        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         kosik.push({ 
             nazev: nazev, 
             cena: cenaCislo, 
@@ -248,7 +248,7 @@
             dbKey: dbKey 
         });
         
-        sessionStorage.setItem('mujKosik', JSON.stringify(kosik));
+        localStorage.setItem('mujKosik', JSON.stringify(kosik));
         aktualizovatPocitadlo();
         zobrazBublinu(nazev);
     }
@@ -267,7 +267,7 @@
 
     function aktualizovatPocitadlo() {
         // ZMĚNA: sessionStorage místo localStorage
-        let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
+        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         const kosikLink = document.getElementById('pocitadlo-odkaz');
         if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;
     }

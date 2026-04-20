@@ -70,8 +70,8 @@
 
     <script>
         function aktualizovatPocitadlo() {
-            // ZMĚNA: Použití sessionStorage místo localStorage
-            let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
+            // ZMĚNA: Použití localStorage místo sessionStorage
+            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
             const kosikLink = document.getElementById('pocitadlo-odkaz');
             if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;
         }

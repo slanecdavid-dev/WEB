@@ -97,7 +97,7 @@
             const patka = document.getElementById('patka-kosiku');
             const kosikOdkaz = document.getElementById('kosik-odkaz');
             
-            let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
+            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
             if(kosikOdkaz) kosikOdkaz.innerText = 'Košík 🛒 (' + kosik.length + ')';
             
             if (kosik.length === 0) {
@@ -149,16 +149,16 @@
         }
 
         function odebratPolozku(index, nazev) {
-            let kosik = JSON.parse(sessionStorage.getItem('mujKosik')) || [];
+            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
             kosik.splice(index, 1);
-            sessionStorage.setItem('mujKosik', JSON.stringify(kosik));
+            localStorage.setItem('mujKosik', JSON.stringify(kosik));
             zobrazKosik();
             zobrazBublinu(`🗑️ ${nazev} byl odebrán`);
         }
 
         function vyprazdnitKosik() {
             // ZMĚNA: Odstraněno confirm(), rovnou smazat a zobrazit bublinu
-            sessionStorage.removeItem('mujKosik');
+            localStorage.removeItem('mujKosik');
             zobrazKosik();
             zobrazBublinu("🗑️ Celý košík byl vyprázdněn");
         }
