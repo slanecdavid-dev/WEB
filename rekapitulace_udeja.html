@@ -138,7 +138,7 @@
                         <option value="+420" selected>🇨🇿 +420</option>
                         <option value="+421">🇸🇰 +421</option>
                     </select>
-                    <input type="tel" id="tel" name="user_phone" required placeholder="123 456 789" maxlength="11">
+                    <input type="tel" id="tel" name="user_phone" required placeholder="123 456 789" maxlength="11" inputmode="numeric" pattern="[0-9 ]{11}">
                 </div>
             </div>
             <div class="radek-formu">
@@ -152,7 +152,7 @@
                 </div>
                 <div class="radek-formu" style="flex: 1;">
                     <label>PSČ</label>
-                    <input type="text" id="psc" name="user_zip" required placeholder="123 45" maxlength="6">
+                    <input type="text" id="psc" name="user_zip" required placeholder="123 45" maxlength="6" inputmode="numeric" pattern="[0-9 ]{6}">
                 </div>
             </div>
             <div class="tlacitka-skupina">
@@ -187,39 +187,50 @@
 </div>
 
 <script>
-    // FORMÁTOVÁNÍ A VALIDACE (TVOJE PŮVODNÍ LOGIKA)
     const telInput = document.getElementById('tel');
     const pscInput = document.getElementById('psc');
     const form = document.getElementById('form-objednavka');
     const odeslatBtn = document.getElementById('odeslat-btn');
 
-    function formatujVstupy() {
-        // Telefon
-        let telVal = telInput.value.replace(/\D/g, ''); 
-        let telFormatted = "";
-        for (let i = 0; i < telVal.length; i++) {
-            if (i > 0 && i % 3 === 0) telFormatted += " ";
-            telFormatted += telVal[i];
-        }
-        telInput.value = telFormatted.substring(0, 11);
-
-        // PSČ
-        let pscVal = pscInput.value.replace(/\D/g, '');
-        if (pscVal.length > 3) {
-            pscInput.value = (pscVal.slice(0, 3) + " " + pscVal.slice(3, 5)).trim();
-        } else {
-            pscInput.value = pscVal;
+    function formatujVstupy(e) {
+        // Formátování TELEFONU (123 456 789)
+        if (e.target === telInput) {
+            let val = telInput.value.replace(/\D/g, '').substring(0, 9); // Pouze 9 čísel
+            let formatted = "";
+            for (let i = 0; i < val.length; i++) {
+                if (i > 0 && i % 3 === 0) formatted += " ";
+                formatted += val[i];
+            }
+            telInput.value = formatted;
         }
 
-        // Aktivace tlačítka
+        // Formátování PSČ (123 45)
+        if (e.target === pscInput) {
+            let val = pscInput.value.replace(/\D/g, '').substring(0, 5); // Pouze 5 čísel
+            if (val.length > 3) {
+                pscInput.value = val.slice(0, 3) + " " + val.slice(3);
+            } else {
+                pscInput.value = val;
+            }
+        }
+
+        // Aktivace tlačítka (kontroluje všechna required pole a patterny)
         odeslatBtn.disabled = !form.checkValidity();
     }
 
+    // Event listenery pro okamžité formátování
     telInput.addEventListener('input', formatujVstupy);
     pscInput.addEventListener('input', formatujVstupy);
-    document.querySelectorAll('input').forEach(i => i.addEventListener('input', formatujVstupy));
+    
+    // Pro ostatní pole (jméno, email atd.) aby se tlačítko aktivovalo hned
+    document.querySelectorAll('input').forEach(i => {
+        i.addEventListener('input', () => {
+            odeslatBtn.disabled = !form.checkValidity();
+        });
+    });
 
-    // NAČTENÍ KOŠÍKU
+    // --- ZBYTEK TVÉ LOGIKY (Načtení košíku, Firebase, EmailJS) ZŮSTÁVÁ STEJNÝ ---
+    
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
     const seznamDiv = document.getElementById('seznam-polozek');
     let celkovaSuma = 0;
@@ -241,7 +252,6 @@
     });
     document.getElementById('suma-celkem').innerText = `Celkem: ${celkovaSuma.toLocaleString('cs-CZ')} Kč`;
 
-    // FIREBASE A ODESLÁNÍ
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
@@ -270,15 +280,11 @@
             });
 
             if (vyprodane.length > 0) {
-                // OKAMŽITÉ SMAZÁNÍ
                 localStorage.removeItem('mujKosik');
-                localStorage.setItem('mujKosik', JSON.stringify([]));
-                
                 document.getElementById('error-message').innerText = "Bohužel, produkt(y) " + vyprodane.join(", ") + " si právě zakoupil jiný zákazník.";
                 document.getElementById('error-overlay').style.display = 'flex';
                 window.scrollTo(0, 0);
             } else {
-                // ODESLAT EMAIL
                 const params = {
                     user_name: document.getElementById('jmeno').value,
                     user_email: document.getElementById('email').value,
@@ -289,7 +295,6 @@
                 };
 
                 emailjs.send('service_david_pokus', 'template_rt53bro', params).then(() => {
-                    // Odečíst sklad
                     kosik.forEach(p => {
                         db.ref('sklad/' + p.dbKey).transaction(s => (s || 1) - 1);
                     });
