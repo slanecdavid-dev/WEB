@@ -21,7 +21,7 @@
         h2 { border-bottom: 2px solid #f0f2f5; padding-bottom: 15px; margin-top: 0; color: #2c3e50; }
 
         .polozka { display: flex; align-items: center; padding: 20px 0; border-bottom: 1px solid #f0f2f5; gap: 20px; }
-        .polozka img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; background: #f9f9f9; }
+        .polozka img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; background: #eee; }
         .polozka-info { flex: 1; }
         .polozka-info strong { font-size: 1.1rem; color: #2c3e50; }
         
@@ -117,13 +117,14 @@
                     const aktualniCena = aktualniCeny[polozka.dbKey] !== undefined ? aktualniCeny[polozka.dbKey] : polozka.cena;
                     celkovaSuma += aktualniCena;
 
-                    // --- ÚPRAVA NAČÍTÁNÍ FOTKY Z LOKÁLNÍ SLOŽKY ---
-                    // Cesta k obrázku: složka 'img/' + název klíče (např. herni-pc-1) + přípona '.jpg'
+                    // --- DIAGNOSTIKA ---
+                    // Tady vytvoříme cestu. Zkontrolujte v F12 konzoli, co se vypíše.
                     const lokalniFoto = `img/${polozka.dbKey}.jpg`;
+                    console.log("Pokus o načtení obrázku:", lokalniFoto);
 
                     seznam.innerHTML += `
                         <div class="polozka">
-                            <img src="${lokalniFoto}" alt="${polozka.nazev}" onerror="this.src='img/placeholder.jpg'">
+                            <img src="${lokalniFoto}" alt="${polozka.nazev}" onerror="this.onerror=null; this.src='img/placeholder.jpg'; console.error('Obrázek nenalezen:', '${lokalniFoto}');">
                             <div class="polozka-info">
                                 <strong>${polozka.nazev}</strong>
                             </div>
@@ -135,23 +136,16 @@
                     `;
                 });
                 celkemElement.innerText = `Celkem: ${celkovaSuma.toLocaleString()} Kč`;
-                
-                const aktualizovanyKosik = kosik.map(p => ({
-                    ...p,
-                    cena: aktualniCeny[p.dbKey] !== undefined ? aktualniCeny[p.dbKey] : p.cena
-                }));
-                localStorage.setItem('mujKosik', JSON.stringify(aktualizovanyKosik));
             });
         }
 
+        // Zbytek funkcí zůstává stejný...
         function zobrazZpravu(text) {
             const bublina = document.getElementById("bublina");
             bublina.innerText = text;
             bublina.classList.add("show");
             clearTimeout(casovacBubliny);
-            casovacBubliny = setTimeout(function(){ 
-                bublina.classList.remove("show");
-            }, 3000);
+            casovacBubliny = setTimeout(function(){ bublina.classList.remove("show"); }, 3000);
         }
 
         function odebratPolozku(index, nazev) {
