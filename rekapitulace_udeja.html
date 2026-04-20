@@ -33,11 +33,11 @@
         input:invalid:not(:placeholder-shown) { border-color: #e74c3c; background-color: #fff8f8; }
 
         .polozka-mini { display: flex; align-items: center; gap: 15px; font-size: 0.9rem; padding: 12px 0; border-bottom: 1px solid #eee; }
-        .polozka-mini img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; background: #f9f9f9; }
+        .polozka-mini img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; background: #f9f9f9; border: 1px solid #eee; }
         .polozka-info { flex: 1; }
-        .polozka-cena { font-weight: bold; white-space: nowrap; }
+        .polozka-cena { font-weight: bold; white-space: nowrap; color: #28a745; }
 
-        .suma-velka { font-size: 1.3rem; font-weight: bold; color: #28a745; margin-top: 15px; text-align: right; }
+        .suma-velka { font-size: 1.3rem; font-weight: bold; color: #2c3e50; margin-top: 15px; text-align: right; }
         
         .tlacitka-skupina { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         .btn { display: block; width: 100%; padding: 15px; border: none; cursor: pointer; border-radius: 8px; font-weight: bold; text-align: center; text-decoration: none; transition: 0.3s; font-size: 1rem; box-sizing: border-box; }
@@ -150,7 +150,7 @@
     telInput.addEventListener('input', formatujVstupy);
     pscInput.addEventListener('input', formatujVstupy);
 
-    // --- NAČTENÍ KOŠÍKU (Opraveno pro složku img a formát .jpg) ---
+    // --- NAČTENÍ KOŠÍKU (Opraveno pro správné zobrazení obrázků pomocí dbKey) ---
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
     const seznamDiv = document.getElementById('seznam-polozek');
     let celkovaSuma = 0;
@@ -163,19 +163,17 @@
     kosik.forEach(p => {
         celkovaSuma += p.cena;
 
-        // Vyčištění názvu pro získání cesty k JPG ve složce img
-        let cistyNazev = p.obrazek || 'placeholder';
-        cistyNazev = cistyNazev.split('/').pop().split('.')[0];
-        let finalniCesta = `./img/${cistyNazev}.jpg`;
+        // Používáme dbKey pro cestu k obrázku, stejně jako v kosik.html
+        const cestaKObrazku = `img/${p.dbKey}.jpg`;
 
         seznamDiv.innerHTML += `
             <div class="polozka-mini">
-                <img src="${finalniCesta}" alt="${p.nazev}" onerror="this.src='./img/placeholder.jpg'">
+                <img src="${cestaKObrazku}" alt="${p.nazev}" onerror="this.src='https://via.placeholder.com/80?text=PC'">
                 <div class="polozka-info"><strong>${p.nazev}</strong></div>
-                <div class="polozka-cena">${p.cena.toLocaleString()} Kč</div>
+                <div class="polozka-cena">${p.cena.toLocaleString('cs-CZ')} Kč</div>
             </div>`;
     });
-    document.getElementById('suma-celkem').innerText = `Celkem: ${celkovaSuma.toLocaleString()} Kč`;
+    document.getElementById('suma-celkem').innerText = `Celkem: ${celkovaSuma.toLocaleString('cs-CZ')} Kč`;
 
     // --- FIREBASE & EMAILJS ---
     const firebaseConfig = {
@@ -200,8 +198,8 @@
             user_email: document.getElementById('email').value,
             user_phone: predvolbaInput.value + " " + telInput.value,
             user_full_address: `${document.getElementById('ulice').value}, ${document.getElementById('mesto').value} ${document.getElementById('psc').value}`,
-            order_items: kosik.map(p => `${p.nazev} (${p.cena.toLocaleString()} Kč)`).join("\n"),
-            total_price: celkovaSuma.toLocaleString() + " Kč"
+            order_items: kosik.map(p => `${p.nazev} (${p.cena.toLocaleString('cs-CZ')} Kč)`).join("\n"),
+            total_price: celkovaSuma.toLocaleString('cs-CZ') + " Kč"
         };
 
         emailjs.send('service_david_pokus', 'template_rt53bro', templateParams)
@@ -213,6 +211,7 @@
                 document.getElementById('success-overlay').style.display = 'flex';
                 window.scrollTo(0, 0);
             }).catch(err => {
+                console.error("EmailJS Error:", err);
                 alert("Chyba při odesílání.");
                 odeslatBtn.disabled = false;
                 odeslatBtn.innerText = "Odeslat objednávku";
