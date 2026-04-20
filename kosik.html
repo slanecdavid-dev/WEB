@@ -36,7 +36,7 @@
         .btn:hover { opacity: 0.9; transform: translateY(-1px); }
         .prazdny-kosik { text-align: center; padding: 40px; color: #666; }
 
-        #bublina { position: fixed; bottom: 30px; right: 30px; background: #2c3e50; color: #fff; padding: 16px 24px; border-radius: 8px; display: none; z-index: 1001; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: opacity 0.3s; }
+        #bublina { position: fixed; bottom: 30px; right: 30px; background: #2c3e50; color: #fff; padding: 166px 24px; border-radius: 8px; display: none; z-index: 1001; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: opacity 0.3s; }
     </style>
 </head>
 <body>
@@ -69,7 +69,7 @@
             </div>
             
             <div style="display: flex; justify-content: center; margin-top: 30px;">
-                <a href="produkty.html" class="btn btn-zpet">← Zpět k produktům</a>
+                <a href="index.html" class="btn btn-zpet">← Zpět k produktům</a>
             </div>
         </div>
     </main>
@@ -106,34 +106,64 @@
                 return;
             }
 
-            db.ref('ceny').once('value').then((snapshot) => {
-                const aktualniCeny = snapshot.val() || {};
+            // Načtení root databáze pro synchronizaci s index.html
+            db.ref('/').once('value').then((snapshot) => {
+                const data = snapshot.val() || {};
+                const aktualniCeny = data.ceny || {};
+                
                 seznam.innerHTML = '';
                 let celkovaSuma = 0;
                 patka.style.display = 'block';
 
                 kosik.forEach((polozka, index) => {
-                    const aktualniCena = aktualniCeny[polozka.dbKey] !== undefined ? aktualniCeny[polozka.dbKey] : polozka.cena;
-                    celkovaSuma += aktualniCena;
+                    // Pokud existuje nová cena v DB, použije se, jinak se použije cena z košíku
+                    const cenaProVypocet = (aktualniCeny[polozka.dbKey] !== undefined) ? aktualniCeny[polozka.dbKey] : polozka.cena;
+                    celkovaSuma += cenaProVypocet;
                     
-                    // Použití obrázku z dat košíku, pokud existuje, jinak placeholder
-                    const foto = polozka.obrazek || `img/${polozka.dbKey}.jpg`;
-
                     seznam.innerHTML += `
                         <div class="polozka">
-                            <img src="${foto}" alt="${polozka.nazev}" onerror="this.src='https://via.placeholder.com/80?text=PC'">
+                            <img src="${polozka.obrazek}" alt="${polozka.nazev}" onerror="this.src='https://via.placeholder.com/80?text=PC'">
                             <div class="polozka-info">
                                 <strong>${polozka.nazev}</strong>
                             </div>
                             <div style="display: flex; align-items: center; gap: 20px;">
-                                <span class="cena-polozky">${aktualniCena.toLocaleString('cs-CZ')} Kč</span>
+                                <span class="cena-polozky">${cenaProVypocet.toLocaleString('cs-CZ')} Kč</span>
                                 <button onclick="odebratPolozku(${index}, '${polozka.nazev}')" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:1.5rem; padding: 0 5px;">&times;</button>
                             </div>
                         </div>
                     `;
                 });
                 celkemElement.innerText = `Celkem: ${celkovaSuma.toLocaleString('cs-CZ')} Kč`;
+            }).catch(error => {
+                console.error("Chyba Firebase:", error);
+                // V případě výpadku Firebase vykreslíme košík aspoň s daty z LocalStorage
+                vykresliZLocalStorage(kosik);
             });
+        }
+
+        function vykresliZLocalStorage(kosik) {
+            const seznam = document.getElementById('seznam-polozek');
+            const celkemElement = document.getElementById('celkova-cena');
+            const patka = document.getElementById('patka-kosiku');
+            
+            seznam.innerHTML = '';
+            let celkovaSuma = 0;
+            patka.style.display = 'block';
+
+            kosik.forEach((polozka, index) => {
+                celkovaSuma += polozka.cena;
+                seznam.innerHTML += `
+                    <div class="polozka">
+                        <img src="${polozka.obrazek}" alt="${polozka.nazev}">
+                        <div class="polozka-info"><strong>${polozka.nazev}</strong></div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <span class="cena-polozky">${polozka.cena.toLocaleString('cs-CZ')} Kč</span>
+                            <button onclick="odebratPolozku(${index}, '${polozka.nazev}')" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:1.5rem;">&times;</button>
+                        </div>
+                    </div>
+                `;
+            });
+            celkemElement.innerText = `Celkem: ${celkovaSuma.toLocaleString('cs-CZ')} Kč`;
         }
 
         function zobrazBublinu(text) {
@@ -157,7 +187,6 @@
         }
 
         function vyprazdnitKosik() {
-            
             localStorage.removeItem('mujKosik');
             zobrazKosik();
             zobrazBublinu("🗑️ Celý košík byl vyprázdněn");

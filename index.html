@@ -57,7 +57,7 @@
     <div class="product-grid">
         <article class="product-card">
             <a href="PC_1.html" class="product-link">
-                <img src="img/PC1.jpg" alt="Herní Bestie">
+                <img src="https://i.postimg.cc/0y138rQK/PC1.jpg" alt="Herní Bestie">
                 <h3>Herní Bestie i7</h3>
             </a>
             <p class="sklad-info" id="sklad-PC1">Načítání skladu...</p>
@@ -68,7 +68,7 @@
 
         <article class="product-card">
             <a href="PC_2.html" class="product-link">
-                <img src="img/PC2.jpg" alt="Kancelářský Profík">
+                <img src="https://i.postimg.cc/0y138rQK/PC1.jpg" alt="Kancelářský Profík">
                 <h3>Kancelářský Profík</h3>
             </a>
             <p class="sklad-info" id="sklad-PC2">Načítání skladu...</p>
@@ -79,7 +79,7 @@
 
         <article class="product-card">
             <a href="PC_3.html" class="product-link">
-                <img src="img/PC3.jpg" alt="Notebook">
+                <img src="https://i.postimg.cc/0y138rQK/PC1.jpg" alt="Notebook">
                 <h3>Stylový Notebook</h3>
             </a>
             <p class="sklad-info" id="sklad-PC3">Načítání skladu...</p>
@@ -146,10 +146,10 @@
     let casovacBubliny;
 
     function pridatDoKosiku(nazev, cenaElementId, urlObrazku, dbKey) {
-        const cenaText = document.getElementById(cenaElementId).innerText.replace(/\s/g, '');
+        // Oprava: odstraníme všechny mezery a text "Kč", aby zůstalo čisté číslo
+        const cenaText = document.getElementById(cenaElementId).innerText.replace(/\s/g, '').replace('Kč', '');
         const cenaCislo = parseInt(cenaText) || 0;
 
-        
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         kosik.push({ 
             nazev: nazev, 
@@ -176,7 +176,6 @@
     }
 
     function aktualizovatPocitadlo() {
-        
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         const kosikLink = document.getElementById('pocitadlo-odkaz');
         if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;
@@ -185,4 +184,4 @@
     window.onload = aktualizovatPocitadlo;
 </script>
 </body>
-</html> 
+</html>
