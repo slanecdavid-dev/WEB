@@ -45,7 +45,7 @@
         .btn-finish:disabled { background: #ccc; cursor: not-allowed; }
         .btn-zpet { background: #6c757d; color: white; }
 
-        /* Overlay pro stavy */
+        /* Overlays */
         #success-overlay, #error-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
         .bublina { background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 450px; width: 90%; display: flex; flex-direction: column; align-items: center; }
     </style>
@@ -124,9 +124,9 @@
 
 <div id="error-overlay">
     <div class="bublina">
-        <h2 style="color: #e74c3c; border:none;">⚠️ Pozor!</h2>
-        <p id="error-message">Některé zboží ve Vašem košíku se právě vyprodalo.</p>
-        <a href="kosik.html" class="btn" style="background: #6c757d; color: white; max-width: 250px;">Zpět do košíku</a>
+        <h2 style="color: #e74c3c; border:none;">⚠️ Produkt vyprodán</h2>
+        <p id="error-message">Bohužel, některé zboží z vašeho košíku si právě koupil někdo jiný.</p>
+        <button onclick="vymazatAZpet()" class="btn" style="background: #2c3e50; color: white; max-width: 250px; border:none;">Zavřít a smazat košík</button>
     </div>
 </div>
 
@@ -159,6 +159,7 @@
     telInput.addEventListener('input', formatujVstupy);
     pscInput.addEventListener('input', formatujVstupy);
 
+    // Načtení košíku
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
     const seznamDiv = document.getElementById('seznam-polozek');
     let celkovaSuma = 0;
@@ -180,6 +181,7 @@
     });
     document.getElementById('suma-celkem').innerText = `Celkem: ${celkovaSuma.toLocaleString('cs-CZ')} Kč`;
 
+    // Firebase inicializace
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
@@ -192,39 +194,43 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    // Funkce pro smazání košíku a návrat na domů
+    function vymazatAZpet() {
+        localStorage.removeItem('mujKosik');
+        window.location.href = 'index.html';
+    }
+
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        odeslatBtn.innerText = "Prověřuji sklad...";
+        odeslatBtn.innerText = "Kontroluji sklad...";
         odeslatBtn.disabled = true;
 
         try {
-            // 1. KROK: Ověření skladu u všech položek
-            const skladSnap = await db.ref('sklad').once('value');
-            const stavySkladu = skladSnap.val() || {};
+            // 1. KROK: Ověření skladu v reálném čase
+            const snapshot = await db.ref('sklad').once('value');
+            const skladData = snapshot.val() || {};
             
-            let vseSkladem = true;
-            let vyprodaneProdukty = [];
+            let vseJeSkladem = true;
+            let vyprodaneNázvy = [];
 
-            kosik.forEach(p => {
-                const aktualniStav = stavySkladu[p.dbKey] || 0;
-                if (aktualniStav <= 0) {
-                    vseSkladem = false;
-                    vyprodaneProdukty.push(p.nazev);
+            kosik.forEach(polozka => {
+                const pocetNaSklade = skladData[polozka.dbKey];
+                if (pocetNaSklade === undefined || pocetNaSklade <= 0) {
+                    vseJeSkladem = false;
+                    vyprodaneNázvy.push(polozka.nazev);
                 }
             });
 
-            // Pokud není něco skladem, zobrazíme chybu a skončíme
-            if (!vseSkladem) {
-                document.getElementById('error-message').innerText = `Omlouváme se, ale následující zboží se právě vyprodalo: ${vyprodaneProdukty.join(', ')}.`;
+            if (!vseJeSkladem) {
+                document.getElementById('error-message').innerText = "Následující položky již nejsou dostupné: " + vyprodaneNázvy.join(", ") + ". Košík bude vymazán.";
                 document.getElementById('error-overlay').style.display = 'flex';
                 odeslatBtn.innerText = "Odeslat objednávku";
                 odeslatBtn.disabled = false;
-                return;
+                return; // Zastavíme odesílání
             }
 
-            // 2. KROK: Pokud je vše OK, pošleme email a odečteme sklad
-            odeslatBtn.innerText = "Odesílám...";
-            
+            // 2. KROK: Odeslání emailu
+            odeslatBtn.innerText = "Odesílám objednávku...";
             const templateParams = {
                 user_name: document.getElementById('jmeno').value,
                 user_email: document.getElementById('email').value,
@@ -236,13 +242,9 @@
 
             await emailjs.send('service_david_pokus', 'template_rt53bro', templateParams);
 
-            // Odečtení ze skladu (pouze pokud e-mail proběhl)
-            const updates = {};
-            kosik.forEach(p => {
-                if (p.dbKey) {
-                    // Použijeme transakci nebo aspoň snížení o 1
-                    db.ref('sklad/' + p.dbKey).transaction(s => (s > 0 ? s - 1 : 0));
-                }
+            // 3. KROK: Odečtení ze skladu ve Firebase
+            kosik.forEach(p => { 
+                if (p.dbKey) db.ref('sklad/' + p.dbKey).transaction(s => (s > 0 ? s - 1 : 0)); 
             });
 
             localStorage.removeItem('mujKosik');
@@ -251,7 +253,7 @@
 
         } catch (err) {
             console.error("Chyba:", err);
-            alert("Došlo k chybě při zpracování objednávky.");
+            alert("Omlouváme se, došlo k technické chybě. Zkuste to prosím znovu.");
             odeslatBtn.disabled = false;
             odeslatBtn.innerText = "Odeslat objednávku";
         }
