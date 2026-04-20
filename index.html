@@ -149,7 +149,7 @@
         const cenaText = document.getElementById(cenaElementId).innerText.replace(/\s/g, '');
         const cenaCislo = parseInt(cenaText) || 0;
 
-        // TADY JE TA ZMĚNA: sessionStorage místo localStorage
+        
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         kosik.push({ 
             nazev: nazev, 
@@ -176,7 +176,7 @@
     }
 
     function aktualizovatPocitadlo() {
-        // TADY JE TA ZMĚNA: sessionStorage místo localStorage
+        
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         const kosikLink = document.getElementById('pocitadlo-odkaz');
         if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;

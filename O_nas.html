@@ -70,7 +70,7 @@
 
     <script>
         function aktualizovatPocitadlo() {
-            // ZMĚNA: Použití localStorage místo sessionStorage
+            
             let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
             const kosikLink = document.getElementById('pocitadlo-odkaz');
             if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;

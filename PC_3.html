@@ -115,7 +115,7 @@
         const cenaText = document.getElementById('cena-' + cenaId).innerText.replace(/\s/g, '');
         const cenaCislo = parseInt(cenaText) || 0;
         
-        // ZMĚNA: localStorage místo sessionStorage
+       
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         kosik.push({ nazev: nazev, cena: cenaCislo, obrazek: url, dbKey: dbKey });
         localStorage.setItem('mujKosik', JSON.stringify(kosik));
@@ -136,7 +136,7 @@
     }
 
     function aktualizovatPocitadlo() {
-        // ZMĚNA: localStorage místo sessionStorage
+        
         let k = JSON.parse(localStorage.getItem('mujKosik')) || [];
         const pocitadlo = document.getElementById('pocitadlo-kosiku');
         if (pocitadlo) pocitadlo.innerText = `Košík 🛒 (${k.length})`;
