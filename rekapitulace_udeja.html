@@ -28,10 +28,8 @@
         .radek-formu { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
         input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; transition: border 0.3s; }
-        input:focus, select:focus { border-color: #2c3e50; outline: none; }
         
         .polozka-mini { display: flex; align-items: center; gap: 15px; font-size: 0.9rem; padding: 12px 0; border-bottom: 1px solid #eee; }
-        .polozka-mini img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
         .polozka-info { flex: 1; }
         .polozka-cena { font-weight: bold; color: #28a745; }
 
@@ -41,6 +39,7 @@
         .btn-finish { background: #28a745; color: white; }
         .btn-finish:disabled { background: #ccc; cursor: not-allowed; }
         .btn-zpet { background: #6c757d; color: white; }
+        .btn-error { background: #e74c3c; color: white; }
 
         #success-overlay, #error-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
         .bublina { background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 450px; width: 90%; }
@@ -64,19 +63,19 @@
     <div class="karta">
         <h2>Doručovací údaje</h2>
         <form id="form-objednavka">
-            <div class="radek-formu"><label>Jméno a příjmení</label><input type="text" id="jmeno" required></div>
-            <div class="radek-formu"><label>E-mail</label><input type="email" id="email" required></div>
+            <div class="radek-formu"><label>Jméno a příjmení</label><input type="text" id="jmeno" required placeholder="Jan Novák"></div>
+            <div class="radek-formu"><label>E-mail</label><input type="email" id="email" required placeholder="vas@email.cz"></div>
             <div class="radek-formu">
                 <label>Telefon</label>
                 <div style="display: flex; gap: 10px;">
                     <select id="predvolba" style="width: 100px;"><option value="+420">+420</option><option value="+421">+421</option></select>
-                    <input type="tel" id="tel" required style="flex: 1;">
+                    <input type="tel" id="tel" required style="flex: 1;" placeholder="123 456 789">
                 </div>
             </div>
             <div class="radek-formu"><label>Ulice a č.p.</label><input type="text" id="ulice" required></div>
             <div style="display: flex; gap: 10px;">
                 <div class="radek-formu" style="flex: 2;"><label>Město</label><input type="text" id="mesto" required></div>
-                <div class="radek-formu" style="flex: 1;"><label>PSČ</label><input type="text" id="psc" required></div>
+                <div class="radek-formu" style="flex: 1;"><label>PSČ</label><input type="text" id="psc" required placeholder="123 45"></div>
             </div>
             <button type="submit" id="odeslat-btn" class="btn btn-finish" disabled>Odeslat objednávku</button>
             <a href="kosik.html" class="btn btn-zpet">Upravit košík</a>
@@ -90,11 +89,25 @@
     </div>
 </div>
 
-<div id="success-overlay"><div class="bublina"><h2>✓ Hotovo!</h2><p>Objednávka byla odeslána.</p><a href="index.html" class="btn btn-finish">Zpět do obchodu</a></div></div>
-<div id="error-overlay"><div class="bublina"><h2>⚠️ Vyprodáno</h2><p id="error-message"></p><button onclick="vymazatAZpet()" class="btn btn-zpet">Vymazat košík a domů</button></div></div>
+<div id="success-overlay">
+    <div class="bublina">
+        <h2 style="color: #28a745;">✓ Objednávka přijata</h2>
+        <p>Potvrzení bylo odesláno na váš e-mail.</p>
+        <a href="index.html" class="btn btn-finish">Zpět na úvod</a>
+    </div>
+</div>
+
+<div id="error-overlay">
+    <div class="bublina">
+        <h2 style="color: #e74c3c;">⚠️ Produkt vyprodán</h2>
+        <p id="error-message"></p>
+        <p>Váš košík bude nyní vymazán.</p>
+        <button onclick="vymazatAZpet()" class="btn btn-error">Rozumím, smazat košík a jít nakupovat</button>
+    </div>
+</div>
 
 <script>
-    // Inicializace Firebase
+    // Konfigurace Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
@@ -111,43 +124,56 @@
     const odeslatBtn = document.getElementById('odeslat-btn');
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
 
-    // Validace a formátování (zjednodušeno pro funkčnost)
-    form.addEventListener('input', () => { odeslatBtn.disabled = !form.checkValidity(); });
+    // Aktivace tlačítka po vyplnění formuláře
+    form.addEventListener('input', () => { 
+        odeslatBtn.disabled = !form.checkValidity(); 
+    });
 
-    // Zobrazení košíku
+    // Vykreslení košíku
     let celkem = 0;
     const seznamDiv = document.getElementById('seznam-polozek');
     kosik.forEach(p => {
         celkem += p.cena;
-        seznamDiv.innerHTML += `<div class="polozka-mini"><span>${p.nazev}</span><span class="polozka-cena">${p.cena} Kč</span></div>`;
+        seznamDiv.innerHTML += `
+            <div class="polozka-mini">
+                <div class="polozka-info"><strong>${p.nazev}</strong></div>
+                <div class="polozka-cena">${p.cena.toLocaleString()} Kč</div>
+            </div>`;
     });
     document.getElementById('suma-celkem').innerText = `Celkem: ${celkem.toLocaleString()} Kč`;
 
-    // HLAVNÍ FUNKCE ODESLÁNÍ
+    // FUNKCE PRO SMAZÁNÍ KOŠÍKU A PŘESMĚROVÁNÍ NA PRODUKTY
+    function vymazatAZpet() {
+        console.log("Mažu košík a vracím se na produkty...");
+        localStorage.removeItem('mujKosik');
+        window.location.href = 'produkty.html'; // Tady tě to hodí zpět na produkty
+    }
+
+    // ODESLÁNÍ FORMULÁŘE
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         odeslatBtn.disabled = true;
-        odeslatBtn.innerText = "Prověřuji sklad...";
+        odeslatBtn.innerText = "Kontroluji sklad...";
 
-        // 1. Kontrola skladu
+        // 1. KROK: Kontrola ve Firebase
         db.ref('sklad').once('value').then((snapshot) => {
             const sklad = snapshot.val() || {};
-            let chybi = [];
+            let vyprodane = [];
 
             kosik.forEach(p => {
                 if (!sklad[p.dbKey] || sklad[p.dbKey] <= 0) {
-                    chybi.push(p.nazev);
+                    vyprodane.push(p.nazev);
                 }
             });
 
-            if (chybi.length > 0) {
-                // Zboží není skladem
-                document.getElementById('error-message').innerText = "Bohužel, tyto položky už nejsou: " + chybi.join(", ");
+            if (vyprodane.length > 0) {
+                // Zobrazit chybu
+                document.getElementById('error-message').innerText = "Omlouváme se, ale " + vyprodane.join(", ") + " už někdo koupil před vámi.";
                 document.getElementById('error-overlay').style.display = 'flex';
                 odeslatBtn.disabled = false;
                 odeslatBtn.innerText = "Odeslat objednávku";
             } else {
-                // Vše je OK -> Odeslat Email a odečíst sklad
+                // Vše je skladem -> Odeslat e-mail
                 odeslatBtn.innerText = "Odesílám...";
                 
                 const params = {
@@ -159,25 +185,21 @@
 
                 emailjs.send('service_david_pokus', 'template_rt53bro', params)
                     .then(() => {
-                        // Odečtení kusů
+                        // Odečíst z Firebase
                         kosik.forEach(p => {
-                            db.ref('sklad/' + p.dbKey).transaction(current => (current || 1) - 1);
+                            db.ref('sklad/' + p.dbKey).transaction(stav => (stav || 1) - 1);
                         });
+                        // Smazat košík (protože objednávka proběhla)
                         localStorage.removeItem('mujKosik');
                         document.getElementById('success-overlay').style.display = 'flex';
                     })
                     .catch(err => {
-                        alert("Chyba EmailJS: " + err);
+                        alert("Chyba při odesílání e-mailu.");
                         odeslatBtn.disabled = false;
                     });
             }
         });
     });
-
-    function vymazatAZpet() {
-        localStorage.removeItem('mujKosik');
-        window.location.href = 'index.html';
-    }
 </script>
 </body>
 </html>
