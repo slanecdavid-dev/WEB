@@ -11,78 +11,25 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f0f2f5; color: #333; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        
-        /* Zvětšený header pro větší logo */
         header { background: #2c3e50; color: #fff; padding: 1.5rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         header .container { display: flex; justify-content: space-between; align-items: center; }
-        
-        /* Styl pro VELKÉ logo a název */
-        .logo a { 
-            display: flex; 
-            align-items: center; 
-            text-decoration: none; 
-            color: #fff; 
-            transition: transform 0.2s ease;
-        }
-        .logo a:hover { transform: scale(1.02); } /* Jemné zvětšení při najetí */
-        
-        .logo img { 
-            height: 70px; /* TADY nastavujete velikost loga */
-            width: auto; 
-            margin-right: 15px; 
-            display: block;
-        }
-        
-        .logo h1 { 
-            margin: 0; 
-            font-size: 1.8rem; /* Zvětšený text názvu k logu */
-            letter-spacing: 1px; 
-            font-weight: 700;
-        }
-        
-        /* Navigace */
+        .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; transition: transform 0.2s ease; }
+        .logo a:hover { transform: scale(1.02); }
+        .logo img { height: 70px; width: auto; margin-right: 15px; display: block; }
+        .logo h1 { margin: 0; font-size: 1.8rem; letter-spacing: 1px; font-weight: 700; }
         nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         nav a:hover { color: #28a745; }
-
-        /* Mobilní menu tlačítko */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 5px;
-        }
-        .menu-toggle span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: white;
-            border-radius: 2px;
-        }
-
-        /* Responzivita pro mobil */
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+        .menu-toggle span { display: block; width: 25px; height: 3px; background: white; border-radius: 2px; }
         @media (max-width: 768px) {
             header { padding: 1rem 0; }
             .menu-toggle { display: flex; }
-            
-            .logo img { height: 50px; } /* Na mobilu trochu zmenšíme, aby se to vešlo */
+            .logo img { height: 50px; }
             .logo h1 { font-size: 1.3rem; }
-            
-            nav {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: #2c3e50;
-                padding: 20px 0;
-                text-align: center;
-                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-            }
+            nav { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: #2c3e50; padding: 20px 0; text-align: center; box-shadow: 0 5px 10px rgba(0,0,0,0.2); }
             nav.active { display: flex; }
             nav a { margin: 10px 0; font-size: 1.2rem; }
         }
-
         .hero { background: #fff; padding: 40px 0; text-align: center; border-bottom: 3px solid #28a745; margin-bottom: 40px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px; }
         .product-card { background: white; padding: 25px; border-radius: 12px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
@@ -109,13 +56,9 @@
                 <h1>Počítače z Moravy</h1>
             </a>
         </div>
-        
         <div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active')">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
-
         <nav>
             <a href="index.html">Domů</a>
             <a href="produkty.html">Produkty</a>
@@ -136,35 +79,35 @@
     <div class="product-grid">
         <article class="product-card">
             <a href="PC_1.html" class="product-link">
-                <img src="img/PC1.jpg" alt="Herní Bestie">
-                <h3>Herní Bestie i7</h3>
+                <img src="img/PC1.jpg" alt="PC 1">
+                <h3 id="nazev-PC_1">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-PC1">Načítání skladu...</p>
-            <p class="cena-text"><strong id="cena-PC1">----</strong> <strong>Kč</strong></p>
+            <p class="sklad-info" id="sklad-PC_1">Načítání skladu...</p>
+            <p class="cena-text"><strong id="cena-PC_1">----</strong> <strong>Kč</strong></p>
             <a href="PC_1.html" class="btn btn-secondary">Specifikace</a>
-            <button class="btn btn-primary" id="btn-PC1" onclick="pridatDoKosiku('Herní Bestie i7', 'cena-PC1', 'https://i.postimg.cc/0y138rQK/PC1.jpg', 'PC1')">Do košíku</button>
+            <button class="btn btn-primary" id="btn-PC_1">Do košíku</button>
         </article>
 
         <article class="product-card">
             <a href="PC_2.html" class="product-link">
-                <img src="img/PC2.jpg" alt="Kancelářský Profík">
-                <h3>Kancelářský Profík</h3>
+                <img src="img/PC2.jpg" alt="PC 2">
+                <h3 id="nazev-PC_2">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-PC2">Načítání skladu...</p>
-            <p class="cena-text"><strong id="cena-PC2">----</strong> <strong>Kč</strong></p>
+            <p class="sklad-info" id="sklad-PC_2">Načítání skladu...</p>
+            <p class="cena-text"><strong id="cena-PC_2">----</strong> <strong>Kč</strong></p>
             <a href="PC_2.html" class="btn btn-secondary">Specifikace</a>
-            <button class="btn btn-primary" id="btn-PC2" onclick="pridatDoKosiku('Kancelářský Profík', 'cena-PC2', 'https://i.postimg.cc/0y138rQK/PC1.jpg', 'PC2')">Do košíku</button>
+            <button class="btn btn-primary" id="btn-PC_2">Do košíku</button>
         </article>
 
         <article class="product-card">
             <a href="PC_3.html" class="product-link">
-                <img src="img/PC3.jpg" alt="Notebook">
-                <h3>Stylový Notebook</h3>
+                <img src="img/PC3.jpg" alt="PC 3">
+                <h3 id="nazev-PC_3">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-PC3">Načítání skladu...</p>
-            <p class="cena-text"><strong id="cena-PC3">----</strong> <strong>Kč</strong></p>
+            <p class="sklad-info" id="sklad-PC_3">Načítání skladu...</p>
+            <p class="cena-text"><strong id="cena-PC_3">----</strong> <strong>Kč</strong></p>
             <a href="PC_3.html" class="btn btn-secondary">Specifikace</a>
-            <button class="btn btn-primary" id="btn-PC3" onclick="pridatDoKosiku('Stylový Notebook', 'cena-PC3', 'https://i.postimg.cc/0y138rQK/PC1.jpg', 'PC3')">Do košíku</button>
+            <button class="btn btn-primary" id="btn-PC_3">Do košíku</button>
         </article>
     </div>
 </div>
@@ -172,7 +115,6 @@
 <div id="bublina"></div>
 
 <script>
-    // Konfigurace Firebase (ponechána beze změny)
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
@@ -180,55 +122,61 @@
         projectId: "pc-store-5656d",
         storageBucket: "pc-store-5656d.firebasestorage.app",
         messagingSenderId: "329194547414",
-        appId: "1:329194547414:web:14cf1cffd85a0279d54177",
-        measurementId: "G-PR8D0RZNSR"
+        appId: "1:329194547414:web:14cf1cffd85a0279d54177"
     };
     
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const produktyKlice = ['PC1', 'PC2', 'PC3'];
+    // Seznam ID produktů, které chceme sledovat
+    const produktyKlice = ['PC_1', 'PC_2', 'PC_3'];
     
-    db.ref('/').on('value', (snapshot) => {
-        const rootData = snapshot.val() || {};
-        const cenyData = rootData.ceny || {};
-        const skladData = rootData.sklad || {};
+    // Hlavní funkce pro načítání dat z Firebase
+    db.ref('produkty').on('value', (snapshot) => {
+        const produkty = snapshot.val() || {};
         
         produktyKlice.forEach(klic => {
-            const pocet = skladData[klic] || 0;
-            const cena = cenyData[klic] || 0;
+            const pc = produkty[klic];
+            if(!pc) return;
 
+            // Elementy v HTML
+            const nazevEl = document.getElementById('nazev-' + klic);
             const infoEl = document.getElementById('sklad-' + klic);
-            const btnEl = document.getElementById('btn-' + klic);
             const cenaEl = document.getElementById('cena-' + klic);
+            const btnEl = document.getElementById('btn-' + klic);
             
+            // 1. Aktualizace názvu
+            if(nazevEl) nazevEl.innerText = pc.nazev;
+
+            // 2. Aktualizace skladu
             if(infoEl) {
-                infoEl.innerText = pocet > 0 ? `Skladem: ${pocet} ks` : "Vyprodáno";
-                infoEl.style.color = pocet > 0 ? "#28a745" : "#e74c3c";
+                infoEl.innerText = pc.sklad > 0 ? `Skladem: ${pc.sklad} ks` : "Vyprodáno";
+                infoEl.style.color = pc.sklad > 0 ? "#28a745" : "#e74c3c";
             }
 
+            // 3. Aktualizace ceny
             if(cenaEl) {
-                cenaEl.innerText = cena > 0 ? cena.toLocaleString('cs-CZ') : "----";
+                cenaEl.innerText = pc.cena.toLocaleString('cs-CZ');
             }
 
+            // 4. Nastavení tlačítka a jeho funkce
             if(btnEl) {
-                if(pocet <= 0) {
+                if(pc.sklad <= 0) {
                     btnEl.disabled = true;
                     btnEl.innerText = "Vyprodáno";
                 } else {
                     btnEl.disabled = false;
                     btnEl.innerText = "Do košíku";
+                    // Přidáme událost kliknutí (předáváme data z Firebase)
+                    btnEl.onclick = () => {
+                        pridatDoKosiku(pc.nazev, pc.cena, `img/${klic}.jpg`, klic);
+                    };
                 }
             }
         });
     });
 
-    let casovacBubliny;
-
-    function pridatDoKosiku(nazev, cenaElementId, urlObrazku, dbKey) {
-        const cenaText = document.getElementById(cenaElementId).innerText.replace(/\s/g, '').replace('Kč', '');
-        const cenaCislo = parseInt(cenaText) || 0;
-
+    function pridatDoKosiku(nazev, cenaCislo, urlObrazku, dbKey) {
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         kosik.push({ 
             nazev: nazev, 
@@ -242,6 +190,7 @@
         zobrazBublinu(nazev);
     }
 
+    let casovacBubliny;
     function zobrazBublinu(nazev) {
         const bublina = document.getElementById('bublina');
         bublina.innerText = '✓ ' + nazev + ' byl přidán do košíku';
