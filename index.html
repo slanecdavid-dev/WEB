@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Počítače z Moravy</title>
     
+    <link rel="icon" type="image/jpeg" href="img/logo.jpg">
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
@@ -15,7 +17,9 @@
         header .container { display: flex; justify-content: space-between; align-items: center; }
         .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; transition: transform 0.2s ease; }
         .logo a:hover { transform: scale(1.02); }
-        .logo img { height: 70px; width: auto; margin-right: 15px; display: block; }
+        
+        .logo img { height: 100px; width: auto; margin-right: 15px; display: block; }
+        
         .logo h1 { margin: 0; font-size: 1.8rem; letter-spacing: 1px; font-weight: 700; }
         nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         nav a:hover { color: #28a745; }
@@ -128,10 +132,8 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Seznam ID produktů, které chceme sledovat
     const produktyKlice = ['PC_1', 'PC_2', 'PC_3'];
     
-    // Hlavní funkce pro načítání dat z Firebase
     db.ref('produkty').on('value', (snapshot) => {
         const produkty = snapshot.val() || {};
         
@@ -139,27 +141,22 @@
             const pc = produkty[klic];
             if(!pc) return;
 
-            // Elementy v HTML
             const nazevEl = document.getElementById('nazev-' + klic);
             const infoEl = document.getElementById('sklad-' + klic);
             const cenaEl = document.getElementById('cena-' + klic);
             const btnEl = document.getElementById('btn-' + klic);
             
-            // 1. Aktualizace názvu
             if(nazevEl) nazevEl.innerText = pc.nazev;
 
-            // 2. Aktualizace skladu
             if(infoEl) {
                 infoEl.innerText = pc.sklad > 0 ? `Skladem: ${pc.sklad} ks` : "Vyprodáno";
                 infoEl.style.color = pc.sklad > 0 ? "#28a745" : "#e74c3c";
             }
 
-            // 3. Aktualizace ceny
             if(cenaEl) {
                 cenaEl.innerText = pc.cena.toLocaleString('cs-CZ');
             }
 
-            // 4. Nastavení tlačítka a jeho funkce
             if(btnEl) {
                 if(pc.sklad <= 0) {
                     btnEl.disabled = true;
@@ -167,7 +164,6 @@
                 } else {
                     btnEl.disabled = false;
                     btnEl.innerText = "Do košíku";
-                    // Přidáme událost kliknutí (předáváme data z Firebase)
                     btnEl.onclick = () => {
                         pridatDoKosiku(pc.nazev, pc.cena, `img/${klic}.jpg`, klic);
                     };
