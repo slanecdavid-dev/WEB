@@ -186,7 +186,6 @@
 
     // --- FORMÁTOVÁNÍ TELEFONU A PSČ ---
     function formatujVstupy(e) {
-        // Formátování telefonu (000 000 000)
         if (e.target === telInput) {
             let val = telInput.value.replace(/\D/g, '').substring(0, 9);
             let formatted = "";
@@ -197,7 +196,6 @@
             telInput.value = formatted;
         }
 
-        // Formátování PSČ (000 00)
         if (e.target === pscInput) {
             let val = pscInput.value.replace(/\D/g, '').substring(0, 5);
             if (val.length > 3) {
@@ -207,7 +205,6 @@
             }
         }
         
-        // Zapnutí/vypnutí tlačítka podle validity
         odeslatBtn.disabled = !form.checkValidity();
     }
 
@@ -215,7 +212,7 @@
     pscInput.addEventListener('input', formatujVstupy);
     form.addEventListener('input', () => odeslatBtn.disabled = !form.checkValidity());
 
-    // 1. ZOBRAZENÍ KOŠÍKU
+    // 1. ZOBRAZENÍ KOŠÍKU NA STRÁNCE
     function renderRekapitulace() {
         const seznamDiv = document.getElementById('seznam-polozek');
         let celkem = 0;
@@ -259,17 +256,49 @@
                 return;
             }
 
+            // --- GENEROVÁNÍ HTML SEZNAMU PRO E-MAIL ---
+            const orderItemsHtml = kosik.map(p => {
+                const produktZDatabaze = produktyData[p.dbKey];
+                
+                // Získání URL fotky z Firebase (pole 'foto')
+                let fotoUrl = "";
+                if (produktZDatabaze && produktZDatabaze.foto) {
+                    fotoUrl = produktZDatabaze.foto;
+                } else {
+                    fotoUrl = 'https://via.placeholder.com/80x60.png?text=PC';
+                }
+                
+                // Kontrolní výpis do konzole prohlížeče (F12 -> Console)
+                console.log("Posílám do mailu fotku pro " + p.nazev + ": " + fotoUrl);
+
+                return `
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 15px; border-bottom: 1px solid #eeeeee;">
+                        <tr>
+                            <td style="width: 90px; padding: 10px 0; vertical-align: middle;">
+                                <img src="${fotoUrl}" width="80" alt="Produkt" style="display: block; border-radius: 4px; border: 1px solid #dddddd;">
+                            </td>
+                            <td style="padding: 10px; vertical-align: middle; font-family: Arial, sans-serif;">
+                                <div style="font-size: 16px; font-weight: bold; color: #333333; margin-bottom: 5px;">${p.nazev}</div>
+                                <div style="font-size: 15px; color: #28a745; font-weight: bold;">${p.cena.toLocaleString('cs-CZ')} Kč</div>
+                            </td>
+                        </tr>
+                    </table>
+                `;
+            }).join("");
+
             const params = {
                 user_name: document.getElementById('jmeno').value,
                 user_email: document.getElementById('email').value,
                 user_phone: document.getElementById('predvolba').value + " " + telInput.value,
                 user_full_address: `${document.getElementById('ulice').value}, ${document.getElementById('mesto').value} ${pscInput.value}`,
-                order_items: kosik.map(p => p.nazev).join(", "),
+                order_items_html: orderItemsHtml, 
                 total_price: document.getElementById('suma-celkem').innerText
             };
 
+            // Odeslání přes EmailJS
             await emailjs.send('service_david_pokus', 'template_rt53bro', params);
 
+            // Snížení stavu skladu ve Firebase
             for (const p of kosik) {
                 await db.ref(`produkty/${p.dbKey}/sklad`).transaction((currentStock) => {
                     return (currentStock || 0) - 1;
@@ -292,3 +321,4 @@
 
 </body>
 </html>
+

@@ -1,34 +1,41 @@
 {
   "produkty": {
     "PC_1": {
-      "nazev": "Herní Bestie i7",
       "cena": 34990,
-      "sklad": 5,
-      "procesor": "Intel Core i7-13700K",
+      "disk": "1TB NVMe SSD 2x",
+      "foto": "https://postimg.cc/Btxp5txQ",
       "grafika": "NVIDIA RTX 4080 16GB",
+      "nazev": "Herní Bestie i7",
+      "popis": "Ultimátní herní stroj pro 4K hraní a náročnou práci.",
+      "procesor": "Intel Core i7-13700K",
       "ram": "32GB DDR5",
-      "disk": "1TB NVMe SSD",
-      "popis": "Ultimátní herní stroj pro 4K hraní a náročnou práci."
+      "sklad": 0,
+      "zaruka": 24
     },
     "PC_2": {
-      "nazev": "Kancelářský Profík",
       "cena": 15200,
-      "sklad": 3,
-      "procesor": "Intel Core i5-12400",
-      "grafika": "Intel UHD Graphics 730",
-      "ram": "16GB DDR4",
       "disk": "512GB SSD",
-      "popis": "Ideální parťák pro plynulou práci v Office a multitasking."
+      "foto": "https://postimg.cc/9zGbPzGH",
+      "grafika": "Intel UHD Graphics 730",
+      "nazev": "Kancelářský Profík",
+      "popis": "Ideální parťák pro plynulou práci v Office a multitasking.",
+      "procesor": "Intel Core i5-12400",
+      "ram": "16GB DDR4",
+      "sklad": 0,
+      "zaruka": 24
     },
     "PC_3": {
-      "nazev": "Stylový Notebook",
       "cena": 21000,
-      "sklad": 0,
-      "procesor": "AMD Ryzen 7 5800H",
-      "grafika": "AMD Radeon Graphics",
-      "ram": "16GB LPDDR4x",
       "disk": "512GB NVMe SSD",
-      "popis": "Lehký, výkonný a s dlouhou výdrží baterie na cesty."
-    }
+      "foto": "https://postimg.cc/qg8wcg8r",
+      "grafika": "AMD Radeon Graphics",
+      "nazev": "Stylový Notebook",
+      "popis": "Lehký, výkonný a s dlouhou výdrží baterie na cesty.",
+      "procesor": "AMD Ryzen 7 5800H",
+      "ram": "16GB LPDDR4x",
+      "sklad": 0,
+      "zaruka": 24
+    },
+    "logo": "https://postimg.cc/Btxp5txQ"
   }
 }
