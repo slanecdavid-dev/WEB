@@ -1,0 +1,2 @@
+předělat rozbalovací nabídku aby byla všude ze shora
+předělat obsah košíku pro mobil
