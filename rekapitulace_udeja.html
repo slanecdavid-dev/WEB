@@ -15,96 +15,139 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
+        /* --- ZÁKLADNÍ STYL --- */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; padding: 0; line-height: 1.6; 
             background: #f0f2f5; color: #333; 
         }
 
-        /* --- SJEDNOCENÝ HEADER --- */
+        /* --- SJEDNOCENÁ HLAVIČKA --- */
         header { 
-            background: #2c3e50; color: #fff; padding: 1rem 0; 
-            position: sticky; top: 0; z-index: 1000; 
+            background: #2c3e50; 
+            color: #fff; 
+            padding: 0.5rem 0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
         }
         header .container { 
-            display: flex; justify-content: space-between; align-items: center; 
-            max-width: 1100px; margin: 0 auto; padding: 0 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
         }
 
-        .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; transition: transform 0.2s; }
+        .logo a { 
+            display: flex; 
+            align-items: center; 
+            text-decoration: none; 
+            color: #fff; 
+            transition: transform 0.2s ease; 
+        }
         .logo a:hover { transform: scale(1.02); }
-        .logo img { height: 100px; width: auto; margin-right: 15px; } /* Sjednoceno na 80px */
-        .logo h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; font-weight: 700; }
 
-        nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        .logo img { 
+            height: 100px; 
+            width: auto; 
+            margin-right: 15px; 
+        }
+        .logo h1 { 
+            margin: 0; 
+            font-size: 1.4rem; 
+            letter-spacing: 1px; 
+            font-weight: 700; 
+        }
+
+        nav a { 
+            color: #fff; 
+            margin-left: 20px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            font-size: 1rem; 
+            transition: color 0.3s; 
+        }
         nav a:hover { color: #28a745; }
 
-        /* --- LAYOUT --- */
+        /* --- LAYOUT HLAVNÍHO OBSAHU --- */
         .container-main { 
-            max-width: 1100px; margin: 30px auto; padding: 0 15px; 
-            display: grid; grid-template-columns: 1fr 380px; gap: 20px; 
+            max-width: 1100px; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+            display: grid; 
+            grid-template-columns: 1fr 380px; 
+            gap: 30px; 
             box-sizing: border-box;
         }
 
         .karta { 
-            background: white; padding: 25px; border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eef0f2;
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            border: 1px solid #eef0f2;
         }
         h2 { border-bottom: 3px solid #28a745; padding-bottom: 12px; margin-top: 0; color: #2c3e50; font-size: 1.3rem; }
 
         /* --- FORMULÁŘ --- */
-        .radek-formu { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.85rem; color: #555; }
+        .radek-formu { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: #555; }
         input, select { 
             width: 100%; padding: 12px; border: 2px solid #e1e4e8; 
             border-radius: 8px; box-sizing: border-box; font-size: 1rem; background: #fafbfc;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
-        input:focus { border-color: #28a745; outline: none; background: #fff; }
+        input:focus { border-color: #28a745; outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1); }
 
-        /* --- KOŠÍK V REKAPITULACI --- */
-        .polozka-mini { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f0f2f5; }
-        .polozka-mini img { width: 50px; height: 40px; object-fit: contain; border-radius: 4px; border: 1px solid #eee; }
+        /* --- REKAPITULACE --- */
+        .polozka-mini { display: flex; align-items: center; gap: 15px; padding: 12px 0; border-bottom: 1px solid #f0f2f5; }
+        .polozka-mini img { width: 60px; height: 45px; object-fit: contain; border-radius: 6px; border: 1px solid #eee; }
         
         .suma-velka { 
-            font-size: 1.3rem; font-weight: 800; color: #28a745; 
-            margin-top: 15px; text-align: right; padding-top: 10px; border-top: 2px solid #f0f2f5;
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            color: #28a745; 
+            margin-top: 20px; 
+            text-align: right; 
+            padding-top: 15px; 
+            border-top: 2px solid #f0f2f5;
         }
 
         /* --- TLAČÍTKA --- */
         .btn { 
             display: block; width: 100%; padding: 15px; border: none; cursor: pointer; 
             border-radius: 8px; font-weight: bold; text-align: center; text-decoration: none; 
-            font-size: 0.95rem; box-sizing: border-box; transition: 0.2s;
+            font-size: 1rem; box-sizing: border-box; transition: all 0.3s ease;
         }
-        .btn-finish { background: #28a745; color: white; margin-top: 10px; }
-        .btn-finish:hover { opacity: 0.9; }
-        .btn-finish:disabled { background: #ccc; cursor: not-allowed; }
-        .btn-zpet { background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6; margin-top: 10px; }
+        .btn-finish { 
+            background: #28a745; color: white; margin-top: 10px; 
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+        }
+        .btn-finish:hover:not(:disabled) { background: #218838; transform: translateY(-2px); }
+        .btn-finish:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
+        
+        .btn-zpet { background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6; margin-top: 15px; }
         .btn-zpet:hover { background: #e9ecef; }
 
-        /* --- OVERLAY --- */
+        /* --- MODÁLNÍ OKNA (OVERLAY) --- */
         #success-overlay, #error-overlay { 
             display: none; position: fixed; top: 0; left: 0; 
             width: 100%; height: 100%; background: rgba(44, 62, 80, 0.9); 
             z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
         }
-        .bublina { background: white; padding: 30px; border-radius: 15px; text-align: center; max-width: 400px; width: 85%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .bublina { background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 450px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
         /* --- MOBILNÍ RESPONSIVITA --- */
         @media (max-width: 850px) {
-            .container-main { grid-template-columns: 1fr; margin: 15px auto; }
+            .container-main { grid-template-columns: 1fr; margin: 20px auto; padding: 0 15px; }
+            header .container { padding: 0 15px; }
             .logo img { height: 50px; }
             .logo h1 { font-size: 1.1rem; }
-            
-            nav a { margin-left: 10px; font-size: 0.85rem; }
-            
-            /* Na mobilu chceme vidět rekapitulaci nahoře, aby uživatel věděl, co platí */
-            .karta:last-child { order: -1; margin-bottom: 10px; }
-            
-            .radek-formu-split { flex-direction: column; gap: 0 !important; }
-            .radek-formu-split > div { width: 100%; }
+            nav a { font-size: 0.9rem; }
+            .karta:last-child { order: -1; } 
         }
     </style>
 </head>
@@ -139,7 +182,7 @@
             <div class="radek-formu">
                 <label>Telefon</label>
                 <div style="display: flex; gap: 10px;">
-                    <select id="predvolba" style="width: 100px;" required>
+                    <select id="predvolba" style="width: 140px;" required>
                         <option value="+420" selected>CZ (+420)</option>
                         <option value="+421">SK (+421)</option>
                     </select>
@@ -150,7 +193,7 @@
                 <label>Ulice a č.p.</label>
                 <input type="text" id="ulice" name="user_address" required placeholder="Moravská 123">
             </div>
-            <div style="display: flex; gap: 10px;" class="radek-formu-split">
+            <div style="display: flex; gap: 15px;" class="radek-formu-split">
                 <div class="radek-formu" style="flex: 2;">
                     <label>Město</label>
                     <input type="text" id="mesto" name="user_city" required placeholder="Brno">
@@ -175,7 +218,7 @@
 
 <div id="success-overlay">
     <div class="bublina">
-        <h2 style="color: #28a745; border:none;">✓ Objednáno!</h2>
+        <h2 style="color: #28a745; border:none; font-size: 1.8rem;">✓ Objednáno!</h2>
         <p>Děkujeme za důvěru. Potvrzení objednávky jsme vám poslali na e-mail a brzy se vám ozveme ohledně doručení.</p>
         <a href="index.html" class="btn btn-finish">Zpět na úvodní stránku</a>
     </div>
@@ -183,14 +226,13 @@
 
 <div id="error-overlay">
     <div class="bublina">
-        <h2 style="color: #e74c3c; border:none;">⚠️ Omlouváme se</h2>
+        <h2 style="color: #e74c3c; border:none; font-size: 1.8rem;">⚠️ Omlouváme se</h2>
         <p id="error-message"></p>
         <a href="produkty.html" class="btn btn-finish" style="background:#e74c3c;">Zpět k produktům</a>
     </div>
 </div>
 
 <script>
-    // FIREBASE CONFIG
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
@@ -209,7 +251,6 @@
     const pscInput = document.getElementById('psc');
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
 
-    // --- FORMÁTOVÁNÍ A VALIDACE ---
     function formatujVstupy(e) {
         if (e.target === telInput) {
             let val = telInput.value.replace(/\D/g, '').substring(0, 9);
@@ -220,17 +261,10 @@
             }
             telInput.value = formatted;
         }
-
         if (e.target === pscInput) {
             let val = pscInput.value.replace(/\D/g, '').substring(0, 5);
-            if (val.length > 3) {
-                pscInput.value = val.slice(0, 3) + " " + val.slice(3);
-            } else {
-                pscInput.value = val;
-            }
+            pscInput.value = val.length > 3 ? val.slice(0, 3) + " " + val.slice(3) : val;
         }
-        
-        // Povolit tlačítko pouze pokud je formulář validní
         odeslatBtn.disabled = !form.checkValidity();
     }
 
@@ -238,16 +272,10 @@
     pscInput.addEventListener('input', formatujVstupy);
     form.addEventListener('input', () => odeslatBtn.disabled = !form.checkValidity());
 
-    // 1. ZOBRAZENÍ REKAPITULACE PRODUKTŮ
     function renderRekapitulace() {
         const seznamDiv = document.getElementById('seznam-polozek');
         let celkem = 0;
-        
-        if (kosik.length === 0) { 
-            window.location.href = 'produkty.html'; 
-            return; 
-        }
-
+        if (kosik.length === 0) { window.location.href = 'produkty.html'; return; }
         seznamDiv.innerHTML = '';
         kosik.forEach(p => {
             celkem += p.cena;
@@ -255,53 +283,37 @@
             seznamDiv.innerHTML += `
                 <div class="polozka-mini">
                     <img src="img/${imgId}.jpg" alt="${p.nazev}" onerror="this.src='https://via.placeholder.com/60?text=PC'">
-                    <div style="flex:1; font-size:0.85rem; font-weight: 500;">${p.nazev}</div>
-                    <div style="font-weight:bold; font-size:0.85rem; color: #28a745;">${p.cena.toLocaleString('cs-CZ')} Kč</div>
+                    <div style="flex:1; font-size:0.9rem; font-weight: 500;">${p.nazev}</div>
+                    <div style="font-weight:bold; color: #28a745;">${p.cena.toLocaleString('cs-CZ')} Kč</div>
                 </div>`;
         });
         document.getElementById('suma-celkem').innerText = `Celkem: ${celkem.toLocaleString('cs-CZ')} Kč`;
     }
 
-    // 2. ODESLÁNÍ OBJEDNÁVKY (Validace skladu -> Email -> Odečtení ze skladu)
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        odeslatBtn.innerText = "Odesílám objednávku...";
+        odeslatBtn.innerText = "Odesílám...";
         odeslatBtn.disabled = true;
 
         try {
-            // Kontrola skladu těsně před odesláním
             const snap = await db.ref('produkty').once('value');
             const produktyData = snap.val() || {};
             let vyprodane = [];
-            
             kosik.forEach(p => {
-                const stavNaSklade = produktyData[p.dbKey] ? produktyData[p.dbKey].sklad : 0;
-                if (stavNaSklade <= 0) { vyprodane.push(p.nazev); }
+                if ((produktyData[p.dbKey]?.sklad || 0) <= 0) vyprodane.push(p.nazev);
             });
 
             if (vyprodane.length > 0) {
                 localStorage.removeItem('mujKosik');
-                document.getElementById('error-message').innerText = `Bohužel, položka ${vyprodane.join(", ")} byla právě vyprodána jiným zákazníkem.`;
+                document.getElementById('error-message').innerText = `Položka ${vyprodane.join(", ")} byla vyprodána.`;
                 document.getElementById('error-overlay').style.display = 'flex';
                 return;
             }
 
-            // Příprava HTML tabulky pro e-mail (EmailJS)
-            const orderItemsHtml = kosik.map(p => {
-                const produktZDatabaze = produktyData[p.dbKey];
-                let fotoUrl = (produktZDatabaze && produktZDatabaze.foto) ? produktZDatabaze.foto : 'https://via.placeholder.com/80x60.png?text=PC';
-                
-                return `
-                    <table width="100%" style="margin-bottom: 10px; border-bottom: 1px solid #eeeeee; font-family: sans-serif;">
-                        <tr>
-                            <td width="90"><img src="${fotoUrl}" width="80" style="border-radius: 4px;"></td>
-                            <td>
-                                <div style="font-weight: bold; font-size: 14px;">${p.nazev}</div>
-                                <div style="color: #28a745; font-weight: bold;">${p.cena.toLocaleString('cs-CZ')} Kč</div>
-                            </td>
-                        </tr>
-                    </table>`;
-            }).join("");
+            const orderItemsHtml = kosik.map(p => `
+                <div style="margin-bottom:10px; border-bottom:1px solid #eee;">
+                    <b>${p.nazev}</b> - ${p.cena.toLocaleString('cs-CZ')} Kč
+                </div>`).join("");
 
             const params = {
                 user_name: document.getElementById('jmeno').value,
@@ -312,23 +324,16 @@
                 total_price: document.getElementById('suma-celkem').innerText
             };
 
-            // Odeslání e-mailu přes EmailJS
             await emailjs.send('service_david_pokus', 'template_rt53bro', params);
 
-            // Odečtení kusů z Firebase skladu
             for (const p of kosik) {
-                await db.ref(`produkty/${p.dbKey}/sklad`).transaction((currentStock) => {
-                    return (currentStock || 0) - 1;
-                });
+                await db.ref(`produkty/${p.dbKey}/sklad`).transaction(stock => (stock || 0) - 1);
             }
 
-            // Vyčištění košíku a zobrazení úspěchu
             localStorage.removeItem('mujKosik');
             document.getElementById('success-overlay').style.display = 'flex';
-
         } catch (err) {
-            console.error(err);
-            alert("Omlouváme se, došlo k chybě při odesílání. Zkuste to prosím znovu nebo nás kontaktujte.");
+            alert("Chyba při odesílání. Zkuste to prosím znovu.");
             odeslatBtn.disabled = false;
             odeslatBtn.innerText = "Odeslat objednávku";
         }
