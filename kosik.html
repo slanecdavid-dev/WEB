@@ -25,7 +25,7 @@
             padding: 0 20px; 
         }
         
-        /* Header & Navigace (Sjednoceno) */
+        /* Header & Navigace */
         header { 
             background: #2c3e50; 
             color: #fff; 
@@ -51,7 +51,7 @@
         .logo a:hover { transform: scale(1.02); }
 
         .logo img {
-            height: 100px; /* Sjednocená výška */
+            height: 100px;
             width: auto;
             margin-right: 15px;
             display: block;
@@ -122,7 +122,6 @@
             gap: 15px; 
         }
         
-        /* Tlačítka */
         .btn { 
             padding: 14px 24px; 
             border: none; 
@@ -152,15 +151,13 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
         }
 
-        /* --- RESPONSIVITA --- */
+        /* --- RESPONSIVITA (Opravené Menu) --- */
         @media (max-width: 768px) {
             header .container { position: relative; }
             .menu-toggle { display: flex; }
             .logo img { height: 45px; }
-            .logo h1 { font-size: 1.2rem; }
-            header {
-        padding: 0.8rem 0; /* Jednotná výška celé lišty */
-                 }  
+            .logo h1 { font-size: 1.1rem; }
+            header { padding: 0.8rem 0; }
 
             nav { 
                 display: none; 
@@ -170,24 +167,25 @@
                 left: -20px; 
                 width: calc(100% + 40px); 
                 background: #2c3e50; 
-                padding: 10px 0; 
+                padding: 0; 
                 text-align: center; 
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2); 
             }
             nav.active { display: flex; }
-            nav a { margin: 0; padding: 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            nav a { 
+                margin: 0; 
+                padding: 20px; 
+                display: block; 
+                border-bottom: 1px solid rgba(255,255,255,0.1); 
+                width: 100%; 
+                box-sizing: border-box; 
+            }
+            nav a:last-child { border-bottom: none; }
 
             .cart-wrapper { margin: 20px 10px; padding: 20px; }
-            
-            .polozka { 
-                flex-direction: column; 
-                text-align: center; 
-                gap: 10px; 
-            }
-            .polozka-info { margin-bottom: 5px; }
-            
+            .polozka { flex-direction: column; text-align: center; gap: 10px; }
             .tlacitka-akce { flex-direction: column; }
             .btn { width: 100%; }
-
             .total { text-align: center; font-size: 1.4rem; }
         }
     </style>
