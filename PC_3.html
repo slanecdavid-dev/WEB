@@ -67,12 +67,10 @@
             <p id="dyn-popis" class="popis-text">Načítání popisu...</p>
             
             <table class="parametry-tabulka">
-                <tr><td>Displej</td><td id="dyn-displej">--</td></tr>
                 <tr><td>Procesor</td><td id="dyn-cpu">--</td></tr>
+                <tr><td>Grafická karta</td><td id="dyn-gpu">--</td></tr>
                 <tr><td>Operační paměť</td><td id="dyn-ram">--</td></tr>
                 <tr><td>Úložiště</td><td id="dyn-disk">--</td></tr>
-                <tr><td>Váha</td><td id="dyn-vaha">--</td></tr>
-                <tr><td>Baterie</td><td id="dyn-baterie">--</td></tr>
                 <tr><td>Záruka</td><td id="dyn-zaruka">--</td></tr>
             </table>
 
@@ -100,23 +98,22 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const PRODUCT_ID = 'PC3'; 
+    const PRODUCT_ID = 'PC_3'; 
 
     db.ref('produkty/' + PRODUCT_ID).on('value', (snapshot) => {
         const pc = snapshot.val();
         if (pc) {
+            // Přiřazení všech dat z Firebase
             document.getElementById('dyn-nazev').innerText = pc.nazev;
             document.getElementById('dyn-popis').innerText = pc.popis;
-            
-            // Parametry notebooku
-            document.getElementById('dyn-displej').innerText = pc.displej || "--";
-            document.getElementById('dyn-cpu').innerText = pc.procesor || "--";
+           
+           document.getElementById('dyn-cpu').innerText = pc.procesor || "--";
+            document.getElementById('dyn-gpu').innerText = pc.grafika || "--";
             document.getElementById('dyn-ram').innerText = pc.ram || "--";
             document.getElementById('dyn-disk').innerText = pc.disk || "--";
-            document.getElementById('dyn-vaha').innerText = pc.vaha || "--";
-            document.getElementById('dyn-baterie').innerText = pc.baterie || "--";
-            document.getElementById('dyn-zaruka').innerText = pc.zaruka || "24 měsíců";
+            document.getElementById('dyn-zaruka').innerText = pc.zaruka || "24 měsíců"; // Pokud ve Firebase nebude, dá default
             
+            // Cena a stav
             document.getElementById('dyn-cena').innerText = pc.cena.toLocaleString('cs-CZ');
             
             const skladEl = document.getElementById('dyn-sklad');

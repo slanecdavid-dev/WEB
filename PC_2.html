@@ -98,7 +98,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const PRODUCT_ID = 'PC2'; // Cesta k datům PC2
+    const PRODUCT_ID = 'PC_2'; // Cesta k datům PC2
 
     db.ref('produkty/' + PRODUCT_ID).on('value', (snapshot) => {
         const pc = snapshot.val();
@@ -106,11 +106,14 @@
             // Přiřazení všech dat z Firebase
             document.getElementById('dyn-nazev').innerText = pc.nazev;
             document.getElementById('dyn-popis').innerText = pc.popis;
-            document.getElementById('dyn-cpu').innerText = pc.procesor;
-            document.getElementById('dyn-gpu').innerText = pc.grafika;
-            document.getElementById('dyn-ram').innerText = pc.ram;
-            document.getElementById('dyn-disk').innerText = pc.disk;
-            document.getElementById('dyn-zaruka').innerText = pc.zaruka || "36 měsíců";
+           
+           document.getElementById('dyn-cpu').innerText = pc.procesor || "--";
+            document.getElementById('dyn-gpu').innerText = pc.grafika || "--";
+            document.getElementById('dyn-ram').innerText = pc.ram || "--";
+            document.getElementById('dyn-disk').innerText = pc.disk || "--";
+            document.getElementById('dyn-zaruka').innerText = pc.zaruka || "24 měsíců"; // Pokud ve Firebase nebude, dá default
+            
+            // Cena a stav
             document.getElementById('dyn-cena').innerText = pc.cena.toLocaleString('cs-CZ');
             
             const skladEl = document.getElementById('dyn-sklad');
@@ -136,7 +139,7 @@
         kosik.push({ 
             nazev: nazev, 
             cena: cena, 
-            obrazek: `img/${id}.jpg`, 
+            obrazek: `img/PC2.jpg`, 
             dbKey: id 
         });
         localStorage.setItem('mujKosik', JSON.stringify(kosik));
@@ -159,4 +162,4 @@
     window.onload = aktualizovatPocitadlo;
 </script>
 </body>
-</html>
+</html> 
