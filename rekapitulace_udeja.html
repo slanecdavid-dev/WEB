@@ -13,211 +13,282 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f0f2f5; color: #333; }
-        header { background: #2c3e50; color: #fff; padding: 1.2rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1, h2 { color: #2c3e50; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .btn-odeslat { background: #27ae60; color: white; border: none; padding: 15px 20px; width: 100%; font-size: 1.1rem; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
-        .btn-odeslat:hover { background: #219150; }
-        .btn-odeslat:disabled { background: #ccc; cursor: not-allowed; }
-        .polozka-rekap { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 0; line-height: 1.6; 
+            background: #f0f2f5; color: #333; 
+        }
+
+        header { 
+            background: #2c3e50; color: #fff; padding: 1.2rem 0; 
+            position: sticky; top: 0; z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        header .container { 
+            display: flex; justify-content: space-between; align-items: center; 
+            max-width: 1100px; margin: 0 auto; padding: 0 20px; 
+        }
+
+        .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; }
+        .logo img { height: 70px; width: auto; margin-right: 15px; }
+        .logo h1 { margin: 0; font-size: 1.8rem; letter-spacing: 1px; font-weight: 700; color: #fff !important; }
+
+        nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; }
+        nav a:hover { color: #28a745; }
+
+        .container-main { 
+            max-width: 1100px; margin: 40px auto; padding: 0 20px; 
+            display: grid; grid-template-columns: 1fr 380px; gap: 30px; 
+            box-sizing: border-box;
+        }
+        @media (max-width: 850px) { .container-main { grid-template-columns: 1fr; } }
+
+        .karta { 
+            background: white; padding: 30px; border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eef0f2;
+        }
+        h2 { border-bottom: 3px solid #28a745; padding-bottom: 12px; margin-top: 0; color: #2c3e50; font-size: 1.4rem; }
+
+        .radek-formu { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #555; }
+        input, select { 
+            width: 100%; padding: 12px 15px; border: 2px solid #e1e4e8; 
+            border-radius: 8px; box-sizing: border-box; font-size: 1rem; background: #fafbfc;
+        }
+        input:focus { border-color: #28a745; outline: none; background: #fff; }
+
+        .polozka-mini { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #f0f2f5; }
+        .polozka-mini img { width: 60px; height: 50px; object-fit: contain; border-radius: 5px; border: 1px solid #eee; }
         
-        /* Overlay pro stavy */
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; color: white; text-align: center; flex-direction: column; }
-        .overlay-content { background: white; color: #333; padding: 40px; border-radius: 10px; max-width: 500px; }
+        .suma-velka { 
+            font-size: 1.4rem; font-weight: 800; color: #28a745; 
+            margin-top: 20px; text-align: right; padding-top: 15px; border-top: 2px solid #f0f2f5;
+        }
+
+        .btn { 
+            display: block; width: 100%; padding: 15px; border: none; cursor: pointer; 
+            border-radius: 8px; font-weight: bold; text-align: center; text-decoration: none; 
+            font-size: 0.9rem; text-transform: uppercase; box-sizing: border-box;
+        }
+        .btn-finish { background: #28a745; color: white; }
+        .btn-finish:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-zpet { background: #e9ecef; color: #2c3e50; border: 1px solid #dee2e6; margin-top: 10px; }
+
+        #success-overlay, #error-overlay { 
+            display: none; position: fixed; top: 0; left: 0; 
+            width: 100%; height: 100%; background: rgba(44, 62, 80, 0.9); 
+            z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
+        }
+        .bublina { background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 450px; width: 90%; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div style="max-width: 1100px; margin: 0 auto; padding: 0 20px;">
-            <h2 style="margin:0;">Počítače z Moravy</h2>
-        </div>
-    </header>
-
+<header>
     <div class="container">
-        <h1>Dodací údaje</h1>
-        <form id="objednavka-form">
-            <div class="form-group">
-                <label for="jmeno">Jméno a příjmení</label>
-                <input type="text" id="jmeno" required placeholder="Jan Novák">
+        <div class="logo">
+            <a href="index.html">
+                <img src="img/logo.jpg" alt="Logo">
+                <h1>Počítače z Moravy</h1>
+            </a>
+        </div>
+        <nav>
+            <a href="index.html">Domů</a> 
+            <a href="produkty.html">Produkty</a>
+            <a href="kosik.html">Zpět do košíku</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container-main">
+    <div class="karta">
+        <h2>Doručovací údaje</h2>
+        <form id="form-objednavka">
+            <div class="radek-formu">
+                <label>Jméno a příjmení</label>
+                <input type="text" id="jmeno" name="user_name" required placeholder="Jan Novák">
             </div>
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" required placeholder="vas@email.cz">
+            <div class="radek-formu">
+                <label>E-mail</label>
+                <input type="email" id="email" name="user_email" required placeholder="vas@email.cz">
             </div>
-            <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 1;">
-                    <label>Předvolba</label>
-                    <select id="predvolba">
-                        <option value="+420">+420 (CZ)</option>
-                        <option value="+421">+421 (SK)</option>
+            <div class="radek-formu">
+                <label>Telefon</label>
+                <div style="display: flex; gap: 10px;">
+                    <select id="predvolba" style="width: 120px;" required>
+                        <option value="+420" selected>🇨🇿 +420</option>
+                        <option value="+421">🇸🇰 +421</option>
                     </select>
-                </div>
-                <div class="form-group" style="flex: 3;">
-                    <label for="telefon">Telefon</label>
-                    <input type="tel" id="telefon" required placeholder="777 123 456">
+                    <input type="tel" id="tel" name="user_phone" required placeholder="123 456 789" inputmode="numeric">
                 </div>
             </div>
-            <div class="form-group">
-                <label for="ulice">Ulice a č.p.</label>
-                <input type="text" id="ulice" required>
+            <div class="radek-formu">
+                <label>Ulice a č.p.</label>
+                <input type="text" id="ulice" name="user_address" required placeholder="Ulice 123">
             </div>
             <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 2;">
-                    <label for="mesto">Město</label>
-                    <input type="text" id="mesto" required>
+                <div class="radek-formu" style="flex: 2;">
+                    <label>Město</label>
+                    <input type="text" id="mesto" name="user_city" required placeholder="Brno">
                 </div>
-                <div class="form-group" style="flex: 1;">
-                    <label for="psc">PSČ</label>
-                    <input type="text" id="psc" required>
+                <div class="radek-formu" style="flex: 1;">
+                    <label>PSČ</label>
+                    <input type="text" id="psc" name="user_zip" required placeholder="123 45" maxlength="6" inputmode="numeric">
                 </div>
             </div>
-
-            <hr>
-            <h2>Shrnutí objednávky</h2>
-            <div id="seznam-rekapitulace"></div>
-            <div style="text-align: right; font-size: 1.5rem; font-weight: bold; margin-top: 20px;">
-                Celkem: <span id="suma-celkem">0</span> Kč
-            </div>
-
-            <button type="submit" class="btn-odeslat" id="odeslat-btn">Odeslat objednávku</button>
+            <button type="submit" id="odeslat-btn" class="btn btn-finish" disabled>Odeslat objednávku</button>
+            <a href="kosik.html" class="btn btn-zpet">Upravit košík</a>
         </form>
     </div>
 
-    <div id="success-overlay" class="overlay">
-        <div class="overlay-content">
-            <h2 style="color: #27ae60;">Objednávka úspěšná!</h2>
-            <p>Děkujeme za nákup. Potvrzení jsme zaslali na váš e-mail.</p>
-            <button onclick="window.location.href='index.html'" style="padding: 10px 20px; cursor:pointer;">Zpět na úvod</button>
-        </div>
+    <div class="karta" style="height: fit-content;">
+        <h2>Váš nákup</h2>
+        <div id="seznam-polozek"></div>
+        <div class="suma-velka" id="suma-celkem">Celkem: 0 Kč</div>
     </div>
+</div>
 
-    <div id="error-overlay" class="overlay">
-        <div class="overlay-content">
-            <h2 style="color: #e74c3c;">Chyba!</h2>
-            <p id="error-message"></p>
-            <button onclick="document.getElementById('error-overlay').style.display='none'" style="padding: 10px 20px; cursor:pointer;">Zavřít</button>
-        </div>
+<div id="success-overlay">
+    <div class="bublina">
+        <h2 style="color: #28a745; border:none;">✓ Objednáno!</h2>
+        <p>Děkujeme. Potvrzení bylo odesláno na váš e-mail.</p>
+        <a href="index.html" class="btn btn-finish">Zpět na úvod</a>
     </div>
+</div>
 
-    <script>
-        // Inicializace Firebase (Nahraďte vlastní konfigurací, pokud ji máte)
-        const firebaseConfig = { databaseURL: "https://vase-db-default-rtdb.firebaseio.com/" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+<div id="error-overlay">
+    <div class="bublina">
+        <h2 style="color: #e74c3c; border:none;">⚠️ Chyba v košíku</h2>
+        <p id="error-message"></p>
+        <a href="produkty.html" class="btn btn-finish" style="background:#e74c3c;">Prohlédnout dostupné produkty</a>
+    </div>
+</div>
 
-        // 1. NASTAVENÍ ADRESY VAŠEHO WEBU
-        // Sem vložte URL adresu, kde máte web nahraný (např. https://mojestranka.github.io/)
-        const webUrl = "https://pocitacezmoravy.github.io/WEB/"; 
+<script>
+    // FIREBASE CONFIG
+    const firebaseConfig = {
+        apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
+        authDomain: "pc-store-5656d.firebaseapp.com",
+        databaseURL: "https://pc-store-5656d-default-rtdb.europe-west1.firebasedatabase.app/",
+        projectId: "pc-store-5656d",
+        storageBucket: "pc-store-5656d.firebasestorage.app",
+        messagingSenderId: "329194547414",
+        appId: "1:329194547414:web:14cf1cffd85a0279d54177"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        function nactatRekapitulaci() {
-            const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
-            const kontejner = document.getElementById('seznam-rekapitulace');
-            const sumaEl = document.getElementById('suma-celkem');
+    const form = document.getElementById('form-objednavka');
+    const odeslatBtn = document.getElementById('odeslat-btn');
+    const telInput = document.getElementById('tel');
+    const pscInput = document.getElementById('psc');
+    const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+
+    // --- FORMÁTOVÁNÍ TELEFONU A PSČ ---
+    function formatujVstupy(e) {
+        // Formátování telefonu (000 000 000)
+        if (e.target === telInput) {
+            let val = telInput.value.replace(/\D/g, '').substring(0, 9);
+            let formatted = "";
+            for (let i = 0; i < val.length; i++) {
+                if (i > 0 && i % 3 === 0) formatted += " ";
+                formatted += val[i];
+            }
+            telInput.value = formatted;
+        }
+
+        // Formátování PSČ (000 00)
+        if (e.target === pscInput) {
+            let val = pscInput.value.replace(/\D/g, '').substring(0, 5);
+            if (val.length > 3) {
+                pscInput.value = val.slice(0, 3) + " " + val.slice(3);
+            } else {
+                pscInput.value = val;
+            }
+        }
+        
+        // Zapnutí/vypnutí tlačítka podle validity
+        odeslatBtn.disabled = !form.checkValidity();
+    }
+
+    telInput.addEventListener('input', formatujVstupy);
+    pscInput.addEventListener('input', formatujVstupy);
+    form.addEventListener('input', () => odeslatBtn.disabled = !form.checkValidity());
+
+    // 1. ZOBRAZENÍ KOŠÍKU
+    function renderRekapitulace() {
+        const seznamDiv = document.getElementById('seznam-polozek');
+        let celkem = 0;
+        
+        if (kosik.length === 0) { window.location.href = 'index.html'; return; }
+
+        seznamDiv.innerHTML = '';
+        kosik.forEach(p => {
+            celkem += p.cena;
+            const imgId = p.dbKey.replace('_', '');
+            seznamDiv.innerHTML += `
+                <div class="polozka-mini">
+                    <img src="img/${imgId}.jpg" alt="${p.nazev}" onerror="this.src='https://via.placeholder.com/60?text=PC'">
+                    <div style="flex:1; font-size:0.9rem;">${p.nazev}</div>
+                    <div style="font-weight:bold;">${p.cena.toLocaleString('cs-CZ')} Kč</div>
+                </div>`;
+        });
+        document.getElementById('suma-celkem').innerText = `Celkem: ${celkem.toLocaleString('cs-CZ')} Kč`;
+    }
+
+    // 2. ODESLÁNÍ OBJEDNÁVKY
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        odeslatBtn.innerText = "Ověřuji sklad...";
+        odeslatBtn.disabled = true;
+
+        try {
+            const snap = await db.ref('produkty').once('value');
+            const produktyData = snap.val() || {};
+            let vyprodane = [];
             
-            if (kosik.length === 0) {
-                window.location.href = 'kosik.html';
+            kosik.forEach(p => {
+                const stavNaSklade = produktyData[p.dbKey] ? produktyData[p.dbKey].sklad : 0;
+                if (stavNaSklade <= 0) { vyprodane.push(p.nazev); }
+            });
+
+            if (vyprodane.length > 0) {
+                localStorage.removeItem('mujKosik');
+                document.getElementById('error-message').innerText = `Bohužel, ${vyprodane.join(", ")} se právě vyprodal(y).`;
+                document.getElementById('error-overlay').style.display = 'flex';
                 return;
             }
 
-            let celkem = 0;
-            kontejner.innerHTML = kosik.map(p => {
-                celkem += p.cena;
-                return `
-                    <div class="polozka-rekap">
-                        <span>${p.nazev}</span>
-                        <span>${p.cena.toLocaleString('cs-CZ')} Kč</span>
-                    </div>
-                `;
-            }).join('');
-            sumaEl.innerText = celkem.toLocaleString('cs-CZ');
-        }
+            const params = {
+                user_name: document.getElementById('jmeno').value,
+                user_email: document.getElementById('email').value,
+                user_phone: document.getElementById('predvolba').value + " " + telInput.value,
+                user_full_address: `${document.getElementById('ulice').value}, ${document.getElementById('mesto').value} ${pscInput.value}`,
+                order_items: kosik.map(p => p.nazev).join(", "),
+                total_price: document.getElementById('suma-celkem').innerText
+            };
 
-        async function odeslatObjednavku(e) {
-            e.preventDefault();
-            const odeslatBtn = document.getElementById('odeslat-btn');
-            odeslatBtn.disabled = true;
-            odeslatBtn.innerText = "Odesílám...";
+            await emailjs.send('service_david_pokus', 'template_rt53bro', params);
 
-            try {
-                const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
-                
-                // 2. GENEROVÁNÍ HTML PRO E-MAIL (S OBRÁZKY)
-                // Tento kus kódu se vloží do e-mailové šablony
-                const orderItemsHtml = `
-                    <table style="width: 100%; border-collapse: collapse;">
-                        ${kosik.map(p => `
-                            <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">
-                                    <img src="${webUrl}${p.obrazek}" width="80" style="border-radius: 5px; display: block;">
-                                </td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">
-                                    <strong>${p.nazev}</strong>
-                                </td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">
-                                    ${p.cena.toLocaleString('cs-CZ')} Kč
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </table>
-                `;
-
-                // Kontrola skladu ve Firebase
-                const snapshot = await db.ref('produkty').once('value');
-                const dbData = snapshot.val();
-                let vyprodane = [];
-
-                kosik.forEach(p => {
-                    if (!dbData[p.dbKey] || dbData[p.dbKey].sklad <= 0) {
-                        vyprodane.push(p.nazev);
-                    }
+            for (const p of kosik) {
+                await db.ref(`produkty/${p.dbKey}/sklad`).transaction((currentStock) => {
+                    return (currentStock || 0) - 1;
                 });
-
-                if (vyprodane.length > 0) {
-                    document.getElementById('error-message').innerText = `Omlouváme se, ale ${vyprodane.join(', ')} už není skladem.`;
-                    document.getElementById('error-overlay').style.display = 'flex';
-                    odeslatBtn.disabled = false;
-                    odeslatBtn.innerText = "Odeslat objednávku";
-                    return;
-                }
-
-                // 3. PARAMETRY PRO EMAILJS
-                const params = {
-                    user_name: document.getElementById('jmeno').value,
-                    user_email: document.getElementById('email').value,
-                    user_phone: document.getElementById('predvolba').value + " " + document.getElementById('telefon').value,
-                    user_address: `${document.getElementById('ulice').value}, ${document.getElementById('mesto').value} ${document.getElementById('psc').value}`,
-                    // Zde posíláme vygenerované HTML s obrázky
-                    order_items_html: orderItemsHtml, 
-                    total_price: document.getElementById('suma-celkem').innerText + " Kč"
-                };
-
-                // Odeslání e-mailu
-                await emailjs.send('service_david_pokus', 'template_rt53bro', params);
-
-                // Aktualizace skladu ve Firebase
-                for (const p of kosik) {
-                    await db.ref(`produkty/${p.dbKey}/sklad`).transaction(s => (s || 0) - 1);
-                }
-
-                // Hotovo
-                localStorage.removeItem('mujKosik');
-                document.getElementById('success-overlay').style.display = 'flex';
-
-            } catch (err) {
-                console.error(err);
-                alert("Chyba při odesílání: " + err.message);
-                odeslatBtn.disabled = false;
-                odeslatBtn.innerText = "Odeslat objednávku";
             }
-        }
 
-        document.getElementById('objednavka-form').onsubmit = odeslatObjednavku;
-        window.onload = nactatRekapitulaci;
-    </script>
+            localStorage.removeItem('mujKosik');
+            document.getElementById('success-overlay').style.display = 'flex';
+
+        } catch (err) {
+            console.error(err);
+            alert("Chyba při zpracování objednávky.");
+            odeslatBtn.disabled = false;
+            odeslatBtn.innerText = "Odeslat objednávku";
+        }
+    });
+
+    renderRekapitulace();
+</script>
+
 </body>
 </html>
