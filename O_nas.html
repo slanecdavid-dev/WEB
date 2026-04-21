@@ -30,8 +30,52 @@
         }
 
         .logo h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
+
+        /* Navigace - Desktop */
         nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         nav a:hover { color: #28a745; }
+
+        /* Hamburger Tlačítko */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        /* Mobilní verze menu */
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+
+            nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #2c3e50;
+                padding: 20px 0;
+                text-align: center;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            }
+
+            nav.active { display: flex; }
+
+            nav a {
+                margin: 10px 0;
+                margin-left: 0;
+                font-size: 1.1rem;
+                display: block;
+            }
+        }
 
         .hero { background: #fff; padding: 40px 0; text-align: center; border-bottom: 3px solid #28a745; margin-bottom: 40px; }
         .hero h2 { margin: 0; color: #2c3e50; }
@@ -44,7 +88,14 @@
     <header>
         <div class="container">
             <div class="logo"><h1>Počítače z Moravy</h1></div>
-            <nav>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav id="nav-menu">
                 <a href="index.html">Domů</a>
                 <a href="produkty.html">Produkty</a>
                 <a href="O_nas.html">O nás</a>
@@ -69,12 +120,21 @@
     </main>
 
     <script>
+        // Logika pro mobilní menu
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+
+        mobileMenu.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Funkce pro počítadlo košíku
         function aktualizovatPocitadlo() {
-            
             let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
             const kosikLink = document.getElementById('pocitadlo-odkaz');
             if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;
         }
+        
         window.onload = aktualizovatPocitadlo;
     </script>
 </body>

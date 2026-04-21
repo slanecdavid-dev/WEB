@@ -30,8 +30,52 @@
             max-width: 1100px; margin: 0 auto; padding: 0 20px; 
         }
         .logo h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
+
+        /* Navigace - Desktop */
         nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         nav a:hover { color: #28a745; }
+
+        /* Hamburger Tlačítko - Skryté na desktopu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        /* Responzivní menu pro mobil */
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+
+            nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #2c3e50;
+                padding: 20px 0;
+                text-align: center;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            }
+
+            nav.active { display: flex; }
+
+            nav a {
+                margin: 10px 0;
+                margin-left: 0;
+                font-size: 1.1rem;
+                display: block;
+            }
+        }
 
         /* Hlavní rozložení */
         .container-main { 
@@ -110,7 +154,14 @@
 <header>
     <div class="container">
         <div class="logo"><h1>Počítače z Moravy</h1></div>
-        <nav>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <nav id="nav-menu">
             <a href="index.html">Domů</a> 
             <a href="produkty.html">Produkty</a>
             <a href="kosik.html">Zpět do košíku</a>
@@ -186,6 +237,14 @@
 </div>
 
 <script>
+    // LOGIKA PRO MOBILNÍ MENU
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navMenu = document.getElementById('nav-menu');
+
+    mobileMenu.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+
     // FORMÁTOVÁNÍ A VALIDACE
     const telInput = document.getElementById('tel');
     const pscInput = document.getElementById('psc');
