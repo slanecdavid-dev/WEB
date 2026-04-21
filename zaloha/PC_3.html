@@ -4,42 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stylový Notebook | Počítače z Moravy</title>
+
+    <link rel="icon" type="image/jpeg" href="img/logo.jpg">
     
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f0f2f5; color: #333; }
-        header { background: #2c3e50; color: #fff; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        header .container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        .logo h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 0; line-height: 1.6; 
+            background: #f0f2f5; color: #333; 
+        }
+
+        /* --- HEADER --- */
+        header { 
+            background: #2c3e50; color: #fff; padding: 1rem 0; 
+            position: sticky; top: 0; z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        header .container { 
+            display: flex; justify-content: space-between; align-items: center; 
+            max-width: 1100px; margin: 0 auto; padding: 0 20px; 
+        }
+        .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; }
+        .logo img { height: 100px; margin-right: 15px; width: auto; }
+        .logo h1 { margin: 0; font-size: 1.5rem; font-weight: 700; }
+
         nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         nav a:hover { color: #28a745; }
-        .main-content { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        .detail-karta { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-        @media (max-width: 768px) { .detail-karta { grid-template-columns: 1fr; } }
-        .foto-sekce img { width: 100%; border-radius: 10px; object-fit: contain; background: #fff; }
-        h1 { color: #2c3e50; margin: 0 0 10px 0; font-size: 2rem; }
-        .kategorie { color: #28a745; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
-        .parametry-tabulka { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .parametry-tabulka tr { border-bottom: 1px solid #eee; }
-        .parametry-tabulka td { padding: 12px 5px; font-size: 0.95rem; }
-        .parametry-tabulka td:first-child { font-weight: bold; color: #2c3e50; width: 40%; }
-        .cena-sekce { margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 12px; text-align: center; }
-        .velka-cena { font-size: 2.2rem; font-weight: bold; color: #2c3e50; display: block; margin-bottom: 15px; }
-        .sklad-info { display: block; margin-bottom: 10px; font-weight: bold; font-size: 0.9rem; }
-        .btn-nakup { display: block; background: #28a745; color: white; padding: 15px; text-decoration: none; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; width: 100%; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
-        .btn-nakup:hover { background: #218838; transform: translateY(-2px); }
+
+        /* --- HLAVNÍ OBSAH --- */
+        .main-content { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        
+        .zpet-odkaz { 
+            display: inline-block; text-decoration: none; color: #6c757d; 
+            font-size: 0.9rem; margin-bottom: 20px; transition: color 0.2s;
+        }
+        .zpet-odkaz:hover { color: #2c3e50; }
+
+        .detail-karta { 
+            background: white; padding: 35px; border-radius: 15px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; 
+        }
+
+        .foto-sekce img { 
+            width: 100%; border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        h1.product-title { color: #2c3e50; margin: 0 0 15px 0; font-size: 2rem; }
+        
+        .popis-text { 
+            color: #555; margin-bottom: 25px; font-size: 1rem; 
+            border-bottom: 1px solid #f0f2f5; padding-bottom: 20px; 
+        }
+        
+        .parametry-tabulka { width: 100%; border-collapse: collapse; }
+        .parametry-tabulka td { padding: 12px 5px; border-bottom: 1px solid #f8f9fa; }
+        .parametry-tabulka td:first-child { font-weight: 600; color: #7f8c8d; width: 40%; }
+        .parametry-tabulka td:last-child { color: #2c3e50; font-weight: 500; }
+        
+        /* --- CENA A TLAČÍTKO --- */
+        .cena-sekce { 
+            margin-top: 30px; padding: 25px; background: #fafbfc; 
+            border-radius: 12px; text-align: center; border: 1px solid #f0f2f5;
+        }
+        .velka-cena { font-size: 2.2rem; font-weight: 800; color: #2c3e50; display: block; margin-bottom: 15px; }
+        .sklad-info { display: block; margin-bottom: 10px; font-weight: 700; }
+        
+        .btn-nakup { 
+            display: block; background: #28a745; color: white; padding: 18px; 
+            border-radius: 10px; font-weight: bold; border: none; cursor: pointer; 
+            width: 100%; font-size: 1.1rem; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-nakup:hover { background: #218838; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(40,167,69,0.2); }
         .btn-nakup:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-        #bublina { position: fixed; bottom: 30px; right: 30px; background: #2c3e50; color: #fff; padding: 16px 24px; border-radius: 8px; display: none; z-index: 1001; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: opacity 0.3s; }
-        .zpet-odkaz { display: inline-block; margin-bottom: 20px; color: #6c757d; text-decoration: none; font-size: 0.9rem; }
+        
+        /* --- BUBLINA --- */
+        #bublina { 
+            position: fixed; bottom: 30px; right: 30px; background: #2c3e50; 
+            color: #fff; padding: 16px 24px; border-radius: 10px; 
+            display: none; z-index: 1001; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- RESPONSIVITA --- */
+        @media (max-width: 768px) {
+            .detail-karta { grid-template-columns: 1fr; padding: 20px; }
+            .logo img { height: 50px; }
+            .logo h1 { font-size: 1.2rem; }
+            h1.product-title { font-size: 1.6rem; }
+            nav a { margin-left: 10px; font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
 
 <header>
     <div class="container">
-        <div class="logo"><h1>Počítače z Moravy</h1></div>
+        <div class="logo">
+            <a href="index.html">
+                <img src="img/logo.jpg" alt="Logo">
+                <h1>Počítače z Moravy</h1>
+            </a>
+        </div>
         <nav>
             <a href="index.html">Domů</a>
             <a href="produkty.html">Produkty</a>
@@ -50,28 +122,29 @@
 </header>
 
 <main class="main-content">
-    <a href="produkty.html" class="zpet-odkaz">← Zpět na nabídku</a>
+    <a href="produkty.html" class="zpet-odkaz">← Zpět na nabídku produktů</a>
+    
     <div class="detail-karta">
         <div class="foto-sekce">
             <img src="img/PC3.jpg" alt="Stylový Notebook">
         </div>
+
         <div class="info-sekce">
-            <span class="kategorie">Notebook</span>
-            <h1>Stylový Notebook</h1>
+            <h1 id="dyn-nazev" class="product-title">Načítání...</h1>
+            <p id="dyn-popis" class="popis-text">Načítání popisu produktu...</p>
+            
             <table class="parametry-tabulka">
-                <tr><td>Displej</td><td>15.6" Full HD IPS (matný)</td></tr>
-                <tr><td>Procesor</td><td>AMD Ryzen 5 (5000 Series)</td></tr>
-                <tr><td>Operační paměť</td><td>16GB DDR4 RAM</td></tr>
-                <tr><td>Úložiště</td><td>1TB SSD NVMe</td></tr>
-                <tr><td>Váha</td><td>1.6 kg (Ultra Slim)</td></tr>
-                <tr><td>Baterie</td><td>Výdrž až 8 hodin</td></tr>
+                <tr><td>Procesor</td><td id="dyn-cpu">--</td></tr>
+                <tr><td>Grafická karta</td><td id="dyn-gpu">--</td></tr>
+                <tr><td>Operační paměť</td><td id="dyn-ram">--</td></tr>
+                <tr><td>Úložiště</td><td id="dyn-disk">--</td></tr>
+                <tr><td>Záruka</td><td id="dyn-zaruka">--</td></tr>
             </table>
+
             <div class="cena-sekce">
-                <span id="sklad-PC3" class="sklad-info">Načítání skladu...</span>
-                <span class="velka-cena"><span id="cena-PC3">----</span> Kč</span>
-                <button id="btn-PC3" class="btn-nakup" onclick="pridatDoKosiku('Stylový Notebook', 'PC3', 'img/PC3.jpg', 'PC3')">
-                    Do košíku 🛒
-                </button>
+                <span id="dyn-sklad" class="sklad-info">Načítání skladu...</span>
+                <span class="velka-cena"><span id="dyn-cena">----</span> Kč</span>
+                <button id="btn-koupit" class="btn-nakup">Do košíku 🛒</button>
             </div>
         </div>
     </div>
@@ -91,55 +164,65 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    const PRODUCT_ID = 'PC3';
 
-    db.ref('/').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-            const cena = data.ceny ? data.ceny[PRODUCT_ID] : 0;
-            const sklad = data.sklad ? data.sklad[PRODUCT_ID] : 0;
-            document.getElementById('cena-' + PRODUCT_ID).innerText = cena.toLocaleString('cs-CZ');
-            const skladEl = document.getElementById('sklad-' + PRODUCT_ID);
-            const btnEl = document.getElementById('btn-' + PRODUCT_ID);
-            skladEl.innerText = sklad > 0 ? `Skladem: ${sklad} ks` : "Vyprodáno";
-            skladEl.style.color = sklad > 0 ? "#28a745" : "#e74c3c";
-            if (btnEl) {
-                btnEl.disabled = sklad <= 0;
-                btnEl.innerText = sklad <= 0 ? "Vyprodáno" : "Do košíku 🛒";
+    const PRODUCT_ID = 'PC_3'; 
+
+    db.ref('produkty/' + PRODUCT_ID).on('value', (snapshot) => {
+        const pc = snapshot.val();
+        if (pc) {
+            document.getElementById('dyn-nazev').innerText = pc.nazev;
+            document.getElementById('dyn-popis').innerText = pc.popis;
+            
+            document.getElementById('dyn-cpu').innerText = pc.procesor || "--";
+            document.getElementById('dyn-gpu').innerText = pc.grafika || "--";
+            document.getElementById('dyn-ram').innerText = pc.ram || "--";
+            document.getElementById('dyn-disk').innerText = pc.disk || "--";
+            document.getElementById('dyn-zaruka').innerText = pc.zaruka ? pc.zaruka + " měsíců" : "24 měsíců";
+            
+            document.getElementById('dyn-cena').innerText = pc.cena.toLocaleString('cs-CZ');
+            
+            const skladEl = document.getElementById('dyn-sklad');
+            const btnEl = document.getElementById('btn-koupit');
+
+            if (pc.sklad > 0) {
+                skladEl.innerText = `✓ Skladem: ${pc.sklad} ks`;
+                skladEl.style.color = "#28a745";
+                btnEl.disabled = false;
+                btnEl.innerText = "Do košíku 🛒";
+                btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, PRODUCT_ID);
+            } else {
+                skladEl.innerText = "✖ Vyprodáno";
+                skladEl.style.color = "#e74c3c";
+                btnEl.disabled = true;
+                btnEl.innerText = "Vyprodáno";
             }
         }
     });
 
-    let casovacBubliny;
-    function pridatDoKosiku(nazev, cenaId, url, dbKey) {
-        const cenaText = document.getElementById('cena-' + cenaId).innerText.replace(/\s/g, '');
-        const cenaCislo = parseInt(cenaText) || 0;
-        
-       
+    function pridatDoKosiku(nazev, cena, id) {
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
-        kosik.push({ nazev: nazev, cena: cenaCislo, obrazek: url, dbKey: dbKey });
+        kosik.push({ 
+            nazev: nazev, 
+            cena: cena, 
+            obrazek: `img/${id}.jpg`, 
+            dbKey: id 
+        });
         localStorage.setItem('mujKosik', JSON.stringify(kosik));
-        
         aktualizovatPocitadlo();
         zobrazBublinu(nazev);
     }
 
     function zobrazBublinu(nazev) {
         const b = document.getElementById('bublina');
-        b.innerText = '✓ ' + nazev + ' v košíku';
-        b.style.display = 'block'; b.style.opacity = '1';
-        clearTimeout(casovacBubliny);
-        casovacBubliny = setTimeout(() => { 
-            b.style.opacity = '0'; 
-            setTimeout(() => b.style.display='none', 300); 
-        }, 3000);
+        b.innerText = '✓ ' + nazev + ' byl přidán do košíku';
+        b.style.display = 'block';
+        setTimeout(() => { b.style.display = 'none'; }, 3000);
     }
 
     function aktualizovatPocitadlo() {
-        
-        let k = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         const pocitadlo = document.getElementById('pocitadlo-kosiku');
-        if (pocitadlo) pocitadlo.innerText = `Košík 🛒 (${k.length})`;
+        if (pocitadlo) pocitadlo.innerText = `Košík 🛒 (${kosik.length})`;
     }
     window.onload = aktualizovatPocitadlo;
 </script>

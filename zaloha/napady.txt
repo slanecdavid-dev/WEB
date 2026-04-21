@@ -1,8 +1,0 @@
-opravit zamítnutí poslání emailu když je stav skladu na nule takové ověření při kliknutí odeslat objednávku
-dodělat fotku v emailu
-nahrát logo pro web
-
-tahání informací o PC z nějakého souboru excel nebo txt
-upravit web pro prostředí telefonu
-
-
