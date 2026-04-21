@@ -11,13 +11,19 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
+        /* --- ZÁKLADNÍ STYLY --- */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; padding: 0; line-height: 1.6; 
             background: #f0f2f5; color: #333; 
         }
+        .container { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
 
-        /* --- HEADER --- */
+        /* --- HEADER & NAVIGACE (Sjednoceno) --- */
         header { 
             background: #2c3e50; color: #fff; padding: 1rem 0; 
             position: sticky; top: 0; z-index: 1000; 
@@ -25,15 +31,31 @@
         }
         header .container { 
             display: flex; justify-content: space-between; align-items: center; 
-            max-width: 1100px; margin: 0 auto; padding: 0 20px; 
         }
+        
         .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; transition: transform 0.2s; }
         .logo a:hover { transform: scale(1.02); }
-        .logo img { height: 100px; margin-right: 15px; width: auto; } /* Sjednoceno na 80px */
+        .logo img { height: 100px; width: auto; margin-right: 15px; border-radius: 5px; }
         .logo h1 { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; }
 
-        nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        nav { display: flex; align-items: center; }
+        nav a { 
+            color: #fff; margin-left: 20px; text-decoration: none; 
+            font-weight: 500; transition: color 0.3s; 
+        }
         nav a:hover { color: #28a745; }
+
+        /* Mobilní menu toggle */
+        .menu-toggle { 
+            display: none; flex-direction: column; cursor: pointer; gap: 5px; padding: 5px;
+        }
+        .menu-toggle span { 
+            display: block; width: 25px; height: 3px; background: white; 
+            border-radius: 2px; transition: 0.3s;
+        }
+        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
         /* --- HLAVNÍ OBSAH --- */
         .main-content { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
@@ -56,22 +78,18 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: transform 0.3s;
         }
-        .foto-sekce img:hover { transform: scale(1.01); }
 
         h1.product-title { color: #2c3e50; margin: 0 0 15px 0; font-size: 2rem; line-height: 1.2; }
-        
         .popis-text { 
             color: #555; margin-bottom: 25px; font-size: 1rem; 
-            line-height: 1.6; border-bottom: 1px solid #f0f2f5; 
-            padding-bottom: 20px; 
+            border-bottom: 1px solid #f0f2f5; padding-bottom: 20px; 
         }
         
         .parametry-tabulka { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .parametry-tabulka td { padding: 12px 5px; border-bottom: 1px solid #f8f9fa; font-size: 0.95rem; }
         .parametry-tabulka td:first-child { font-weight: 600; color: #7f8c8d; width: 40%; }
-        .parametry-tabulka td:last-child { color: #2c3e50; font-weight: 500; }
         
-        /* --- CENA A KOUPIT --- */
+        /* --- CENA A TLAČÍTKA --- */
         .cena-sekce { 
             margin-top: 30px; padding: 25px; background: #fafbfc; 
             border-radius: 12px; text-align: center; border: 1px solid #f0f2f5;
@@ -84,33 +102,34 @@
             border-radius: 10px; font-weight: bold; border: none; cursor: pointer; 
             width: 100%; font-size: 1.1rem; transition: 0.3s; 
             text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
         }
-        .btn-nakup:hover { background: #218838; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3); }
-        .btn-nakup:active { transform: translateY(0); }
-        .btn-nakup:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-nakup:hover { background: #218838; transform: translateY(-2px); }
+        .btn-nakup:active { transform: scale(0.98); }
+        .btn-nakup:disabled { background: #ccc; cursor: not-allowed; transform: none; }
         
-        /* --- BUBLINA --- */
+        /* --- BUBLINA (Sjednoceno) --- */
         #bublina { 
-            position: fixed; bottom: 30px; right: 30px; background: #2c3e50; 
-            color: #fff; padding: 16px 24px; border-radius: 10px; 
-            display: none; z-index: 1001; box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease-out;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #2c3e50; color: #fff; padding: 16px 24px; border-radius: 50px; 
+            display: none; z-index: 2000; box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            white-space: nowrap; transition: opacity 0.3s;
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* --- MOBILNÍ RESPONSIVITA --- */
+        /* --- RESPONSIVITA --- */
         @media (max-width: 850px) {
-            .detail-karta { grid-template-columns: 1fr; padding: 20px; gap: 25px; }
+            .detail-karta { grid-template-columns: 1fr; padding: 20px; }
             .logo img { height: 50px; }
-            .logo h1 { font-size: 1.2rem; }
-            h1.product-title { font-size: 1.6rem; }
-            .velka-cena { font-size: 1.8rem; }
-            nav a { margin-left: 10px; font-size: 0.8rem; }
+            .logo h1 { font-size: 1.1rem; }
+            .menu-toggle { display: flex; }
+            
+            nav { 
+                display: flex; flex-direction: column; position: fixed; 
+                top: 0; right: -100%; width: 80%; height: 100vh;
+                background: #2c3e50; padding: 80px 0 0 0; transition: 0.4s;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+            }
+            nav.active { right: 0; }
+            nav a { margin: 0; padding: 20px; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
         }
     </style>
 </head>
@@ -124,7 +143,10 @@
                 <h1>Počítače z Moravy</h1>
             </a>
         </div>
-        <nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span><span></span><span></span>
+        </div>
+        <nav id="nav-menu">
             <a href="index.html">Domů</a>
             <a href="produkty.html">Produkty</a>
             <a href="O_nas.html">O nás</a>
@@ -165,6 +187,14 @@
 <div id="bublina"></div>
 
 <script>
+    // Mobilní menu
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navMenu = document.getElementById('nav-menu');
+    mobileMenu.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
     // FIREBASE CONFIG
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
@@ -180,32 +210,29 @@
 
     const PRODUCT_ID = 'PC_1'; 
 
-    // Načítání dat z Firebase v reálném čase
     db.ref('produkty/' + PRODUCT_ID).on('value', (snapshot) => {
         const pc = snapshot.val();
         if (pc) {
             document.getElementById('dyn-nazev').innerText = pc.nazev;
             document.getElementById('dyn-popis').innerText = pc.popis;
-            
             document.getElementById('dyn-cpu').innerText = pc.procesor || "--";
             document.getElementById('dyn-gpu').innerText = pc.grafika || "--";
             document.getElementById('dyn-ram').innerText = pc.ram || "--";
             document.getElementById('dyn-disk').innerText = pc.disk || "--";
             document.getElementById('dyn-zaruka').innerText = pc.zaruka ? pc.zaruka + " měsíců" : "24 měsíců";
-            
             document.getElementById('dyn-cena').innerText = pc.cena.toLocaleString('cs-CZ');
             
             const skladEl = document.getElementById('dyn-sklad');
             const btnEl = document.getElementById('btn-koupit');
 
             if (pc.sklad > 0) {
-                skladEl.innerText = `✓ Skladem: ${pc.sklad} ks`;
+                skladEl.innerText = `● Skladem: ${pc.sklad} ks`;
                 skladEl.style.color = "#28a745";
                 btnEl.disabled = false;
                 btnEl.innerText = "Do košíku 🛒";
                 btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, PRODUCT_ID);
             } else {
-                skladEl.innerText = "✖ Aktuálně vyprodáno";
+                skladEl.innerText = "Aktuálně vyprodáno";
                 skladEl.style.color = "#e74c3c";
                 btnEl.disabled = true;
                 btnEl.innerText = "Vyprodáno";
@@ -226,17 +253,23 @@
         zobrazBublinu(nazev);
     }
 
+    let casovacBubliny;
     function zobrazBublinu(nazev) {
         const b = document.getElementById('bublina');
-        b.innerText = '✓ ' + nazev + ' byl přidán do košíku';
+        b.innerHTML = '<b>✓ Přidáno:</b> ' + nazev;
         b.style.display = 'block';
-        setTimeout(() => { b.style.display = 'none'; }, 3000);
+        b.style.opacity = '1';
+        clearTimeout(casovacBubliny);
+        casovacBubliny = setTimeout(() => {
+            b.style.opacity = '0';
+            setTimeout(() => { b.style.display = 'none'; }, 300);
+        }, 2500);
     }
 
     function aktualizovatPocitadlo() {
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         const pocitadlo = document.getElementById('pocitadlo-kosiku');
-        if (pocitadlo) pocitadlo.innerText = `Košík 🛒 (${kosik.length})`;
+        if (pocitadlo) pocitadlo.innerHTML = `Košík 🛒 <b>(${kosik.length})</b>`;
     }
     
     window.onload = aktualizovatPocitadlo;
