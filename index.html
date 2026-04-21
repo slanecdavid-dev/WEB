@@ -14,8 +14,51 @@
         header { background: #2c3e50; color: #fff; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         header .container { display: flex; justify-content: space-between; align-items: center; }
         .logo h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
+        
+        /* Navigace */
         nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         nav a:hover { color: #28a745; }
+
+        /* Mobilní menu tlačítko - schované na desktopu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        /* Responzivita pro mobil */
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            
+            nav {
+                display: none; /* Schováme menu */
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #2c3e50;
+                padding: 20px 0;
+                text-align: center;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            }
+
+            nav.active { display: flex; } /* Zobrazíme při aktivaci */
+            
+            nav a {
+                margin: 10px 0;
+                font-size: 1.2rem;
+            }
+        }
+
         .hero { background: #fff; padding: 40px 0; text-align: center; border-bottom: 3px solid #28a745; margin-bottom: 40px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px; }
         .product-card { background: white; padding: 25px; border-radius: 12px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
@@ -37,6 +80,13 @@
 <header>
     <div class="container">
         <div class="logo"><h1>Počítače z Moravy</h1></div>
+        
+        <div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active')">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
         <nav>
             <a href="index.html">Domů</a>
             <a href="produkty.html">Produkty</a>
@@ -146,7 +196,6 @@
     let casovacBubliny;
 
     function pridatDoKosiku(nazev, cenaElementId, urlObrazku, dbKey) {
-        // Oprava: odstraníme všechny mezery a text "Kč", aby zůstalo čisté číslo
         const cenaText = document.getElementById(cenaElementId).innerText.replace(/\s/g, '').replace('Kč', '');
         const cenaCislo = parseInt(cenaText) || 0;
 
