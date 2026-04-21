@@ -39,6 +39,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
+            position: relative;
         }
 
         .logo a {
@@ -51,7 +52,7 @@
         .logo a:hover { transform: scale(1.02); }
 
         .logo img {
-            height: 100px;
+            height: 100px; /* Sjednoceno s indexem a produkty */
             width: auto;
             margin-right: 15px;
             display: block;
@@ -151,13 +152,11 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
         }
 
-        /* --- RESPONSIVITA (Opravené Menu) --- */
+        /* --- RESPONSIVITA --- */
         @media (max-width: 768px) {
-            header .container { position: relative; }
             .menu-toggle { display: flex; }
-            .logo img { height: 45px; }
+            .logo img { height: 50px; }
             .logo h1 { font-size: 1.1rem; }
-            header { padding: 0.8rem 0; }
 
             nav { 
                 display: none; 
@@ -167,25 +166,21 @@
                 left: -20px; 
                 width: calc(100% + 40px); 
                 background: #2c3e50; 
-                padding: 0; 
+                padding: 10px 0; 
                 text-align: center; 
                 box-shadow: 0 5px 10px rgba(0,0,0,0.2); 
             }
             nav.active { display: flex; }
             nav a { 
                 margin: 0; 
-                padding: 20px; 
+                padding: 15px; 
                 display: block; 
                 border-bottom: 1px solid rgba(255,255,255,0.1); 
-                width: 100%; 
-                box-sizing: border-box; 
             }
-            nav a:last-child { border-bottom: none; }
 
             .cart-wrapper { margin: 20px 10px; padding: 20px; }
             .polozka { flex-direction: column; text-align: center; gap: 10px; }
             .tlacitka-akce { flex-direction: column; }
-            .btn { width: 100%; }
             .total { text-align: center; font-size: 1.4rem; }
         }
     </style>
@@ -201,7 +196,7 @@
                 </a>
             </div>
             
-            <div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active')">
+            <div class="menu-toggle" id="mobile-toggle">
                 <span></span><span></span><span></span>
             </div>
 
@@ -236,6 +231,7 @@
     <div id="bublina"></div>
 
     <script>
+        // Firebase Konfigurace
         const firebaseConfig = {
             apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
             authDomain: "pc-store-5656d.firebaseapp.com",
@@ -247,6 +243,13 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+
+        // Ovládání mobilního menu
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
 
         function zobrazBublinu(text) {
             const bublina = document.getElementById('bublina');

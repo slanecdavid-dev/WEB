@@ -36,19 +36,32 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
+            position: relative;
         }
-        
-        .logo a { 
-            display: flex; 
-            align-items: center; 
-            text-decoration: none; 
-            color: #fff; 
-            transition: transform 0.2s ease; 
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.2s ease;
         }
         .logo a:hover { transform: scale(1.02); }
-        .logo img { height: 100px; width: auto; margin-right: 15px; display: block; }
-        .logo h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; font-weight: 700; }
-        
+
+        .logo img {
+            height: 100px;
+            width: auto;
+            margin-right: 15px;
+            display: block;
+        }
+
+        .logo h1 { 
+            margin: 0; 
+            font-size: 1.5rem; 
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
         nav { display: flex; align-items: center; }
         nav a { 
             color: #fff; 
@@ -59,7 +72,7 @@
         }
         nav a:hover { color: #28a745; }
 
-        /* Mobilní menu toggle */
+        /* Mobilní menu toggle (hamburger) */
         .menu-toggle { 
             display: none; 
             flex-direction: column; 
@@ -75,38 +88,23 @@
             border-radius: 2px; 
         }
 
-        /* Hero sekce */
-        .hero { 
-            background: #fff; 
-            padding: 50px 0; 
-            text-align: center; 
-            border-bottom: 3px solid #28a745; 
-            margin-bottom: 40px; 
+        /* Obsah stránky O nás */
+        main { padding: 40px 0; }
+        .about-section {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .hero h2 { margin: 0; font-size: 2.2rem; color: #2c3e50; }
-        .hero p { font-size: 1.1rem; color: #666; }
-
-        /* Sekce O nás */
-        .about-section { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-            margin-bottom: 60px; 
-        }
-        .about-section h3 { margin-top: 0; color: #2c3e50; font-size: 1.8rem; }
-        .about-section p { margin-bottom: 20px; font-size: 1.05rem; }
+        .about-section h2 { color: #2c3e50; margin-top: 0; }
+        .about-section p { font-size: 1.1rem; margin-bottom: 20px; }
 
         /* --- RESPONSIVITA --- */
         @media (max-width: 768px) {
-            header .container { position: relative; }
             .menu-toggle { display: flex; }
-            .logo img { height: 45px; }
+            .logo img { height: 50px; }
             .logo h1 { font-size: 1.2rem; }
-            header {
-        padding: 0.8rem 0; /* Jednotná výška celé lišty */
-                 }  
-
+            
             nav { 
                 display: none; 
                 flex-direction: column; 
@@ -117,23 +115,10 @@
                 background: #2c3e50; 
                 padding: 10px 0; 
                 text-align: center; 
-                box-shadow: 0 5px 10px rgba(0,0,0,0.2); 
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             }
             nav.active { display: flex; }
-            nav a { 
-                margin: 0; 
-                padding: 15px; 
-                width: 100%; 
-                display: block; 
-                border-bottom: 1px solid rgba(255,255,255,0.1); 
-                box-sizing: border-box;
-            }
-
-            .hero { padding: 30px 15px; }
-            .hero h2 { font-size: 1.8rem; }
-            
-            .about-section { padding: 25px 20px; margin-bottom: 40px; }
-            .about-section h3 { font-size: 1.5rem; }
+            nav a { margin: 0; padding: 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); }
         }
     </style>
 </head>
@@ -148,59 +133,57 @@
                 </a>
             </div>
             
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="menu-toggle" id="mobile-toggle">
+                <span></span><span></span><span></span>
             </div>
 
             <nav id="nav-menu">
                 <a href="index.html">Domů</a>
                 <a href="produkty.html">Produkty</a>
                 <a href="O_nas.html">O nás</a>
-                <a href="kosik.html" id="pocitadlo-odkaz">Košík 🛒 (0)</a>
+                <a href="kosik.html" id="kosik-odkaz">Košík 🛒 (0)</a>
             </nav>
         </div>
     </header>
 
-    <div class="hero">
-        <div class="container">
-            <h2>Náš příběh</h2>
-            <p>Jsme parta nadšenců z Moravy, kteří milují technologie.</p>
-        </div>
-    </div>
-
     <main class="container">
         <section class="about-section">
-            <h3>Kdo jsme?</h3>
-            <p>Skládáme počítače s láskou a precizností. Naším cílem je dodat zákazníkovi stroj, který nebude jen kusem železa, ale spolehlivým partnerem pro práci i zábavu.</p>
-            <p>Všechny komponenty pečlivě vybíráme a každý počítač prochází náročným testováním, než se vydá na cestu k vám. Zakládáme si na osobním přístupu a moravské poctivosti.</p>
+            <h2>Kdo jsme?</h2>
+            <p>Jsme parta nadšenců z Moravy, kteří věří, že počítač by neměl být jen anonymní krabice z velkoskladu. Skládáme počítače s láskou, precizností a důrazem na detail.</p>
+            
+            <h3>Naše filozofie</h3>
+            <p>Naším cílem je dodat zákazníkovi stroj, který nebude jen kusem železa, ale spolehlivým partnerem pro práci i zábavu. Všechny komponenty pečlivě vybíráme a každý počítač prochází náročným testováním, než se vydá na cestu k vám.</p>
+            
+            <p>Zakládáme si na osobním přístupu a <strong>moravské poctivosti</strong>. Když si koupíte počítač od nás, nekupujete jen hardware, ale i naši podporu a jistotu, že jsme tu pro vás i po nákupu.</p>
         </section>
     </main>
 
     <script>
-        // Logika pro mobilní menu
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navMenu = document.getElementById('nav-menu');
-
-        mobileMenu.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+        // Ovládání mobilního menu
+        const toggle = document.getElementById('mobile-toggle');
+        const menu = document.getElementById('nav-menu');
+        
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
         });
 
-        // Zavřít menu při kliknutí na odkaz (vhodné pro mobilní UX)
+        // Funkce pro aktualizaci počítadla košíku
+        function aktualizovatPocitadlo() {
+            const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+            const odkaz = document.getElementById('kosik-odkaz');
+            if (odkaz) {
+                odkaz.innerText = `Košík 🛒 (${kosik.length})`;
+            }
+        }
+
+        // Zavření menu po kliknutí na odkaz (pro mobilní telefony)
         document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
+                menu.classList.remove('active');
             });
         });
 
-        // Funkce pro počítadlo košíku
-        function aktualizovatPocitadlo() {
-            let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
-            const kosikLink = document.getElementById('pocitadlo-odkaz');
-            if (kosikLink) kosikLink.innerText = `Košík 🛒 (${kosik.length})`;
-        }
-        
+        // Inicializace při načtení stránky
         window.onload = aktualizovatPocitadlo;
     </script>
 </body>
