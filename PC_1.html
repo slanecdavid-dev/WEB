@@ -118,7 +118,7 @@
             white-space: nowrap; transition: opacity 0.3s;
         }
 
-        /* --- RESPONSIVITA (Nové vysouvací menu) --- */
+        /* --- RESPONSIVITA (Vysouvání shora) --- */
         @media (max-width: 850px) {
             .detail-karta { grid-template-columns: 1fr; padding: 20px; }
             .logo img { height: 60px; }
@@ -136,11 +136,11 @@
                 padding: 10px 0;
                 box-shadow: 0 10px 15px rgba(0,0,0,0.2);
                 
-                /* Skrytí menu nahoru pod header */
+                /* Skrytí menu nahoru */
                 transform: translateY(-150%); 
                 opacity: 0;
                 visibility: hidden;
-                transition: transform 0.4s ease, opacity 0.3s ease;
+                transition: transform 0.4s ease-in-out, opacity 0.3s ease;
                 z-index: -1;
             }
 
