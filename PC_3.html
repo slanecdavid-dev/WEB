@@ -31,6 +31,7 @@
         }
         header .container { 
             display: flex; justify-content: space-between; align-items: center; 
+            position: relative;
         }
         
         .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; transition: transform 0.2s; }
@@ -53,6 +54,8 @@
             display: block; width: 25px; height: 3px; background: white; 
             border-radius: 2px; transition: 0.3s;
         }
+
+        /* Animace křížku */
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
@@ -115,21 +118,49 @@
             white-space: nowrap; transition: opacity 0.3s;
         }
 
-        /* --- RESPONSIVITA --- */
+        /* --- RESPONSIVITA (Vysouvání shora) --- */
         @media (max-width: 850px) {
             .detail-karta { grid-template-columns: 1fr; padding: 20px; }
-            .logo img { height: 50px; }
+            .logo img { height: 60px; }
             .logo h1 { font-size: 1.1rem; }
             .menu-toggle { display: flex; }
             
             nav { 
-                display: flex; flex-direction: column; position: fixed; 
-                top: 0; right: -100%; width: 80%; height: 100vh;
-                background: #2c3e50; padding: 80px 0 0 0; transition: 0.4s;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+                display: flex;
+                flex-direction: column; 
+                position: absolute; 
+                top: 100%; 
+                left: 0;
+                width: 100%; 
+                background: #2c3e50; 
+                padding: 10px 0;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+                
+                /* Skrytí menu nahoru */
+                transform: translateY(-150%); 
+                opacity: 0;
+                visibility: hidden;
+                transition: transform 0.4s ease-in-out, opacity 0.3s ease;
+                z-index: -1;
             }
-            nav.active { right: 0; }
-            nav a { margin: 0; padding: 20px; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
+
+            nav.active { 
+                transform: translateY(0); 
+                opacity: 1;
+                visibility: visible;
+            }
+
+            nav a { 
+                margin: 0; 
+                padding: 15px 20px; 
+                width: 100%; 
+                font-size: 1.1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.05); 
+                text-align: center;
+                box-sizing: border-box;
+                display: block;
+            }
+            nav a:last-child { border-bottom: none; }
         }
     </style>
 </head>
@@ -176,7 +207,7 @@
             </table>
 
             <div class="cena-sekce">
-                <span id="dyn-sklad" class="sklad-info">Načítání skladu...</span>
+                <span id="dyn-sklad" class="sklad-info">Načítání stavu skladu...</span>
                 <span class="velka-cena"><span id="dyn-cena">----</span> Kč</span>
                 <button id="btn-koupit" class="btn-nakup">Do košíku 🛒</button>
             </div>
@@ -187,12 +218,21 @@
 <div id="bublina"></div>
 
 <script>
-    // Mobilní menu toggle
+    // Mobilní menu logika
     const mobileMenu = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
+    
     mobileMenu.addEventListener('click', () => {
         mobileMenu.classList.toggle('active');
         navMenu.classList.toggle('active');
+    });
+
+    // Zavření menu po kliknutí na odkaz
+    document.querySelectorAll('#nav-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
     });
 
     // FIREBASE CONFIG
@@ -271,6 +311,7 @@
         const pocitadlo = document.getElementById('pocitadlo-kosiku');
         if (pocitadlo) pocitadlo.innerHTML = `Košík 🛒 <b>(${kosik.length})</b>`;
     }
+    
     window.onload = aktualizovatPocitadlo;
 </script>
 </body>
