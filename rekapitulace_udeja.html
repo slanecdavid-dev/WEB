@@ -140,13 +140,8 @@
         }
         .bublina { background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 450px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
-        /* --- MOBILNÍ RESPONSIVITA --- */
         @media (max-width: 850px) {
             .container-main { grid-template-columns: 1fr; margin: 20px auto; padding: 0 15px; }
-            header .container { padding: 0 15px; }
-            .logo img { height: 50px; }
-            .logo h1 { font-size: 1.1rem; }
-            nav a { font-size: 0.9rem; }
             .karta:last-child { order: -1; } 
         }
     </style>
@@ -210,8 +205,7 @@
 
     <div class="karta" style="height: fit-content;">
         <h2>Váš nákup</h2>
-        <div id="seznam-polozek">
-            </div>
+        <div id="seznam-polozek"></div>
         <div class="suma-velka" id="suma-celkem">Celkem: 0 Kč</div>
     </div>
 </div>
@@ -219,7 +213,7 @@
 <div id="success-overlay">
     <div class="bublina">
         <h2 style="color: #28a745; border:none; font-size: 1.8rem;">✓ Objednáno!</h2>
-        <p>Děkujeme za důvěru. Potvrzení objednávky jsme vám poslali na e-mail a brzy se vám ozveme ohledně doručení.</p>
+        <p>Děkujeme za důvěru. Potvrzení objednávky jsme vám poslali na e-mail.</p>
         <a href="index.html" class="btn btn-finish">Zpět na úvodní stránku</a>
     </div>
 </div>
@@ -233,6 +227,7 @@
 </div>
 
 <script>
+    // --- KONFIGURACE FIREBASE ---
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
@@ -251,6 +246,7 @@
     const pscInput = document.getElementById('psc');
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
 
+    // --- FORMÁTOVÁNÍ VSTUPŮ ---
     function formatujVstupy(e) {
         if (e.target === telInput) {
             let val = telInput.value.replace(/\D/g, '').substring(0, 9);
@@ -272,17 +268,25 @@
     pscInput.addEventListener('input', formatujVstupy);
     form.addEventListener('input', () => odeslatBtn.disabled = !form.checkValidity());
 
-    function renderRekapitulace() {
+    // --- RENDER REKAPITULACE NA STRÁNCE ---
+    async function renderRekapitulace() {
         const seznamDiv = document.getElementById('seznam-polozek');
         let celkem = 0;
         if (kosik.length === 0) { window.location.href = 'produkty.html'; return; }
+        
+        // Načteme data z Firebase pro zobrazení fotek i na této stránce
+        const snap = await db.ref('produkty').once('value');
+        const produktyData = snap.val() || {};
+
         seznamDiv.innerHTML = '';
         kosik.forEach(p => {
             celkem += p.cena;
-            const imgId = p.dbKey.replace('_', '');
+            const produktInfo = produktyData[p.dbKey] || {};
+            const fotoUrl = produktInfo.foto || "https://via.placeholder.com/60?text=PC";
+            
             seznamDiv.innerHTML += `
                 <div class="polozka-mini">
-                    <img src="img/${imgId}.jpg" alt="${p.nazev}" onerror="this.src='https://via.placeholder.com/60?text=PC'">
+                    <img src="${fotoUrl}" alt="${p.nazev}">
                     <div style="flex:1; font-size:0.9rem; font-weight: 500;">${p.nazev}</div>
                     <div style="font-weight:bold; color: #28a745;">${p.cena.toLocaleString('cs-CZ')} Kč</div>
                 </div>`;
@@ -290,6 +294,7 @@
         document.getElementById('suma-celkem').innerText = `Celkem: ${celkem.toLocaleString('cs-CZ')} Kč`;
     }
 
+    // --- ODESLÁNÍ OBJEDNÁVKY ---
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         odeslatBtn.innerText = "Odesílám...";
@@ -299,6 +304,7 @@
             const snap = await db.ref('produkty').once('value');
             const produktyData = snap.val() || {};
             let vyprodane = [];
+            
             kosik.forEach(p => {
                 if ((produktyData[p.dbKey]?.sklad || 0) <= 0) vyprodane.push(p.nazev);
             });
@@ -310,24 +316,23 @@
                 return;
             }
 
-            // --- OPRAVA PRO OBRÁZKY V EMAILU ---
-            // ZDE NAHRAĎTE "vasi_domeny.cz" SKUTEČNOU ADRESOU VAŠEHO WEBU
-            const baseUrl = "https://pocitacezmoravy.github.io/WEB"; 
-
+            // --- GENERUJEME HTML PRO EMAIL ---
             const orderItemsHtml = kosik.map(p => {
-                const imgId = p.dbKey.replace('_', '');
-                const imgSrc = `${baseUrl}img/${imgId}.jpg`;
+                const produktInfo = produktyData[p.dbKey] || {};
+                // Použijeme PŘÍMÝ ODKAZ z Firebase
+                const imgSrc = produktInfo.foto || "https://via.placeholder.com/80x60?text=PC";
                 
                 return `
                 <div style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom: 10px; display: flex; align-items: center; font-family: sans-serif;">
-                    <img src="${imgSrc}" width="80" height="60" style="object-fit: contain; margin-right: 15px; border-radius: 4px; border: 1px solid #ddd;" alt="${p.nazev}">
+                    <div style="margin-right: 15px;">
+                        <img src="${imgSrc}" width="100" style="display: block; border-radius: 4px; border: 1px solid #eee;" alt="${p.nazev}">
+                    </div>
                     <div>
-                        <b style="font-size: 14px;">${p.nazev}</b><br>
+                        <b style="font-size: 14px; color: #333;">${p.nazev}</b><br>
                         <span style="color: #28a745; font-weight: bold; font-size: 16px;">${p.cena.toLocaleString('cs-CZ')} Kč</span>
                     </div>
                 </div>`;
             }).join("");
-            // ------------------------------------
 
             const params = {
                 user_name: document.getElementById('jmeno').value,
@@ -348,7 +353,7 @@
             document.getElementById('success-overlay').style.display = 'flex';
         } catch (err) {
             console.error(err);
-            alert("Chyba při odesílání. Zkuste to prosím znovu.");
+            alert("Chyba při odesílání: " + err.message);
             odeslatBtn.disabled = false;
             odeslatBtn.innerText = "Odeslat objednávku";
         }
