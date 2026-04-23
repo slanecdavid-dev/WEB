@@ -1,14 +1,5 @@
 přidat do emailu údaje o zákazníkovi
 
-Domů:
-přidat řádek na domoskou obrazovku hned nad produkty s textem : Nově naskladněné
-lehce posunout nabídku pc dolů na domovské obrazovce
-
-
-ve všech kartách:
-předělat umístění loga aby bylo vždy v rohu podle obrazovky
-to stejné u menu k pravému rohu
-
 prohlížeč na fotky:
 zobrazení posuvníku fotek
 udělat překlikávací menu pro popis, parametry, benchmark

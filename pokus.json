@@ -1,6 +1,6 @@
 {
   "produkty": {
-    "PC_1": {
+    "pc_1": {
       "cena": 34990,
       "disk": "1TB NVMe SSD 2x",
       "foto": "https://postimg.cc/Btxp5txQ",
@@ -12,7 +12,7 @@
       "sklad": 0,
       "zaruka": 24
     },
-    "PC_2": {
+    "pc_2": {
       "cena": 15200,
       "disk": "512GB SSD",
       "foto": "https://postimg.cc/9zGbPzGH",
@@ -24,7 +24,7 @@
       "sklad": 0,
       "zaruka": 24
     },
-    "PC_3": {
+    "pc_3": {
       "cena": 21000,
       "disk": "512GB NVMe SSD",
       "foto": "https://postimg.cc/qg8wcg8r",

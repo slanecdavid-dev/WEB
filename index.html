@@ -235,7 +235,8 @@
         <nav id="nav-menu">
             <a href="index.html">Domů</a>
             <a href="produkty.html">Produkty</a>
-            <a href="O_nas.html">O nás</a>
+            <a href="o_nas.html">O nás</a>
+            <a href="servis.html">Servis</a>
             <a href="kosik.html" id="pocitadlo-odkaz">Košík 🛒 (0)</a>
         </nav>
     </div>
@@ -255,36 +256,36 @@
 <div class="container">
     <div class="product-grid">
         <article class="product-card">
-            <a href="PC_1.html" class="product-link">
-                <img src="img/PC1.jpg" alt="PC 1">
-                <h3 id="nazev-PC_1">Načítání...</h3>
+            <a href="pc_1.html" class="product-link">
+                <img src="img/pc1.jpg" alt="PC 1">
+                <h3 id="nazev-pc_1">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-PC_1">Načítání skladu...</p>
-            <p class="cena-text"><strong id="cena-PC_1">----</strong> <strong>Kč</strong></p>
-            <a href="PC_1.html" class="btn btn-secondary">Specifikace</a>
-            <button class="btn btn-primary" id="btn-PC_1">Do košíku</button>
+            <p class="sklad-info" id="sklad-pc_1">Načítání skladu...</p>
+            <p class="cena-text"><strong id="cena-pc_1">----</strong> <strong>Kč</strong></p>
+            <a href="pc_1.html" class="btn btn-secondary">Specifikace</a>
+            <button class="btn btn-primary" id="btn-pc_1">Do košíku</button>
         </article>
 
         <article class="product-card">
-            <a href="PC_2.html" class="product-link">
-                <img src="img/PC2.jpg" alt="PC 2">
-                <h3 id="nazev-PC_2">Načítání...</h3>
+            <a href="pc_2.html" class="product-link">
+                <img src="img/pc2.jpg" alt="PC 2">
+                <h3 id="nazev-pc_2">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-PC_2">Načítání skladu...</p>
-            <p class="cena-text"><strong id="cena-PC_2">----</strong> <strong>Kč</strong></p>
-            <a href="PC_2.html" class="btn btn-secondary">Specifikace</a>
-            <button class="btn btn-primary" id="btn-PC_2">Do košíku</button>
+            <p class="sklad-info" id="sklad-pc_2">Načítání skladu...</p>
+            <p class="cena-text"><strong id="cena-pc_2">----</strong> <strong>Kč</strong></p>
+            <a href="pc_2.html" class="btn btn-secondary">Specifikace</a>
+            <button class="btn btn-primary" id="btn-pc_2">Do košíku</button>
         </article>
 
         <article class="product-card">
-            <a href="PC_3.html" class="product-link">
-                <img src="img/PC3.jpg" alt="PC 3">
-                <h3 id="nazev-PC_3">Načítání...</h3>
+            <a href="pc_3.html" class="product-link">
+                <img src="img/pc3.jpg" alt="PC 3">
+                <h3 id="nazev-pc_3">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-PC_3">Načítání skladu...</p>
-            <p class="cena-text"><strong id="cena-PC_3">----</strong> <strong>Kč</strong></p>
-            <a href="PC_3.html" class="btn btn-secondary">Specifikace</a>
-            <button class="btn btn-primary" id="btn-PC_3">Do košíku</button>
+            <p class="sklad-info" id="sklad-pc_3">Načítání skladu...</p>
+            <p class="cena-text"><strong id="cena-pc_3">----</strong> <strong>Kč</strong></p>
+            <a href="pc_3.html" class="btn btn-secondary">Specifikace</a>
+            <button class="btn btn-primary" id="btn-pc_3">Do košíku</button>
         </article>
     </div>
 </div>
@@ -321,7 +322,7 @@
     
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    const produktyKlice = ['PC_1', 'PC_2', 'PC_3'];
+    const produktyKlice = ['pc_1', 'pc_2', 'pc_3'];
     
     db.ref('produkty').on('value', (snapshot) => {
         const produkty = snapshot.val() || {};

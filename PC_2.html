@@ -180,7 +180,8 @@
         <nav id="nav-menu">
             <a href="index.html">Domů</a>
             <a href="produkty.html">Produkty</a>
-            <a href="O_nas.html">O nás</a>
+            <a href="o_nas.html">O nás</a>
+            <a href="servis.html">Servis</a>
             <a href="kosik.html" id="pocitadlo-kosiku">Košík 🛒 (0)</a>
         </nav>
     </div>
@@ -191,7 +192,7 @@
     
     <div class="detail-karta">
         <div class="foto-sekce">
-            <img src="img/PC2.jpg" alt="Kancelářský Profík">
+            <img src="img/pc2.jpg" alt="Kancelářský Profík">
         </div>
 
         <div class="info-sekce">
@@ -248,7 +249,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const PRODUCT_ID = 'PC_2'; 
+    const PRODUCT_ID = 'pc_2'; 
 
     db.ref('produkty/' + PRODUCT_ID).on('value', (snapshot) => {
         const pc = snapshot.val();
@@ -285,7 +286,7 @@
         kosik.push({ 
             nazev: nazev, 
             cena: cena, 
-            obrazek: `img/PC2.jpg`, 
+            obrazek: `img/pc2.jpg`, 
             dbKey: id 
         });
         localStorage.setItem('mujKosik', JSON.stringify(kosik));

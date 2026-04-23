@@ -22,77 +22,32 @@
             background: #f0f2f5; color: #333; 
         }
 
-        /* --- SJEDNOCENÁ HLAVIČKA --- */
         header { 
-            background: #2c3e50; 
-            color: #fff; 
-            padding: 0.5rem 0; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
+            background: #2c3e50; color: #fff; padding: 0.5rem 0; 
+            position: sticky; top: 0; z-index: 1000; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
         }
         header .container { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            max-width: 1100px; 
-            margin: 0 auto; 
-            padding: 0 20px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            max-width: 1100px; margin: 0 auto; padding: 0 20px; 
         }
 
-        .logo a { 
-            display: flex; 
-            align-items: center; 
-            text-decoration: none; 
-            color: #fff; 
-            transition: transform 0.2s ease; 
-        }
+        .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; transition: transform 0.2s ease; }
         .logo a:hover { transform: scale(1.02); }
+        .logo img { height: 100px; width: auto; margin-right: 15px; }
+        .logo h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; font-weight: 700; }
 
-        .logo img { 
-            height: 100px; 
-            width: auto; 
-            margin-right: 15px; 
-        }
-        .logo h1 { 
-            margin: 0; 
-            font-size: 1.4rem; 
-            letter-spacing: 1px; 
-            font-weight: 700; 
-        }
-
-        nav a { 
-            color: #fff; 
-            margin-left: 20px; 
-            text-decoration: none; 
-            font-weight: 500; 
-            font-size: 1rem; 
-            transition: color 0.3s; 
-        }
+        nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; font-size: 1rem; transition: color 0.3s; }
         nav a:hover { color: #28a745; }
 
-        /* --- LAYOUT HLAVNÍHO OBSAHU --- */
         .container-main { 
-            max-width: 1100px; 
-            margin: 40px auto; 
-            padding: 0 20px; 
-            display: grid; 
-            grid-template-columns: 1fr 380px; 
-            gap: 30px; 
-            box-sizing: border-box;
+            max-width: 1100px; margin: 40px auto; padding: 0 20px; 
+            display: grid; grid-template-columns: 1fr 380px; gap: 30px; box-sizing: border-box;
         }
 
-        .karta { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            border: 1px solid #eef0f2;
-        }
+        .karta { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #eef0f2; }
         h2 { border-bottom: 3px solid #28a745; padding-bottom: 12px; margin-top: 0; color: #2c3e50; font-size: 1.3rem; }
 
-        /* --- FORMULÁŘ --- */
         .radek-formu { margin-bottom: 18px; }
         label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: #555; }
         input, select { 
@@ -102,48 +57,27 @@
         }
         input:focus { border-color: #28a745; outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1); }
 
+        /* --- GDPR --- */
+        .gdpr-container { margin: 25px 0; }
+        .gdpr-label { display: flex !important; align-items: flex-start; gap: 12px; font-weight: 400 !important; font-size: 0.85rem !important; cursor: pointer; line-height: 1.4; }
+        .gdpr-label input { width: auto !important; margin-top: 3px; cursor: pointer; }
+
         /* --- REKAPITULACE --- */
         .polozka-mini { display: flex; align-items: center; gap: 15px; padding: 12px 0; border-bottom: 1px solid #f0f2f5; }
-        .polozka-mini img { width: 60px; height: 45px; object-fit: contain; border-radius: 6px; border: 1px solid #eee; }
+        .polozka-mini img { width: 80px; height: 60px; object-fit: contain; border-radius: 6px; border: 1px solid #eee; }
         
-        .suma-velka { 
-            font-size: 1.6rem; 
-            font-weight: 800; 
-            color: #28a745; 
-            margin-top: 20px; 
-            text-align: right; 
-            padding-top: 15px; 
-            border-top: 2px solid #f0f2f5;
-        }
+        .suma-velka { font-size: 1.6rem; font-weight: 800; color: #28a745; margin-top: 20px; text-align: right; padding-top: 15px; border-top: 2px solid #f0f2f5; }
 
-        /* --- TLAČÍTKA --- */
-        .btn { 
-            display: block; width: 100%; padding: 15px; border: none; cursor: pointer; 
-            border-radius: 8px; font-weight: bold; text-align: center; text-decoration: none; 
-            font-size: 1rem; box-sizing: border-box; transition: all 0.3s ease;
-        }
-        .btn-finish { 
-            background: #28a745; color: white; margin-top: 10px; 
-            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
-        }
+        .btn { display: block; width: 100%; padding: 15px; border: none; cursor: pointer; border-radius: 8px; font-weight: bold; text-align: center; text-decoration: none; font-size: 1rem; box-sizing: border-box; transition: all 0.3s ease; }
+        .btn-finish { background: #28a745; color: white; margin-top: 10px; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2); }
         .btn-finish:hover:not(:disabled) { background: #218838; transform: translateY(-2px); }
         .btn-finish:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
-        
         .btn-zpet { background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6; margin-top: 15px; }
-        .btn-zpet:hover { background: #e9ecef; }
 
-        /* --- MODÁLNÍ OKNA (OVERLAY) --- */
-        #success-overlay, #error-overlay { 
-            display: none; position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%; background: rgba(44, 62, 80, 0.9); 
-            z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
-        }
-        .bublina { background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 450px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        #success-overlay, #error-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 62, 80, 0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .bublina { background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 450px; width: 90%; }
 
-        @media (max-width: 850px) {
-            .container-main { grid-template-columns: 1fr; margin: 20px auto; padding: 0 15px; }
-            .karta:last-child { order: -1; } 
-        }
+        @media (max-width: 850px) { .container-main { grid-template-columns: 1fr; } .karta:last-child { order: -1; } }
     </style>
 </head>
 <body>
@@ -151,14 +85,9 @@
 <header>
     <div class="container">
         <div class="logo">
-            <a href="index.html">
-                <img src="img/logo.jpg" alt="Logo">
-                <h1>Počítače z Moravy</h1>
-            </a>
+            <a href="index.html"><img src="img/logo.jpg" alt="Logo"><h1>Počítače z Moravy</h1></a>
         </div>
-        <nav>
-            <a href="kosik.html">← Zpět do košíku</a>
-        </nav>
+        <nav><a href="kosik.html">← Zpět do košíku</a></nav>
     </div>
 </header>
 
@@ -198,6 +127,14 @@
                     <input type="text" id="psc" name="user_zip" required placeholder="123 45" maxlength="6" inputmode="numeric">
                 </div>
             </div>
+
+            <div class="radek-formu gdpr-container">
+                <label class="gdpr-label">
+                    <input type="checkbox" id="gdpr-souhlas" required>
+                    <span>Souhlasím se <a href="obchodni-podminky.html" target="_blank">zpracováním osobních údajů</a>.</span>
+                </label>
+            </div>
+
             <button type="submit" id="odeslat-btn" class="btn btn-finish" disabled>Odeslat objednávku</button>
             <a href="kosik.html" class="btn btn-zpet">Změnit produkty v košíku</a>
         </form>
@@ -210,24 +147,10 @@
     </div>
 </div>
 
-<div id="success-overlay">
-    <div class="bublina">
-        <h2 style="color: #28a745; border:none; font-size: 1.8rem;">✓ Objednáno!</h2>
-        <p>Děkujeme za důvěru. Potvrzení objednávky jsme vám poslali na e-mail.</p>
-        <a href="index.html" class="btn btn-finish">Zpět na úvodní stránku</a>
-    </div>
-</div>
-
-<div id="error-overlay">
-    <div class="bublina">
-        <h2 style="color: #e74c3c; border:none; font-size: 1.8rem;">⚠️ Omlouváme se</h2>
-        <p id="error-message"></p>
-        <a href="produkty.html" class="btn btn-finish" style="background:#e74c3c;">Zpět k produktům</a>
-    </div>
-</div>
+<div id="success-overlay"><div class="bublina"><h2 style="color:#28a745;">✓ Objednáno!</h2><p>Potvrzení jsme poslali na e-mail.</p><a href="index.html" class="btn btn-finish">Zpět na úvod</a></div></div>
+<div id="error-overlay"><div class="bublina"><h2 style="color:#e74c3c;">⚠️ Problém</h2><p id="error-message"></p><a href="produkty.html" class="btn btn-finish" style="background:#e74c3c;">Zpět k produktům</a></div></div>
 
 <script>
-    // --- KONFIGURACE FIREBASE ---
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
@@ -246,16 +169,20 @@
     const pscInput = document.getElementById('psc');
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
 
-    // --- FORMÁTOVÁNÍ VSTUPŮ ---
+    // Pomocná funkce pro opravu Postimg odkazů na přímé obrázky
+    function fixImgUrl(url) {
+        if (!url) return "https://via.placeholder.com/80x60?text=PC";
+        if (url.includes("postimg.cc") && !url.includes("i.postimg.cc")) {
+            return url.replace("postimg.cc", "i.postimg.cc") + ".jpg";
+        }
+        return url;
+    }
+
     function formatujVstupy(e) {
         if (e.target === telInput) {
             let val = telInput.value.replace(/\D/g, '').substring(0, 9);
-            let formatted = "";
-            for (let i = 0; i < val.length; i++) {
-                if (i > 0 && i % 3 === 0) formatted += " ";
-                formatted += val[i];
-            }
-            telInput.value = formatted;
+            let parts = val.match(/.{1,3}/g);
+            telInput.value = parts ? parts.join(' ') : val;
         }
         if (e.target === pscInput) {
             let val = pscInput.value.replace(/\D/g, '').substring(0, 5);
@@ -268,33 +195,30 @@
     pscInput.addEventListener('input', formatujVstupy);
     form.addEventListener('input', () => odeslatBtn.disabled = !form.checkValidity());
 
-    // --- RENDER REKAPITULACE NA STRÁNCE ---
     async function renderRekapitulace() {
         const seznamDiv = document.getElementById('seznam-polozek');
         let celkem = 0;
         if (kosik.length === 0) { window.location.href = 'produkty.html'; return; }
         
-        // Načteme data z Firebase pro zobrazení fotek i na této stránce
         const snap = await db.ref('produkty').once('value');
         const produktyData = snap.val() || {};
 
         seznamDiv.innerHTML = '';
         kosik.forEach(p => {
+            const info = produktyData[p.dbKey];
+            if (!info || !info.nazev) return; // Ignoruje klíče jako 'logo'
+
             celkem += p.cena;
-            const produktInfo = produktyData[p.dbKey] || {};
-            const fotoUrl = produktInfo.foto || "https://via.placeholder.com/60?text=PC";
-            
             seznamDiv.innerHTML += `
                 <div class="polozka-mini">
-                    <img src="${fotoUrl}" alt="${p.nazev}">
-                    <div style="flex:1; font-size:0.9rem; font-weight: 500;">${p.nazev}</div>
-                    <div style="font-weight:bold; color: #28a745;">${p.cena.toLocaleString('cs-CZ')} Kč</div>
+                    <img src="${fixImgUrl(info.foto)}" alt="${p.nazev}">
+                    <div style="flex:1; font-size:0.9rem;">${p.nazev}</div>
+                    <div style="font-weight:bold; color:#28a745;">${p.cena.toLocaleString()} Kč</div>
                 </div>`;
         });
         document.getElementById('suma-celkem').innerText = `Celkem: ${celkem.toLocaleString('cs-CZ')} Kč`;
     }
 
-    // --- ODESLÁNÍ OBJEDNÁVKY ---
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         odeslatBtn.innerText = "Odesílám...";
@@ -305,34 +229,23 @@
             const produktyData = snap.val() || {};
             let vyprodane = [];
             
+            // Kontrola skladu v reálném čase
             kosik.forEach(p => {
-                if ((produktyData[p.dbKey]?.sklad || 0) <= 0) vyprodane.push(p.nazev);
+                const stavSkladu = produktyData[p.dbKey]?.sklad || 0;
+                if (stavSkladu <= 0) vyprodane.push(p.nazev);
             });
 
             if (vyprodane.length > 0) {
-                localStorage.removeItem('mujKosik');
-                document.getElementById('error-message').innerText = `Položka ${vyprodane.join(", ")} byla vyprodána.`;
+                document.getElementById('error-message').innerText = `Litujeme, ale ${vyprodane.join(", ")} se právě vyprodal(y).`;
                 document.getElementById('error-overlay').style.display = 'flex';
                 return;
             }
 
-            // --- GENERUJEME HTML PRO EMAIL ---
-            const orderItemsHtml = kosik.map(p => {
-                const produktInfo = produktyData[p.dbKey] || {};
-                // Použijeme PŘÍMÝ ODKAZ z Firebase
-                const imgSrc = produktInfo.foto || "https://via.placeholder.com/80x60?text=PC";
-                
-                return `
-                <div style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom: 10px; display: flex; align-items: center; font-family: sans-serif;">
-                    <div style="margin-right: 15px;">
-                        <img src="${imgSrc}" width="100" style="display: block; border-radius: 4px; border: 1px solid #eee;" alt="${p.nazev}">
-                    </div>
-                    <div>
-                        <b style="font-size: 14px; color: #333;">${p.nazev}</b><br>
-                        <span style="color: #28a745; font-weight: bold; font-size: 16px;">${p.cena.toLocaleString('cs-CZ')} Kč</span>
-                    </div>
-                </div>`;
-            }).join("");
+            const orderItemsHtml = kosik.map(p => `
+                <div style="display:flex; align-items:center; border-bottom:1px solid #eee; padding:10px 0;">
+                    <img src="${fixImgUrl(produktyData[p.dbKey]?.foto)}" width="80" style="margin-right:15px; border-radius:4px;">
+                    <div><b>${p.nazev}</b><br><span style="color:#28a745;">${p.cena.toLocaleString()} Kč</span></div>
+                </div>`).join("");
 
             const params = {
                 user_name: document.getElementById('jmeno').value,
@@ -345,15 +258,15 @@
 
             await emailjs.send('service_david_pokus', 'template_rt53bro', params);
 
+            // Odečtení ze skladu
             for (const p of kosik) {
-                await db.ref(`produkty/${p.dbKey}/sklad`).transaction(stock => (stock || 0) - 1);
+                await db.ref(`produkty/${p.dbKey}/sklad`).transaction(s => (s || 1) - 1);
             }
 
             localStorage.removeItem('mujKosik');
             document.getElementById('success-overlay').style.display = 'flex';
         } catch (err) {
-            console.error(err);
-            alert("Chyba při odesílání: " + err.message);
+            alert("Chyba: " + err.message);
             odeslatBtn.disabled = false;
             odeslatBtn.innerText = "Odeslat objednávku";
         }
@@ -361,6 +274,5 @@
 
     renderRekapitulace();
 </script>
-
 </body>
 </html>
