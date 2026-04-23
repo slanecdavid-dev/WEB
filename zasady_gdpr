@@ -1,0 +1,53 @@
+Tvorba zásad ochrany osobních údajů (GDPR) není jen zákonná povinnost, ale i projev respektu k tvým návštěvníkům. Jelikož rok 2026 klade ještě větší důraz na transparentnost, tvoje dokumentace by měla být srozumitelná a snadno dohledatelná.
+
+Tady je strukturovaný přehled toho, co by tvé zásady měly obsahovat:
+
+---
+
+## 1. Identifikace Správce
+Hned v úvodu musí být jasné, kdo data sbírá.
+* **Jméno/Název firmy:** (např. Jan Novák / Web s.r.o.)
+* **IČO:** Pokud podnikáš.
+* **Sídlo/Adresa:**
+* **Kontaktní e-mail:** (Zásadní pro dotazy ohledně soukromí).
+
+## 2. Jaké údaje sbíráš a proč?
+Musíš uvést **účel** a **právní základ** pro každý typ dat.
+
+| Typ údajů | Účel zpracování | Právní základ |
+| :--- | :--- | :--- |
+| **Jméno, e-mail, telefon** | Vyřízení objednávky / dotazu | Plnění smlouvy |
+| **E-mailová adresa** | Zasílání newsletterů | Souhlas / Oprávněný zájem |
+| **IP adresa, cookies** | Analýza návštěvnosti, reklama | Souhlas / Oprávněný zájem |
+
+## 3. Doba uchovávání údajů
+Data nesmíš držet navždy. Musíš uvést konkrétní lhůty:
+* **Účetní doklady:** 10 let (dle zákona).
+* **Marketingové účely:** Např. 3 roky nebo do odvolání souhlasu.
+* **Kontaktní formulář:** Po dobu vyřízení dotazu (např. 6 měsíců).
+
+## 4. Kdo další má k datům přístup? (Zpracovatelé)
+Uveď kategorie partnerů, kterým data předáváš. Typicky to jsou:
+* Poskytovatel hostingu a e-mailových služeb.
+* Nástroje pro analýzu a marketing (Google Analytics, Meta).
+* Účetní firma nebo doručovací služby (pokud máš e-shop).
+
+## 5. Práva uživatelů
+Uživatelé musí vědět, že mají nad svými daty kontrolu. Mají právo na:
+* **Přístup** k údajům (chtít vědět, co o nich víš).
+* **Opravu** nepřesných údajů.
+* **Výmaz** (právo být zapomenut).
+* **Vznést námitku** proti zpracování.
+* **Podat stížnost** u Úřadu pro ochranu osobních údajů (ÚOOÚ).
+
+---
+
+### :bulb: Pár tipů pro tvůj web:
+
+1.  **Žádný právnický slang:** Piš to tak, aby to pochopil i běžný člověk. Vyhni se nekonečným souvětím.
+2.  **Cookie lišta:** Pamatuj, že pro analytické a marketingové cookies potřebuješ aktivní souhlas (opt-in) ještě předtím, než se spustí.
+3.  **Vždy po ruce:** Odkaz na "Ochrana osobních údajů" dej do patičky webu, aby byl přístupný z každé podstránky.
+
+> **Upozornění:** Jsem AI, nikoliv právník. Tento text slouží jako základní přehled a doporučuji jej nechat zkontrolovat odborníkem, zejména pokud provozuješ složitější e-shop nebo sbíráš citlivé údaje.
+
+Chceš pomoci s konkrétní formulací pro některou z částí, nebo se podíváme na textaci té cookie lišty?
