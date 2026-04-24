@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doprava a platba | Počítače z Moravy</title>
 
-    <link rel="icon" type="image/jpeg" href="img/logo.jpg">
+    <link rel="icon" type="image/jpeg" href="img/loga/logo.jpg">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -57,12 +57,10 @@
         }
         input:focus { border-color: #28a745; outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1); }
 
-        /* --- GDPR --- */
         .gdpr-container { margin: 25px 0; }
         .gdpr-label { display: flex !important; align-items: flex-start; gap: 12px; font-weight: 400 !important; font-size: 0.85rem !important; cursor: pointer; line-height: 1.4; }
         .gdpr-label input { width: auto !important; margin-top: 3px; cursor: pointer; }
 
-        /* --- REKAPITULACE --- */
         .polozka-mini { display: flex; align-items: center; gap: 15px; padding: 12px 0; border-bottom: 1px solid #f0f2f5; }
         .polozka-mini img { width: 80px; height: 60px; object-fit: contain; border-radius: 6px; border: 1px solid #eee; }
         
@@ -85,7 +83,7 @@
 <header>
     <div class="container">
         <div class="logo">
-            <a href="index.html"><img src="img/logo.jpg" alt="Logo"><h1>Počítače z Moravy</h1></a>
+            <a href="index.html"><img src="img/loga/logo.jpg" alt="Logo"><h1>Počítače z Moravy</h1></a>
         </div>
         <nav><a href="kosik.html">← Zpět do košíku</a></nav>
     </div>
@@ -128,7 +126,6 @@
                 </div>
             </div>
 
-
             <div class="radek-formu gdpr-container">
                 <label class="gdpr-label">
                     <input type="checkbox" id="gdpr-souhlas" required>
@@ -139,7 +136,7 @@
                 </label>
             </div>
 
-            <button type="submit" id="odeslat-btn" class="btn btn-finish" disabled>Odeslat objednávku</button>
+            <button type="submit" id="odeslat-btn" class="btn btn-finish" disabled>Potvrdit objednávku</button>
             <a href="kosik.html" class="btn btn-zpet">Změnit produkty v košíku</a>
         </form>
     </div>
@@ -173,13 +170,10 @@
     const pscInput = document.getElementById('psc');
     const kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
 
-    // Pomocná funkce pro opravu Postimg odkazů na přímé obrázky
-    function fixImgUrl(url) {
-        if (!url) return "https://via.placeholder.com/80x60?text=PC";
-        if (url.includes("postimg.cc") && !url.includes("i.postimg.cc")) {
-            return url.replace("postimg.cc", "i.postimg.cc") + ".jpg";
-        }
-        return url;
+    // Pomocná funkce pro získání cesty k obrázku na základě dbKey
+    function getProductImgPath(dbKey) {
+        const idCiste = dbKey.replace('_', '').toLowerCase();
+        return `img/${idCiste}/${idCiste}.jpg`;
     }
 
     function formatujVstupy(e) {
@@ -210,12 +204,15 @@
         seznamDiv.innerHTML = '';
         kosik.forEach(p => {
             const info = produktyData[p.dbKey];
-            if (!info || !info.nazev) return; // Ignoruje klíče jako 'logo'
+            if (!info || !info.nazev) return;
 
             celkem += p.cena;
+            // Použití nové cesty k obrázku
+            const cestaImg = getProductImgPath(p.dbKey);
+
             seznamDiv.innerHTML += `
                 <div class="polozka-mini">
-                    <img src="${fixImgUrl(info.foto)}" alt="${p.nazev}">
+                    <img src="${cestaImg}" alt="${p.nazev}" onerror="this.src='https://via.placeholder.com/80x60?text=PC'">
                     <div style="flex:1; font-size:0.9rem;">${p.nazev}</div>
                     <div style="font-weight:bold; color:#28a745;">${p.cena.toLocaleString()} Kč</div>
                 </div>`;
@@ -233,7 +230,6 @@
             const produktyData = snap.val() || {};
             let vyprodane = [];
             
-            // Kontrola skladu v reálném čase
             kosik.forEach(p => {
                 const stavSkladu = produktyData[p.dbKey]?.sklad || 0;
                 if (stavSkladu <= 0) vyprodane.push(p.nazev);
@@ -245,11 +241,16 @@
                 return;
             }
 
-            const orderItemsHtml = kosik.map(p => `
+            // Generování HTML pro e-mail s novou cestou k obrázku
+            // POZNÁMKA: V e-mailu se lokální cesty (img/...) nezobrazí, pokud nemáte absolutní URL (např. https://vase-domena.cz/img/...)
+            const orderItemsHtml = kosik.map(p => {
+                const cestaImg = getProductImgPath(p.dbKey);
+                return `
                 <div style="display:flex; align-items:center; border-bottom:1px solid #eee; padding:10px 0;">
-                    <img src="${fixImgUrl(produktyData[p.dbKey]?.foto)}" width="80" style="margin-right:15px; border-radius:4px;">
+                    <img src="https://vasedomena.cz/${cestaImg}" width="80" style="margin-right:15px; border-radius:4px;">
                     <div><b>${p.nazev}</b><br><span style="color:#28a745;">${p.cena.toLocaleString()} Kč</span></div>
-                </div>`).join("");
+                </div>`;
+            }).join("");
 
             const params = {
                 user_name: document.getElementById('jmeno').value,
@@ -262,7 +263,6 @@
 
             await emailjs.send('service_david_pokus', 'template_rt53bro', params);
 
-            // Odečtení ze skladu
             for (const p of kosik) {
                 await db.ref(`produkty/${p.dbKey}/sklad`).transaction(s => (s || 1) - 1);
             }
@@ -272,7 +272,7 @@
         } catch (err) {
             alert("Chyba: " + err.message);
             odeslatBtn.disabled = false;
-            odeslatBtn.innerText = "Odeslat objednávku";
+            odeslatBtn.innerText = "Potvrdit objednávku";
         }
     });
 
