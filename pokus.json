@@ -1,41 +1,109 @@
 {
   "produkty": {
     "pc_1": {
-      "cena": 34990,
-      "disk": "1TB NVMe SSD 2x",
-      "foto": "https://postimg.cc/Btxp5txQ",
-      "grafika": "NVIDIA RTX 4080 16GB",
       "nazev": "Herní Bestie i7",
-      "popis": "Ultimátní herní stroj pro 4K hraní a náročnou práci.",
+      "popis_strucne": "Hledáte spolehlivý stroj pro populární hry jako Fortnite, CS2 nebo Minecraft? Tento počítač prošel kompletním servisem, má instalované Windows 11 i balík Office 2024 a díky nové skříni vypadá skvěle na každém stole. Ideální volba pro školáky i začínající hráče.",
+      "sklad": 0,
+      "cena": 34990,
+      
+      "popis_podrobne":  "Tento herní počítač v úplně nové skříni s prosklenou bočnicí představuje ideální vstupenku do světa moderního gamingu. Sestava byla navržena s ohledem na vyvážený poměr ceny a výkonu, přičemž důraz byl kladen na maximální spolehlivost. Srdcem počítače je osvědčený procesor AMD Ryzen 5 2600, kterému sekunduje grafická karta NVIDIA GTX 1050Ti.",
+      
       "procesor": "Intel Core i7-13700K",
+      "zakladni_deska": "Základní deska s podporou PCIe 4.0",
       "ram": "32GB DDR5",
-      "sklad": 0,
-      "zaruka": 24
+      "disk_1": "1TB NVMe SSD 2x",
+      "disk_2": "3TB NVMe SSD 2x",
+      "grafika": "NVIDIA RTX 4080 16GB",
+      "zdroj": "750W 80 Plus Gold",
+      "operacni_system": "Windows 11 Pro",
+      "zaruka": 24,
+
+      "popis_procesoru": "Výkonný procesor Intel Core i7-13700K s 16 jádry a 24 vlákny zajišťuje plynulý chod i těch nejnáročnějších her a multitaskingu.",
+      "popis_ram": "32GB DDR5 RAM poskytuje dostatek paměti pro bezproblémový běh her, streamování a práci s náročnými aplikacemi.",
+      "popis_disk_1": "1TB NVMe SSD pro rychlé načítání her a aplikací.",
+      "popis_disk_2": "3TB NVMe SSD pro dostatek úložného prostoru.",
+      "popis_grafiky": "NVIDIA RTX 4080 s 16GB grafické paměti nabízí špičkový výkon pro hraní ve vysokém rozlišení a ray tracingem.",
+      "popis_zdroje": "750W zdroj s certifikací 80 Plus Gold zajišťuje stabilní napájení a efektivní provoz celé sestavy.",
+      "popis_operacni_system": "Windows 11 Pro přináší moderní uživatelské rozhraní a optimalizace pro gaming.",
+      "popis_skrine": "Nová skříň s prosklenou bočnicí nejenže vypadá skvěle, ale také zajišťuje efektivní chlazení komponent.",
+      "popis_zakladni_deska": "Základní deska s podporou PCIe 4.0 a dostatkem portů pro rozšíření.",
+
+
+      
+      "foto": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc1.jpg?raw=true"
+     
     },
+    
     "pc_2": {
-      "cena": 15200,
-      "disk": "512GB SSD",
-      "foto": "https://postimg.cc/9zGbPzGH",
-      "grafika": "Intel UHD Graphics 730",
-      "nazev": "Kancelářský Profík",
-      "popis": "Ideální parťák pro plynulou práci v Office a multitasking.",
-      "procesor": "Intel Core i5-12400",
-      "ram": "16GB DDR4",
+      "nazev": "Herní Bestie i7",
+      "popis_strucne": "Hledáte spolehlivý stroj pro populární hry jako Fortnite, CS2 nebo Minecraft? Tento počítač prošel kompletním servisem, má instalované Windows 11 i balík Office 2024 a díky nové skříni vypadá skvěle na každém stole. Ideální volba pro školáky i začínající hráče.",
       "sklad": 0,
-      "zaruka": 24
+      "cena": 34990,
+      
+      "popis_podrobne":  "Tento herní počítač v úplně nové skříni s prosklenou bočnicí představuje ideální vstupenku do světa moderního gamingu. Sestava byla navržena s ohledem na vyvážený poměr ceny a výkonu, přičemž důraz byl kladen na maximální spolehlivost. Srdcem počítače je osvědčený procesor AMD Ryzen 5 2600, kterému sekunduje grafická karta NVIDIA GTX 1050Ti.",
+      
+      "procesor": "Intel Core i7-13700K",
+      "zakladni_deska": "Základní deska s podporou PCIe 4.0",
+      "ram": "32GB DDR5",
+      "disk_1": "1TB NVMe SSD 2x",
+      "disk_2": "3TB NVMe SSD 2x",
+      "grafika": "NVIDIA RTX 4080 16GB",
+      "zdroj": "750W 80 Plus Gold",
+      "operacni_system": "Windows 11 Pro",
+      "zaruka": 24,
+
+      "popis_procesoru": "Výkonný procesor Intel Core i7-13700K s 16 jádry a 24 vlákny zajišťuje plynulý chod i těch nejnáročnějších her a multitaskingu.",
+      "popis_ram": "32GB DDR5 RAM poskytuje dostatek paměti pro bezproblémový běh her, streamování a práci s náročnými aplikacemi.",
+      "popis_disk_1": "1TB NVMe SSD pro rychlé načítání her a aplikací.",
+      "popis_disk_2": "3TB NVMe SSD pro dostatek úložného prostoru.",
+      "popis_grafiky": "NVIDIA RTX 4080 s 16GB grafické paměti nabízí špičkový výkon pro hraní ve vysokém rozlišení a ray tracingem.",
+      "popis_zdroje": "750W zdroj s certifikací 80 Plus Gold zajišťuje stabilní napájení a efektivní provoz celé sestavy.",
+      "popis_operacni_system": "Windows 11 Pro přináší moderní uživatelské rozhraní a optimalizace pro gaming.",
+      "popis_skrine": "Nová skříň s prosklenou bočnicí nejenže vypadá skvěle, ale také zajišťuje efektivní chlazení komponent.",
+      "popis_zakladni_deska": "Základní deska s podporou PCIe 4.0 a dostatkem portů pro rozšíření.",
+
+
+      
+      "foto": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2.jpg?raw=true"
+     
     },
+
     "pc_3": {
-      "cena": 21000,
-      "disk": "512GB NVMe SSD",
-      "foto": "https://postimg.cc/qg8wcg8r",
-      "grafika": "AMD Radeon Graphics",
-      "nazev": "Stylový Notebook",
-      "popis": "Lehký, výkonný a s dlouhou výdrží baterie na cesty.",
-      "procesor": "AMD Ryzen 7 5800H",
-      "ram": "16GB LPDDR4x",
+      "nazev": "Herní Bestie i7",
+      "popis_strucne": "Hledáte spolehlivý stroj pro populární hry jako Fortnite, CS2 nebo Minecraft? Tento počítač prošel kompletním servisem, má instalované Windows 11 i balík Office 2024 a díky nové skříni vypadá skvěle na každém stole. Ideální volba pro školáky i začínající hráče.",
       "sklad": 0,
-      "zaruka": 24
+      "cena": 34990,
+      
+      "popis_podrobne":  "Tento herní počítač v úplně nové skříni s prosklenou bočnicí představuje ideální vstupenku do světa moderního gamingu. Sestava byla navržena s ohledem na vyvážený poměr ceny a výkonu, přičemž důraz byl kladen na maximální spolehlivost. Srdcem počítače je osvědčený procesor AMD Ryzen 5 2600, kterému sekunduje grafická karta NVIDIA GTX 1050Ti.",
+      
+      "procesor": "Intel Core i7-13700K",
+      "zakladni_deska": "Základní deska s podporou PCIe 4.0",
+      "ram": "32GB DDR5",
+      "disk_1": "1TB NVMe SSD 2x",
+      "disk_2": "3TB NVMe SSD 2x",
+      "grafika": "NVIDIA RTX 4080 16GB",
+      "zdroj": "750W 80 Plus Gold",
+      "operacni_system": "Windows 11 Pro",
+      "zaruka": 24,
+
+      "popis_procesoru": "Výkonný procesor Intel Core i7-13700K s 16 jádry a 24 vlákny zajišťuje plynulý chod i těch nejnáročnějších her a multitaskingu.",
+      "popis_ram": "32GB DDR5 RAM poskytuje dostatek paměti pro bezproblémový běh her, streamování a práci s náročnými aplikacemi.",
+      "popis_disk_1": "1TB NVMe SSD pro rychlé načítání her a aplikací.",
+      "popis_disk_2": "3TB NVMe SSD pro dostatek úložného prostoru.",
+      "popis_grafiky": "NVIDIA RTX 4080 s 16GB grafické paměti nabízí špičkový výkon pro hraní ve vysokém rozlišení a ray tracingem.",
+      "popis_zdroje": "750W zdroj s certifikací 80 Plus Gold zajišťuje stabilní napájení a efektivní provoz celé sestavy.",
+      "popis_operacni_system": "Windows 11 Pro přináší moderní uživatelské rozhraní a optimalizace pro gaming.",
+      "popis_skrine": "Nová skříň s prosklenou bočnicí nejenže vypadá skvěle, ale také zajišťuje efektivní chlazení komponent.",
+      "popis_zakladni_deska": "Základní deska s podporou PCIe 4.0 a dostatkem portů pro rozšíření.",
+
+
+      
+      "foto": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3.jpg?raw=true"
+     
     },
-    "logo": "https://postimg.cc/Btxp5txQ"
+    "logo_1": "https://github.com/pocitacezmoravy/WEB/blob/main/img/logo.jpg?raw=true",
+    "logo_2": "https://github.com/pocitacezmoravy/WEB/blob/main/img/logo2.jpg?raw=true",
+    "logo_3": "https://github.com/pocitacezmoravy/WEB/blob/main/img/logo3.jpg?raw=true"
+
   }
 }
