@@ -30,7 +30,16 @@
 
 
       
-      "foto": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc1.jpg?raw=true"
+      "foto_1": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc1.jpg?raw=true",
+      "foto_2": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc2.jpg?raw=true",
+      "foto_3": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc3.jpg?raw=true",
+      "foto_4": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc4.jpg?raw=true",
+      "foto_5": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc5.jpg?raw=true",
+      "foto_6": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc6.jpg?raw=true",
+      "foto_7": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc7.jpg?raw=true",
+      "foto_8": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc8.jpg?raw=true",
+      "foto_9": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc9.jpg?raw=true",
+      "foto_10": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc10.jpg?raw=true"
      
     },
     
@@ -64,7 +73,16 @@
 
 
       
-      "foto": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2.jpg?raw=true"
+      "foto_1": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc1.jpg?raw=true",
+      "foto_2": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc2.jpg?raw=true",
+      "foto_3": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc3.jpg?raw=true",
+      "foto_4": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc4.jpg?raw=true",
+      "foto_5": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc5.jpg?raw=true",
+      "foto_6": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc6.jpg?raw=true",
+      "foto_7": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc7.jpg?raw=true",
+      "foto_8": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc8.jpg?raw=true",
+      "foto_9": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc9.jpg?raw=true",
+      "foto_10": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc2/pc10.jpg?raw=true"
      
     },
 
@@ -98,12 +116,23 @@
 
 
       
-      "foto": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3.jpg?raw=true"
+      "foto_1": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc1.jpg?raw=true",
+      "foto_2": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc2.jpg?raw=true",
+      "foto_3": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc3.jpg?raw=true",
+      "foto_4": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc4.jpg?raw=true",
+      "foto_5": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc5.jpg?raw=true",
+      "foto_6": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc6.jpg?raw=true",
+      "foto_7": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc7.jpg?raw=true",
+      "foto_8": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc8.jpg?raw=true",
+      "foto_9": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc9.jpg?raw=true",
+      "foto_10": "https://github.com/pocitacezmoravy/WEB/blob/main/img/pc3/pc10.jpg?raw=true"
      
     },
-    "logo_1": "https://github.com/pocitacezmoravy/WEB/blob/main/img/loga/logo.jpg?raw=true",
-    "logo_2": "https://github.com/pocitacezmoravy/WEB/blob/main/img/loga/logo_1.jpg?raw=true",
-    "logo_3": "https://github.com/pocitacezmoravy/WEB/blob/main/img/loga/logo_3.jpg?raw=true"
+
+    "logo": "https://github.com/pocitacezmoravy/WEB/blob/main/img/loga/logo.jpg?raw=true",
+    "logo_1": "https://github.com/pocitacezmoravy/WEB/blob/main/img/loga/logo_1.jpg?raw=true",
+    "logo_2": "https://github.com/pocitacezmoravy/WEB/blob/main/img/loga/logo_2.jpg?raw=true"
+    
 
   }
 }
