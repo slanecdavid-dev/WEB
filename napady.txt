@@ -1,7 +1,6 @@
-přidat do emailu údaje o zákazníkovi jak pro nákup tak formulář
+přidat do emailu údaje o zákazníkovi jak pro nákup
 
 prohlížeč na fotky:
 zobrazení posuvníku fotek
 
 předělat zobrazení paramterů PC a celkovou stránku
-udělat překlikávací menu pro popis, parametry, benchmark u daných kompů
