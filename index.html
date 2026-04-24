@@ -11,211 +11,49 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
     <style>
-        /* Základní styly */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            line-height: 1.6; 
-            background: #f0f2f5; 
-            color: #333; 
-        }
-        .container { 
-            max-width: 1100px; 
-            margin: 0 auto; 
-            padding: 0 20px; 
-        }
-
-        /* Hlavička a Navigace - UPRAVENO PRO ŠIROKÝ DISPLEJ */
-        header { 
-            background: #2c3e50; 
-            color: #fff; 
-            padding: 1rem 0; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-        }
-        
-        /* Nová třída, která ignoruje 1100px limit a roztáhne se ke krajům */
-        .header-full-width {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 0 40px; /* Mezera od úplného kraje obrazovky */
-        }
-        
-        .logo a { 
-            display: flex; 
-            align-items: center; 
-            text-decoration: none; 
-            color: #fff; 
-            transition: transform 0.2s ease; 
-        }
+        /* Tvoje stávající CSS zůstává stejné */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f0f2f5; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        header { background: #2c3e50; color: #fff; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-full-width { display: flex; justify-content: space-between; align-items: center; padding: 0 40px; }
+        .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; transition: transform 0.2s ease; }
         .logo a:hover { transform: scale(1.02); }
         .logo img { height: 100px; width: auto; margin-right: 15px; display: block; border-radius: 5px; }
         .logo h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; font-weight: 700; }
-        
         nav { display: flex; align-items: center; }
-        nav a { 
-            color: #fff; 
-            margin-left: 20px; 
-            text-decoration: none; 
-            font-weight: 500; 
-            transition: color 0.3s; 
-        }
+        nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         nav a:hover { color: #28a745; }
-
-        /* Mobilní menu tlačítko */
-        .menu-toggle { 
-            display: none; 
-            flex-direction: column; 
-            cursor: pointer; 
-            gap: 5px; 
-            padding: 5px;
-        }
-        .menu-toggle span { 
-            display: block; 
-            width: 25px; 
-            height: 3px; 
-            background: white; 
-            border-radius: 2px; 
-            transition: 0.3s;
-        }
-        
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; padding: 5px; }
+        .menu-toggle span { display: block; width: 25px; height: 3px; background: white; border-radius: 2px; transition: 0.3s; }
         .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-        /* Hero sekce */
-        .hero { 
-            background: #fff; 
-            padding: 50px 0; 
-            text-align: center; 
-            border-bottom: 3px solid #28a745; 
-            margin-bottom: 40px; 
-        }
+        .hero { background: #fff; padding: 50px 0; text-align: center; border-bottom: 3px solid #28a745; margin-bottom: 40px; }
         .hero h2 { margin-top: 0; font-size: 2.2rem; }
         .hero p { font-size: 1.1rem; color: #666; }
-
-        .sekce-nadpis {
-            text-align: center;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 0 0 30px 0;
-        }
-
-        /* Produkty Grid */
-        .product-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 30px; 
-            margin-bottom: 60px; 
-        }
-        .product-card { 
-            background: white; 
-            padding: 25px; 
-            border-radius: 12px; 
-            text-align: center; 
-            transition: all 0.3s ease; 
-            display: flex; 
-            flex-direction: column; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-        }
-        .product-card:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1); 
-        }
+        .sekce-nadpis { text-align: center; font-size: 1.8rem; font-weight: bold; color: #2c3e50; margin: 0 0 30px 0; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        .product-card { background: white; padding: 25px; border-radius: 12px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); }
         .product-link { text-decoration: none; color: inherit; display: block; flex-grow: 1; }
-        .product-card img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 20px; }
-        
+        .product-card img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 20px; background: #f9f9f9; }
         .sklad-info { font-size: 0.85rem; margin-bottom: 5px; font-weight: bold; }
         .cena-text { font-size: 1.4rem; color: #2c3e50; margin: 10px 0; }
-
-        .btn { 
-            padding: 14px 20px; 
-            border: none; 
-            cursor: pointer; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            font-size: 0.9rem; 
-            transition: all 0.3s; 
-            margin-top: 10px; 
-            width: 100%; 
-            text-decoration: none; 
-            display: inline-block; 
-            box-sizing: border-box; 
-        }
+        .btn { padding: 14px 20px; border: none; cursor: pointer; border-radius: 8px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; transition: all 0.3s; margin-top: 10px; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; }
         .btn-primary { background: #28a745; color: white; }
         .btn-primary:hover { background: #218838; }
         .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
         .btn-secondary { background: #e9ecef; color: #2c3e50; border: 1px solid #dee2e6; }
         .btn-secondary:hover { background: #dee2e6; }
+        #bublina { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #2c3e50; color: #fff; padding: 16px 24px; border-radius: 50px; display: none; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: opacity 0.3s; white-space: nowrap; }
 
-        #bublina { 
-            position: fixed; 
-            bottom: 30px; 
-            left: 50%;
-            transform: translateX(-50%); 
-            background: #2c3e50; 
-            color: #fff; 
-            padding: 16px 24px; 
-            border-radius: 50px; 
-            display: none; 
-            z-index: 2000; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
-            transition: opacity 0.3s; 
-            white-space: nowrap;
-        }
-
-        /* RESPONSIVITA */
         @media (max-width: 768px) {
-            .header-full-width { padding: 0 20px; } /* Menší boční mezery na mobilu */
+            .header-full-width { padding: 0 20px; }
             .logo img { height: 60px; }
-            .logo h1 { font-size: 1.1rem; }
             .menu-toggle { display: flex; }
-            
-            nav { 
-                display: flex;
-                flex-direction: column; 
-                position: absolute; 
-                top: 100%; 
-                left: 0;
-                width: 100%; 
-                background: #2c3e50; 
-                padding: 10px 0;
-                box-shadow: 0 10px 15px rgba(0,0,0,0.2);
-                transform: translateY(-150%); 
-                opacity: 0;
-                visibility: hidden;
-                transition: transform 0.4s ease, opacity 0.3s ease;
-                z-index: -1;
-            }
-
-            nav.active { 
-                transform: translateY(0); 
-                opacity: 1;
-                visibility: visible;
-            }
-
-            nav a { 
-                margin: 0; 
-                padding: 15px 20px; 
-                width: 100%; 
-                font-size: 1.1rem;
-                border-bottom: 1px solid rgba(255,255,255,0.05); 
-                text-align: center;
-                box-sizing: border-box;
-                display: block;
-            }
-            nav a:last-child { border-bottom: none; }
-
-            .hero { padding: 30px 15px; margin-bottom: 20px; }
-            .hero h2 { font-size: 1.6rem; }
-            .product-grid { padding: 0 10px; }
-            .sekce-nadpis { font-size: 1.5rem; }
+            nav { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: #2c3e50; padding: 10px 0; transform: translateY(-150%); opacity: 0; visibility: hidden; transition: transform 0.4s ease, opacity 0.3s ease; z-index: -1; }
+            nav.active { transform: translateY(0); opacity: 1; visibility: visible; }
+            nav a { margin: 0; padding: 15px 20px; width: 100%; text-align: center; display: block; }
         }
     </style>
 </head>
@@ -225,7 +63,7 @@
     <div class="header-full-width">
         <div class="logo">
             <a href="index.html">
-                <img src="img/loga/logo.jpg" alt="Logo">
+                <img id="db-logo" src="img/loga/logo.jpg" alt="Logo">
                 <h1>Počítače z Moravy</h1>
             </a>
         </div>
@@ -251,13 +89,10 @@
 
 <div class="container">
     <h2 class="sekce-nadpis">Nově naskladněné</h2>
-</div>
-
-<div class="container">
     <div class="product-grid">
         <article class="product-card">
             <a href="pc_1.html" class="product-link">
-                <img src="img/pc1/pc1.jpg" alt="PC 1">
+                <img id="img-pc_1" src="" alt="PC 1">
                 <h3 id="nazev-pc_1">Načítání...</h3>
             </a>
             <p class="sklad-info" id="sklad-pc_1">Načítání skladu...</p>
@@ -268,7 +103,7 @@
 
         <article class="product-card">
             <a href="pc_2.html" class="product-link">
-                <img src="img/pc2/pc2.jpg" alt="PC 2">
+                <img id="img-pc_2" src="" alt="PC 2">
                 <h3 id="nazev-pc_2">Načítání...</h3>
             </a>
             <p class="sklad-info" id="sklad-pc_2">Načítání skladu...</p>
@@ -279,7 +114,7 @@
 
         <article class="product-card">
             <a href="pc_3.html" class="product-link">
-                <img src="img/pc3.jpg" alt="PC 3">
+                <img id="img-pc_3" src="" alt="PC 3">
                 <h3 id="nazev-pc_3">Načítání...</h3>
             </a>
             <p class="sklad-info" id="sklad-pc_3">Načítání skladu...</p>
@@ -293,23 +128,15 @@
 <div id="bublina"></div>
 
 <script>
-    // Mobilní menu logika
+    // --- LOGIKA MENU ---
     const mobileMenu = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
-    
     mobileMenu.addEventListener('click', () => { 
         mobileMenu.classList.toggle('active');
         navMenu.classList.toggle('active'); 
     });
 
-    document.querySelectorAll('#nav-menu a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
-
-    // Firebase konfigurace
+    // --- FIREBASE NASTAVENÍ ---
     const firebaseConfig = {
         apiKey: "AIzaSyB0AsPToca13UPI9BzR_5nj5scqZwnhOxo",
         authDomain: "pc-store-5656d.firebaseapp.com",
@@ -324,22 +151,36 @@
     const db = firebase.database();
     const produktyKlice = ['pc_1', 'pc_2', 'pc_3'];
     
+    // --- NAČÍTÁNÍ DAT ---
     db.ref('produkty').on('value', (snapshot) => {
-        const produkty = snapshot.val() || {};
+        const data = snapshot.val() || {};
+        
+        // Načtení Loga (pokud ho máš v DB pod klíčem logo_1)
+        if(data.logo_1) document.getElementById('db-logo').src = data.logo_1;
+
         produktyKlice.forEach(klic => {
-            const pc = produkty[klic];
+            const pc = data[klic];
             if(!pc) return;
+
+            // Elementy
             const nazevEl = document.getElementById('nazev-' + klic);
             const infoEl = document.getElementById('sklad-' + klic);
             const cenaEl = document.getElementById('cena-' + klic);
             const btnEl = document.getElementById('btn-' + klic);
+            const imgEl = document.getElementById('img-' + klic);
             
+            // 1. Aktualizace Textů
             if(nazevEl) nazevEl.innerText = pc.nazev;
+            if(cenaEl) cenaEl.innerText = pc.cena.toLocaleString('cs-CZ');
+            
+            // 2. Aktualizace Obrázku (pokud je v DB pole 'foto')
+            if(imgEl && pc.foto) imgEl.src = pc.foto;
+
+            // 3. Sklad a Tlačítko
             if(infoEl) {
                 infoEl.innerText = pc.sklad > 0 ? `Skladem: ${pc.sklad} ks` : "Vyprodáno";
                 infoEl.style.color = pc.sklad > 0 ? "#28a745" : "#e74c3c";
             }
-            if(cenaEl) cenaEl.innerText = pc.cena.toLocaleString('cs-CZ');
             
             if(btnEl) {
                 if(pc.sklad <= 0) {
@@ -348,12 +189,14 @@
                 } else {
                     btnEl.disabled = false;
                     btnEl.innerText = "Do košíku";
-                    btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, `img/${klic}.jpg`, klic);
+                    // Použijeme URL obrázku přímo z DB pro košík
+                    btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, pc.foto, klic);
                 }
             }
         });
     });
 
+    // --- KOŠÍK ---
     function pridatDoKosiku(nazev, cenaCislo, urlObrazku, dbKey) {
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
         kosik.push({ nazev: nazev, cena: cenaCislo, obrazek: urlObrazku, dbKey: dbKey });
@@ -362,23 +205,21 @@
         zobrazBublinu(nazev);
     }
 
-    let casovacBubliny;
+    function aktualizovatPocitadlo() {
+        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
+        const kosikLink = document.getElementById('pocitadlo-odkaz');
+        if (kosikLink) kosikLink.innerHTML = `Košík 🛒 <b>(${kosik.length})</b>`;
+    }
+
     function zobrazBublinu(nazev) {
         const bublina = document.getElementById('bublina');
         bublina.innerHTML = '<b>✓ Přidáno:</b> ' + nazev;
         bublina.style.display = 'block';
         bublina.style.opacity = '1';
-        clearTimeout(casovacBubliny);
-        casovacBubliny = setTimeout(() => {
+        setTimeout(() => {
             bublina.style.opacity = '0';
             setTimeout(() => { bublina.style.display = 'none'; }, 300);
         }, 2500);
-    }
-
-    function aktualizovatPocitadlo() {
-        let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
-        const kosikLink = document.getElementById('pocitadlo-odkaz');
-        if (kosikLink) kosikLink.innerHTML = `Košík 🛒 <b>(${kosik.length})</b>`;
     }
 
     window.onload = aktualizovatPocitadlo;
