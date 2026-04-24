@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Počítače z Moravy</title>
+    <title id="web-title-tag">Počítače z Moravy</title>
     
     <link rel="icon" type="image/jpeg" href="img/loga/logo.jpg">
     
@@ -11,7 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
     <style>
-        /* Tvoje stávající CSS zůstává stejné */
+        /* CSS zůstává beze změny pro zachování vzhledu */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f0f2f5; color: #333; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         header { background: #2c3e50; color: #fff; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -64,7 +64,7 @@
         <div class="logo">
             <a href="index.html">
                 <img id="db-logo" src="img/loga/logo.jpg" alt="Logo">
-                <h1>Počítače z Moravy</h1>
+                <h1 id="web-title-display">Počítače z Moravy</h1>
             </a>
         </div>
         <div class="menu-toggle" id="mobile-menu">
@@ -155,28 +155,43 @@
     db.ref('produkty').on('value', (snapshot) => {
         const data = snapshot.val() || {};
         
-        // Načtení Loga (pokud ho máš v DB pod klíčem logo_1)
-        if(data.logo_1) document.getElementById('db-logo').src = data.logo_1;
+        // 1. DYNAMICKÝ TITLE (Záložka prohlížeče) A LOGO TEXT (H1)
+        if (data.nazev_webu) {
+            document.title = data.nazev_webu; // Změní title v prohlížeči
+            const titleDisplay = document.getElementById('web-title-display');
+            if (titleDisplay) titleDisplay.innerText = data.nazev_webu; // Změní text v logu
+        }
 
+        // 2. DYNAMICKÉ LOGO (Obrázek)
+        if(data.logo) {
+            const logoImg = document.getElementById('db-logo');
+            if(logoImg) logoImg.src = data.logo;
+        }
+
+        // 3. PROCHÁZENÍ PRODUKTŮ
         produktyKlice.forEach(klic => {
             const pc = data[klic];
             if(!pc) return;
 
-            // Elementy
             const nazevEl = document.getElementById('nazev-' + klic);
             const infoEl = document.getElementById('sklad-' + klic);
             const cenaEl = document.getElementById('cena-' + klic);
             const btnEl = document.getElementById('btn-' + klic);
             const imgEl = document.getElementById('img-' + klic);
             
-            // 1. Aktualizace Textů
             if(nazevEl) nazevEl.innerText = pc.nazev;
             if(cenaEl) cenaEl.innerText = pc.cena.toLocaleString('cs-CZ');
             
-            // 2. Aktualizace Obrázku (pokud je v DB pole 'foto')
-            if(imgEl && pc.foto) imgEl.src = pc.foto;
+            // OŠETŘENÍ OBRÁZKŮ: Načte z DB klíče 'foto'
+            if(imgEl) {
+                if (pc.foto) {
+                    imgEl.src = pc.foto;
+                } else {
+                    // Záložní obrázek pokud foto v DB chybí
+                    imgEl.src = "https://via.placeholder.com/300x200?text=Bez+obrazku";
+                }
+            }
 
-            // 3. Sklad a Tlačítko
             if(infoEl) {
                 infoEl.innerText = pc.sklad > 0 ? `Skladem: ${pc.sklad} ks` : "Vyprodáno";
                 infoEl.style.color = pc.sklad > 0 ? "#28a745" : "#e74c3c";
@@ -189,8 +204,7 @@
                 } else {
                     btnEl.disabled = false;
                     btnEl.innerText = "Do košíku";
-                    // Použijeme URL obrázku přímo z DB pro košík
-                    btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, pc.foto, klic);
+                    btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, pc.foto || "", klic);
                 }
             }
         });
