@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="web-title-tag">Počítače z Moravy</title>
     
-    <link rel="icon" type="image/jpeg" href="img/loga/logo.jpg">
+    <link rel="icon" type="image/jpeg" href="https://github.com/pocitacezmoravy/WEB/blob/main/img/loga/logo.jpg?raw=true">
     
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
     <style>
-        /* CSS zůstává beze změny pro zachování vzhledu */
+        /* CSS zůstává zachováno dle tvého návrhu */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; line-height: 1.6; background: #f0f2f5; color: #333; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         header { background: #2c3e50; color: #fff; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-full-width { display: flex; justify-content: space-between; align-items: center; padding: 0 40px; }
         .logo a { display: flex; align-items: center; text-decoration: none; color: #fff; transition: transform 0.2s ease; }
         .logo a:hover { transform: scale(1.02); }
-        .logo img { height: 100px; width: auto; margin-right: 15px; display: block; border-radius: 5px; }
+        .logo img { height: 100px; width: auto; margin-right: 15px; display: block; border-radius: 5px; background: #fff; }
         .logo h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; font-weight: 700; }
         nav { display: flex; align-items: center; }
         nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.3s; }
@@ -42,7 +42,7 @@
         .btn { padding: 14px 20px; border: none; cursor: pointer; border-radius: 8px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; transition: all 0.3s; margin-top: 10px; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; }
         .btn-primary { background: #28a745; color: white; }
         .btn-primary:hover { background: #218838; }
-        .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-primary:disabled { background: #ccc !important; cursor: not-allowed; }
         .btn-secondary { background: #e9ecef; color: #2c3e50; border: 1px solid #dee2e6; }
         .btn-secondary:hover { background: #dee2e6; }
         #bublina { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #2c3e50; color: #fff; padding: 16px 24px; border-radius: 50px; display: none; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: opacity 0.3s; white-space: nowrap; }
@@ -63,7 +63,7 @@
     <div class="header-full-width">
         <div class="logo">
             <a href="index.html">
-                <img id="db-logo" src="img/loga/logo.jpg" alt="Logo">
+                <img id="db-logo" src="" alt="Logo">
                 <h1 id="web-title-display">Počítače z Moravy</h1>
             </a>
         </div>
@@ -95,7 +95,7 @@
                 <img id="img-pc_1" src="" alt="PC 1">
                 <h3 id="nazev-pc_1">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-pc_1">Načítání skladu...</p>
+            <p class="sklad-info" id="sklad-pc_1">...</p>
             <p class="cena-text"><strong id="cena-pc_1">----</strong> <strong>Kč</strong></p>
             <a href="pc_1.html" class="btn btn-secondary">Specifikace</a>
             <button class="btn btn-primary" id="btn-pc_1">Do košíku</button>
@@ -106,7 +106,7 @@
                 <img id="img-pc_2" src="" alt="PC 2">
                 <h3 id="nazev-pc_2">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-pc_2">Načítání skladu...</p>
+            <p class="sklad-info" id="sklad-pc_2">...</p>
             <p class="cena-text"><strong id="cena-pc_2">----</strong> <strong>Kč</strong></p>
             <a href="pc_2.html" class="btn btn-secondary">Specifikace</a>
             <button class="btn btn-primary" id="btn-pc_2">Do košíku</button>
@@ -117,7 +117,7 @@
                 <img id="img-pc_3" src="" alt="PC 3">
                 <h3 id="nazev-pc_3">Načítání...</h3>
             </a>
-            <p class="sklad-info" id="sklad-pc_3">Načítání skladu...</p>
+            <p class="sklad-info" id="sklad-pc_3">...</p>
             <p class="cena-text"><strong id="cena-pc_3">----</strong> <strong>Kč</strong></p>
             <a href="pc_3.html" class="btn btn-secondary">Specifikace</a>
             <button class="btn btn-primary" id="btn-pc_3">Do košíku</button>
@@ -128,6 +128,16 @@
 <div id="bublina"></div>
 
 <script>
+    // --- POMOCNÁ FUNKCE PRO GITHUB OBRÁZKY ---
+    function fixGithubUrl(url) {
+        if (!url) return "";
+        // Převádí github.com/.../blob/ na raw.githubusercontent.com/.../
+        if (url.includes("github.com") && url.includes("/blob/")) {
+            return url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
+        }
+        return url;
+    }
+
     // --- LOGIKA MENU ---
     const mobileMenu = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
@@ -155,20 +165,13 @@
     db.ref('produkty').on('value', (snapshot) => {
         const data = snapshot.val() || {};
         
-        // 1. DYNAMICKÝ TITLE (Záložka prohlížeče) A LOGO TEXT (H1)
-        if (data.nazev_webu) {
-            document.title = data.nazev_webu; // Změní title v prohlížeči
-            const titleDisplay = document.getElementById('web-title-display');
-            if (titleDisplay) titleDisplay.innerText = data.nazev_webu; // Změní text v logu
-        }
-
-        // 2. DYNAMICKÉ LOGO (Obrázek)
+        // 1. LOGO A NÁZEV
         if(data.logo) {
             const logoImg = document.getElementById('db-logo');
-            if(logoImg) logoImg.src = data.logo;
+            if(logoImg) logoImg.src = fixGithubUrl(data.logo);
         }
 
-        // 3. PROCHÁZENÍ PRODUKTŮ
+        // 2. PROCHÁZENÍ PRODUKTŮ
         produktyKlice.forEach(klic => {
             const pc = data[klic];
             if(!pc) return;
@@ -180,20 +183,16 @@
             const imgEl = document.getElementById('img-' + klic);
             
             if(nazevEl) nazevEl.innerText = pc.nazev;
-            if(cenaEl) cenaEl.innerText = pc.cena.toLocaleString('cs-CZ');
+            if(cenaEl) cenaEl.innerText = pc.cena ? pc.cena.toLocaleString('cs-CZ') : "0";
             
-            // OŠETŘENÍ OBRÁZKŮ: Načte z DB klíče 'foto'
+            // OPRAVA: Použití klíče foto_1 z tvé Firebase struktury
             if(imgEl) {
-                if (pc.foto) {
-                    imgEl.src = pc.foto;
-                } else {
-                    // Záložní obrázek pokud foto v DB chybí
-                    imgEl.src = "https://via.placeholder.com/300x200?text=Bez+obrazku";
-                }
+                const fotoUrl = pc.foto_1 || pc.foto; 
+                imgEl.src = fixGithubUrl(fotoUrl) || "https://via.placeholder.com/300x200?text=Bez+obrazku";
             }
 
             if(infoEl) {
-                infoEl.innerText = pc.sklad > 0 ? `Skladem: ${pc.sklad} ks` : "Vyprodáno";
+                infoEl.innerText = pc.sklad > 0 ? `● Skladem: ${pc.sklad} ks` : "✕ Vyprodáno";
                 infoEl.style.color = pc.sklad > 0 ? "#28a745" : "#e74c3c";
             }
             
@@ -204,7 +203,7 @@
                 } else {
                     btnEl.disabled = false;
                     btnEl.innerText = "Do košíku";
-                    btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, pc.foto || "", klic);
+                    btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, pc.foto_1 || "", klic);
                 }
             }
         });
@@ -213,7 +212,7 @@
     // --- KOŠÍK ---
     function pridatDoKosiku(nazev, cenaCislo, urlObrazku, dbKey) {
         let kosik = JSON.parse(localStorage.getItem('mujKosik')) || [];
-        kosik.push({ nazev: nazev, cena: cenaCislo, obrazek: urlObrazku, dbKey: dbKey });
+        kosik.push({ nazev: nazev, cena: cenaCislo, obrazek: fixGithubUrl(urlObrazku), dbKey: dbKey });
         localStorage.setItem('mujKosik', JSON.stringify(kosik));
         aktualizovatPocitadlo();
         zobrazBublinu(nazev);
