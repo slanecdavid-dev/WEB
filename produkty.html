@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produkty | Počítače z Moravy</title>
 
-    <link rel="icon" type="image/jpeg" href="img/logo.jpg">
+    <link rel="icon" type="image/jpeg" href="img/loga/logo.jpg">
     
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -86,13 +86,13 @@
         .menu-toggle.active span:nth-child(2) { opacity: 0; }
         .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* Produkty Grid a Karty - ZVĚTŠENO ODSAZENÍ (margin-top) */
+        /* Produkty Grid */
         .product-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 30px; 
             margin-bottom: 60px;
-            margin-top: 80px; /* Zde jsem změnil 40px na 80px */
+            margin-top: 80px;
         }
 
         .product-card { 
@@ -188,11 +188,6 @@
                 text-align: center;
                 box-sizing: border-box;
             }
-            
-            .product-grid { 
-                padding: 0 10px; 
-                margin-top: 40px; /* Na mobilech může zůstat menší */
-            }
         }
     </style>
 </head>
@@ -202,7 +197,7 @@
     <div class="header-full-width">
         <div class="logo">
             <a href="index.html">
-                <img src="img/loga/logo.jpg" alt="Logo">
+                <img id="web-logo" src="img/loga/logo.jpg" alt="Logo">
                 <h1>Počítače z Moravy</h1>
             </a>
         </div>
@@ -223,7 +218,7 @@
     <div class="product-grid">
         <article class="product-card">
             <a href="pc_1.html" class="product-link">
-                <img src="img/pc1/pc1.jpg" alt="PC 1">
+                <img id="img-pc_1" src="" alt="PC 1">
                 <h3 id="nazev-pc_1">Načítání...</h3>
             </a>
             <p class="sklad-info" id="sklad-pc_1">Načítání...</p>
@@ -234,7 +229,7 @@
 
         <article class="product-card">
             <a href="pc_2.html" class="product-link">
-                <img src="img/pc2/pc2.jpg" alt="PC 2">
+                <img id="img-pc_2" src="" alt="PC 2">
                 <h3 id="nazev-pc_2">Načítání...</h3>
             </a>
             <p class="sklad-info" id="sklad-pc_2">Načítání...</p>
@@ -245,7 +240,7 @@
 
         <article class="product-card">
             <a href="pc_3.html" class="product-link">
-                <img src="img/pc3/pc3.jpg" alt="PC 3">
+                <img id="img-pc_3" src="" alt="PC 3">
                 <h3 id="nazev-pc_3">Načítání...</h3>
             </a>
             <p class="sklad-info" id="sklad-pc_3">Načítání...</p>
@@ -283,6 +278,13 @@
     
     db.ref('produkty').on('value', (snapshot) => {
         const data = snapshot.val() || {};
+        
+        // Načtení loga z DB
+        if(data.logo) {
+            const logoImg = document.getElementById('web-logo');
+            if(logoImg) logoImg.src = data.logo;
+        }
+
         produktyKlice.forEach(klic => {
             const pc = data[klic];
             if (!pc) return;
@@ -291,10 +293,17 @@
             const infoEl = document.getElementById('sklad-' + klic);
             const cenaEl = document.getElementById('cena-' + klic);
             const btnEl = document.getElementById('btn-' + klic);
+            const imgEl = document.getElementById('img-' + klic);
             
+            // Načtení textů
             if(nazevEl) nazevEl.innerText = pc.nazev;
             if(cenaEl) cenaEl.innerText = pc.cena.toLocaleString('cs-CZ');
             
+            // NAČTENÍ OBRÁZKU Z FIREBASE (klíč foto_1)
+            if(imgEl && pc.foto_1) {
+                imgEl.src = pc.foto_1;
+            }
+
             if(infoEl) {
                 infoEl.innerText = pc.sklad > 0 ? `● Skladem: ${pc.sklad} ks` : "Vyprodáno";
                 infoEl.style.color = pc.sklad > 0 ? "#28a745" : "#e74c3c";
@@ -308,7 +317,8 @@
                 } else {
                     btnEl.disabled = false;
                     btnEl.innerText = "Do košíku";
-                    btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, `img/${klic}.jpg`, klic);
+                    // Do košíku posíláme foto_1
+                    btnEl.onclick = () => pridatDoKosiku(pc.nazev, pc.cena, pc.foto_1, klic);
                 }
             }
         });
